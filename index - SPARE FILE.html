@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0092b1">
+    <title>BOPEU Digital Union · Fixed Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+        :root {
+            --primary: #E1252C; --primary-dark: #b81d24; --primary-light: #fde8e9;
+            --accent: #EFE92B; --accent-light: #fffde0;
+            --white: #ffffff; --bg: #f7f9fa;
+            --grey1: #ececec; --grey2: #d0d5dd; --grey3: #98a2b3; --grey4: #667085;
+            --dark: #060707; --text: #2d3748;
+            --danger: #e53e3e; --success: #38a169;
+            --font-sans: 'Inter', system-ui, sans-serif;
+        }
+        body { font-family: var(--font-sans); background: var(--bg); color: var(--dark); max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; }
+        input, button, textarea, select { font-family: var(--font-sans); font-size: 16px; }
+        button { cursor: pointer; border: none; background: none; }
+        .app-container { display: flex; flex-direction: column; height: 100vh; overflow: hidden; background: var(--bg); }
+        .screen { display: none; flex-direction: column; flex: 1; overflow-y: auto; }
+        .screen.active { display: flex; }
+        .top-bar { background: var(--white); padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; color: var(--dark); border-bottom: 1px solid var(--grey1); flex-shrink: 0; }
+        .logo-area { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 18px; letter-spacing: 1px; }
+        .logo-area img { height: 32px; width: auto; }
+        .badge-area { background: var(--accent); color: var(--dark); border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 700; }
+        .bottom-nav { background: var(--white); border-top: 1px solid var(--grey1); display: flex; padding: 6px 12px 10px; flex-shrink: 0; }
+        .nav-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; font-size:12px; font-weight:500; color:var(--grey3); transition:all 0.1s; }
+        .nav-item.active { color:var(--primary); font-weight:700; }
+        .nav-icon { font-size:22px; }
+        .swipe-tabs { display:flex; background:var(--white); border-bottom:1px solid var(--grey1); padding:0 12px; }
+        .tab { flex:1; padding:12px 0; text-align:center; font-weight:600; font-size:14px; color:var(--grey3); border-bottom:2px solid transparent; cursor:pointer; }
+        .tab.active { color:var(--primary); border-bottom-color:var(--primary); }
+        .card { background:var(--white); border-radius:12px; margin-bottom:12px; border:1px solid var(--grey1); overflow:hidden; padding:16px; }
+        .btn { display:block; width:100%; padding:14px; border-radius:12px; font-weight:700; text-align:center; background:var(--primary); color:white; border:none; min-height:60px; }
+        .btn-outline { background:transparent; border:2px solid var(--primary); color:var(--primary); }
+        .btn-danger { background:var(--danger); color:white; }
+        .field { margin-bottom:14px; }
+        .field label { font-size:12px; font-weight:600; color:var(--grey4); display:block; margin-bottom:4px; }
+        input, select, textarea { width:100%; padding:12px 14px; border:1.5px solid var(--grey2); border-radius:10px; background:var(--white); font-size:14px; min-height:60px; }
+        .toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%); background:var(--dark); color:white; padding:8px 20px; border-radius:40px; font-size:13px; z-index:1100; opacity:0; transition:opacity 0.2s; pointer-events:none; }
+        .toast.show { opacity:1; }
+        .offline-banner { background: var(--accent); color: var(--dark); text-align:center; padding:6px; font-size:12px; font-weight:600; display:none; }
+        .offline-banner.show { display:block; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div id="offlineBanner" class="offline-banner">📵 Offline — data saved locally</div>
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" class="screen active">
+        <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding:32px;">
+            <div style="text-align:center; margin-bottom:32px;">
+                <img src="bopeu_logo.png" style="max-width:200px; height:auto; margin-bottom:12px;">
+                <div style="font-size:12px; font-weight:600; color:var(--grey4);">Botswana Public Employees Union</div>
+            </div>
+            <div class="card">
+                <div class="field"><label>First Name</label><input id="loginName" placeholder="e.g. Katlego" value="Katlego"></div>
+                <div class="field"><label>WhatsApp Number</label><input id="loginWhatsapp" placeholder="+267 71 234 567" value="+26771234567"></div>
+                <div class="field"><label>Password</label><input id="loginPassword" type="password" placeholder="••••••" value="pass"></div>
+                <button class="btn" id="doLoginBtn">Sign in →</button>
+                <div style="text-align:center; margin-top:12px;"><a href="#" id="showRegisterLink" style="color:var(--primary);">Create account (free)</a></div>
+            </div>
+        </div>
+    </div>
+    <!-- REGISTER SCREEN -->
+    <div id="registerScreen" class="screen">
+        <div class="top-bar"><div class="logo-area"><img src="bopeu_logo.png" alt="BOPEU"><span>+</span></div><div class="badge-area">Register</div></div>
+        <div style="padding:20px;">
+            <div class="card">
+                <div class="field"><label>First Name *</label><input id="regFirstName"></div>
+                <div class="field"><label>WhatsApp Number *</label><input id="regWhatsapp" placeholder="+267 71 234 567"></div>
+                <div class="field"><label>Password *</label><input id="regPassword" type="password"></div>
+                <div class="field"><label>Confirm Password</label><input id="regConfirm" type="password"></div>
+                <div class="field"><label>BOPEU Membership Number (optional)</label><input id="regMemberNo" placeholder="optional"></div>
+                <button class="btn" id="doRegisterBtn">Create Account</button>
+                <div style="margin-top:12px;"><a href="#" id="backToLoginLink" style="color:var(--primary);">← Back to login</a></div>
+            </div>
+        </div>
+    </div>
+    <!-- MAIN APP SCREEN -->
+    <div id="appScreen" class="screen">
+        <div class="top-bar"><div class="logo-area"><img src="bopeu_logo.png" alt="BOPEU"><span>+</span></div><div class="badge-area" id="memberBadge">Member</div></div>
+        <div id="topTabs"></div>
+        <div id="mainContent" style="flex:1; overflow-y:auto; padding:12px;"></div>
+        <div class="bottom-nav" id="bottomNav">
+            <div class="nav-item active" data-tab="home"><div class="nav-icon">🏠</div><div>Home</div></div>
+            <div class="nav-item" data-tab="lifulator"><div class="nav-icon">⚡</div><div>Lifulator</div></div>
+            <div class="nav-item" data-tab="motshelo"><div class="nav-icon">🤝</div><div>Motshelo</div></div>
+            <div class="nav-item" data-tab="profile"><div class="nav-icon">👤</div><div>Profile</div></div>
+        </div>
+    </div>
+</div>
+<div id="toast" class="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/idb@8.0.0/build/umd.js"></script>
+<script>
+    // ----------------------------- OFFLINE STORAGE (idb library) -------------------------
+    const DB_NAME = 'BopeuFixedDB';
+    let db = null;
+    async function initDB() {
+        db = await idb.openDB(DB_NAME, 1, {
+            upgrade(db) {
+                if (!db.objectStoreNames.contains('users')) db.createObjectStore('users', { keyPath: 'id' });
+                if (!db.objectStoreNames.contains('notes')) db.createObjectStore('notes', { keyPath: 'id' });
+                if (!db.objectStoreNames.contains('items')) db.createObjectStore('items', { keyPath: 'id' });
+                if (!db.objectStoreNames.contains('motshelo_groups')) db.createObjectStore('motshelo_groups', { keyPath: 'id' });
+                if (!db.objectStoreNames.contains('motshelo_contributions')) db.createObjectStore('motshelo_contributions', { keyPath: 'id' });
+                if (!db.objectStoreNames.contains('join_requests')) db.createObjectStore('join_requests', { keyPath: 'id' });
+            }
+        });
+        return db;
+    }
+    async function saveRecord(store, rec) { await db.put(store, rec); }
+    async function getAll(store) { return await db.getAll(store); }
+    async function deleteRecord(store, id) { await db.delete(store, id); }
+
+    // --------------------------------- STATE ------------------------------------------
+    let currentUser = null, isUnionMember = false, activeTab = 'home', activeSubTab = null, currentGroupId = null;
+    let motsheloGroups = [], motsheloContributions = [], joinRequests = [];
+    let notes = [], items = [];
+    let budgetIncome = 18500, budgetLimit = 15000;
+
+    const defaultNotes = [
+        { id: 'home', label: 'Home', icon: '🏠' }, { id: 'transport', label: 'Transport', icon: '🚗' },
+        { id: 'food', label: 'Food & Groceries', icon: '🍲' }, { id: 'health', label: 'Health', icon: '🏥' },
+        { id: 'savings', label: 'Savings', icon: '💰' }
+    ];
+
+    // --------------------------------- UI Helpers --------------------------------------
+    function showToast(msg, dur=2500) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),dur); }
+    function updateOfflineBanner() { const b=document.getElementById('offlineBanner'); if(!navigator.onLine) b.classList.add('show'); else b.classList.remove('show'); }
+    window.addEventListener('online', updateOfflineBanner); window.addEventListener('offline', updateOfflineBanner);
+
+    // Navigation
+    function switchBottomTab(tabId) {
+        activeTab = tabId; activeSubTab = null;
+        document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+        document.querySelector(`.nav-item[data-tab="${tabId}"]`).classList.add('active');
+        if (tabId === 'lifulator') activeSubTab = 'Budget';
+        else if (tabId === 'motshelo') activeSubTab = 'My Groups';
+        else if (tabId === 'profile') activeSubTab = 'Profile';
+        else if (tabId === 'home') activeSubTab = 'Promos';
+        renderTopTabs();
+        renderMainContent();
+    }
+    function renderTopTabs() {
+        const container = document.getElementById('topTabs'); container.innerHTML = '';
+        let tabs = [];
+        if (activeTab === 'home') tabs = ['Promos', 'Insurance'];
+        else if (activeTab === 'lifulator') tabs = ['Budget', 'Goals'];
+        else if (activeTab === 'motshelo') tabs = ['My Groups', 'Registry', 'Collection', 'Vault', 'Boma'];
+        else if (activeTab === 'profile') tabs = ['Profile'];
+        if (!tabs.length) return;
+        if (!activeSubTab || !tabs.includes(activeSubTab)) activeSubTab = tabs[0];
+        tabs.forEach(t => {
+            const btn = document.createElement('div');
+            btn.className = `tab ${activeSubTab === t ? 'active' : ''}`;
+            btn.textContent = t;
+            btn.onclick = () => { activeSubTab = t; renderMainContent(); renderTopTabs(); };
+            container.appendChild(btn);
+        });
+    }
+    async function renderMainContent() {
+        const cont = document.getElementById('mainContent');
+        if (!cont) return;
+        if (activeTab === 'home') {
+            cont.innerHTML = `<div class="card"><h3>BOPEU Digital Union</h3><p>Offline‑first union tools for Botswana.</p><button class="btn btn-outline" onclick="switchBottomTab('lifulator')">Go to Lifulator</button><button class="btn btn-outline" style="margin-top:8px" onclick="switchBottomTab('motshelo')">Go to Motshelo</button></div>`;
+        } else if (activeTab === 'lifulator') {
+            const spent = items.reduce((s,i)=>s+(i.amount||0),0);
+            const remaining = budgetLimit - spent;
+            const percent = Math.min(100, (spent/budgetLimit)*100);
+            cont.innerHTML = `<div class="card" style="background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;"><div>Budget: P${budgetLimit.toFixed(2)}</div><div>Spent: P${spent.toFixed(2)}</div><div>Remaining: P${remaining.toFixed(2)}</div><div style="height:8px;background:rgba(255,255,255,0.3);border-radius:8px;margin:10px 0;"><div style="width:${percent}%;height:100%;background:var(--accent);border-radius:8px;"></div></div><button class="btn" style="background:white;color:var(--primary);margin-top:8px" onclick="openAddItem()">+ Add Item</button></div>`;
+            for (let note of notes) {
+                const noteItems = items.filter(i=>i.noteId===note.id);
+                cont.innerHTML += `<div class="card"><div style="background:var(--primary);padding:12px 16px;color:white;font-weight:700;display:flex;justify-content:space-between;"><span>${note.icon} ${note.label}</span><span>P${noteItems.reduce((s,i)=>s+(i.amount||0),0).toFixed(2)}</span></div><div style="padding:12px;">${noteItems.map(i=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--grey1);"><span>${i.name}</span><span>P${i.amount.toFixed(2)}</span><button class="btn-sm" style="background:var(--danger);color:white;padding:2px 8px;border-radius:6px;" onclick="deleteItem('${i.id}')">🗑️</button></div>`).join('')}<button class="btn btn-outline" style="margin-top:8px" onclick="openAddItemForNote('${note.id}')">+ Add Item</button></div></div>`;
+            }
+            cont.innerHTML += `<button class="btn btn-outline" onclick="addCategory()">+ Add Category</button>`;
+        } else if (activeTab === 'motshelo') {
+            if (activeSubTab === 'My Groups') {
+                cont.innerHTML = `<div class="card"><h3>Your Motshelo Groups</h3>${motsheloGroups.map(g=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--grey1);"><span>🤝 ${g.name} · P${g.amount}/mo</span><button class="btn-sm" onclick="selectGroup('${g.id}')">Open</button></div>`).join('')}<button class="btn" onclick="createGroup()">+ Create Group</button><button class="btn btn-outline" style="margin-top:8px" onclick="joinGroup()">Join Group</button></div>`;
+            } else if (activeSubTab === 'Registry' && currentGroupId) {
+                const group = motsheloGroups.find(g=>g.id===currentGroupId);
+                if(group) cont.innerHTML = `<div class="card"><h3>${group.name} · Members</h3>${group.members.map(m=>`<div style="display:flex;justify-content:space-between;padding:6px 0;"><span>${m.name}</span><button class="btn-sm" onclick="vouchMember('${currentGroupId}','${m.id}')">Vouch</button></div>`).join('')}<button class="btn" onclick="inviteMember()">Invite</button></div>`;
+            } else if (activeSubTab === 'Collection' && currentGroupId) {
+                const group = motsheloGroups.find(g=>g.id===currentGroupId);
+                cont.innerHTML = `<div class="card"><h3>Record Contributions</h3>${group.members.map(m=>`<div style="display:flex;gap:8px;margin-bottom:8px;"><span>${m.name}</span><input type="number" id="amt-${m.id}" placeholder="Amount" style="width:100px;min-height:auto;"><button class="btn-sm" onclick="recordContribution('${currentGroupId}','${m.id}')">Record</button></div>`).join('')}</div>`;
+            } else if (activeSubTab === 'Vault') {
+                cont.innerHTML = `<div class="card"><h3>Social Vault</h3><div>Balance: P0.00</div><button class="btn btn-danger" onclick="startBereavement()">Report Tragedy (P2,000 bridge)</button></div>`;
+            } else if (activeSubTab === 'Boma') {
+                cont.innerHTML = `<div class="card"><h3>Archive & Paper Seal</h3><button class="btn" onclick="generatePaperSeal()">Generate Paper Seal</button><div id="sealDisplay"></div><button class="btn btn-outline" onclick="shareWhatsApp()">Share via WhatsApp</button></div>`;
+            }
+        } else if (activeTab === 'profile') {
+            cont.innerHTML = `<div class="card"><div style="display:flex;gap:12px;"><div style="width:60px;height:60px;background:var(--primary-light);border-radius:60px;display:flex;align-items:center;justify-content:center;font-size:28px;">👤</div><div><h3>${currentUser?.name}</h3><div>${isUnionMember?'✅ Union Member':'⚠️ Basic'}</div></div></div><button class="btn btn-danger" style="margin-top:16px" onclick="logout()">Sign Out</button></div>`;
+        }
+    }
+
+    // Lifulator actions
+    window.openAddItem = () => { if(notes.length) openAddItemForNote(notes[0].id); };
+    window.openAddItemForNote = (noteId) => {
+        let name = prompt('Item name'); if(!name) return;
+        let amount = parseFloat(prompt('Amount (P)')); if(isNaN(amount)) return;
+        let newItem = { id: Date.now().toString(), noteId, name, amount };
+        items.push(newItem); saveRecord('items', newItem); renderMainContent();
+    };
+    window.deleteItem = async (id) => { items = items.filter(i=>i.id!==id); await deleteRecord('items', id); renderMainContent(); };
+    window.addCategory = async () => { let label=prompt('Category name'); if(label){ let newNote={id:Date.now().toString(),label,icon:'📁'}; notes.push(newNote); await saveRecord('notes',newNote); renderMainContent(); } };
+
+    // Motshelo actions
+    window.createGroup = async () => {
+        let name = prompt('Group name'); if(!name) return;
+        let amount = parseFloat(prompt('Monthly contribution (P)','200'))||200;
+        let newGroup = { id: Date.now().toString(), name, amount, members: [{ id: currentUser.id, name: currentUser.name, vouches:0 }], socialFund:0, createdAt: new Date().toISOString() };
+        motsheloGroups.push(newGroup);
+        await saveRecord('motshelo_groups', newGroup);
+        let seal = Math.random().toString(36).substring(2,10).toUpperCase();
+        showToast(`Group "${name}" created! Paper Seal: ${seal} — write it down.`, 4000);
+        renderMainContent();
+    };
+    window.selectGroup = (id) => { currentGroupId = id; activeSubTab = 'Registry'; renderTopTabs(); renderMainContent(); };
+    window.vouchMember = (groupId, memberId) => { showToast('Vouch recorded (PIN not required for demo)'); };
+    window.recordContribution = async (groupId, memberId) => {
+        let amt = parseFloat(document.getElementById(`amt-${memberId}`).value);
+        if(isNaN(amt)){ showToast('Enter amount'); return; }
+        let contrib = { id: Date.now().toString(), groupId, memberId, amount: amt, confirmed: true };
+        motsheloContributions.push(contrib);
+        await saveRecord('motshelo_contributions', contrib);
+        showToast('Contribution recorded');
+        renderMainContent();
+    };
+    window.inviteMember = () => { showToast(`Share Group ID: ${currentGroupId}`); };
+    window.joinGroup = async () => {
+        let code = prompt('Enter Group ID');
+        let group = motsheloGroups.find(g=>g.id===code);
+        if(!group){ showToast('Group not found'); return; }
+        if(group.members.some(m=>m.id===currentUser.id)){ showToast('Already member'); return; }
+        let req = { id: Date.now().toString(), groupId: group.id, userId: currentUser.id, userName: currentUser.name };
+        joinRequests.push(req);
+        await saveRecord('join_requests', req);
+        showToast('Join request sent to admin');
+        renderMainContent();
+    };
+    window.startBereavement = () => { showToast('Bereavement claim: P2,000 bridge loan approved. Upload death certificate.'); };
+    window.generatePaperSeal = () => {
+        let seal = Math.random().toString(36).substring(2,10).toUpperCase();
+        document.getElementById('sealDisplay').innerHTML = `<div style="background:var(--accent-light);padding:16px;border-radius:16px;text-align:center;font-family:monospace;font-size:28px;margin-top:12px;">📜 ${seal}</div><p style="font-size:12px;margin-top:8px;">Write this in your notebook.</p>`;
+        showToast(`Paper Seal: ${seal} — write it down!`);
+    };
+    window.shareWhatsApp = () => { window.open(`https://wa.me/?text=${encodeURIComponent('Motshelo update: group active.')}`,'_blank'); };
+
+    // Profile actions
+    function logout(){ localStorage.removeItem('bopeu_userId'); currentUser=null; document.getElementById('appScreen').classList.remove('active'); document.getElementById('loginScreen').classList.add('active'); }
+
+    // ======================== AUTH ========================
+    async function loadUserFromDB() {
+        const users = await getAll('users');
+        const stored = localStorage.getItem('bopeu_userId');
+        if (stored) {
+            const user = users.find(u=>u.id===stored);
+            if (user) { currentUser = user; isUnionMember = !!user.memberNumber; return true; }
+        }
+        // create default demo user if none exists
+        if (users.length === 0) {
+            const demoUser = { id: 'demo1', name: 'Katlego', whatsapp: '+26771234567', password: 'pass', memberNumber: null };
+            await saveRecord('users', demoUser);
+            currentUser = demoUser;
+            isUnionMember = false;
+            localStorage.setItem('bopeu_userId', demoUser.id);
+            return true;
+        }
+        return false;
+    }
+    async function register() {
+        let fn = document.getElementById('regFirstName').value.trim();
+        let wa = document.getElementById('regWhatsapp').value.trim();
+        let pwd = document.getElementById('regPassword').value;
+        let conf = document.getElementById('regConfirm').value;
+        let mem = document.getElementById('regMemberNo').value.trim();
+        if(!fn || !wa || !pwd) { showToast('Fill required fields'); return; }
+        if(pwd !== conf) { showToast('Passwords do not match'); return; }
+        let users = await getAll('users');
+        if(users.some(u=>u.whatsapp === wa)) { showToast('WhatsApp already registered'); return; }
+        let newUser = { id: Date.now().toString(), name: fn, whatsapp: wa, password: pwd, memberNumber: mem || null };
+        await saveRecord('users', newUser);
+        currentUser = newUser; isUnionMember = !!mem;
+        localStorage.setItem('bopeu_userId', newUser.id);
+        document.getElementById('loginScreen').classList.remove('active');
+        document.getElementById('appScreen').classList.add('active');
+        document.getElementById('memberBadge').textContent = isUnionMember ? 'Full Member' : 'Basic';
+        notes = await getAll('notes'); if(!notes.length){ notes=defaultNotes.map(n=>({...n})); for(let n of notes) await saveRecord('notes',n); }
+        items = await getAll('items');
+        motsheloGroups = await getAll('motshelo_groups');
+        motsheloContributions = await getAll('motshelo_contributions');
+        joinRequests = await getAll('join_requests');
+        switchBottomTab('home');
+    }
+    async function login() {
+        let name = document.getElementById('loginName').value.trim();
+        let wa = document.getElementById('loginWhatsapp').value.trim();
+        let pwd = document.getElementById('loginPassword').value;
+        let users = await getAll('users');
+        let user = users.find(u => (u.name.toLowerCase().includes(name.toLowerCase()) || u.whatsapp === wa) && u.password === pwd);
+        if(!user) { showToast('Invalid credentials'); return; }
+        currentUser = user; isUnionMember = !!user.memberNumber;
+        localStorage.setItem('bopeu_userId', user.id);
+        document.getElementById('loginScreen').classList.remove('active');
+        document.getElementById('appScreen').classList.add('active');
+        document.getElementById('memberBadge').textContent = isUnionMember ? 'Full Member' : 'Basic';
+        notes = await getAll('notes'); if(!notes.length){ notes=defaultNotes.map(n=>({...n})); for(let n of notes) await saveRecord('notes',n); }
+        items = await getAll('items');
+        motsheloGroups = await getAll('motshelo_groups');
+        motsheloContributions = await getAll('motshelo_contributions');
+        joinRequests = await getAll('join_requests');
+        switchBottomTab('home');
+    }
+
+    // Event listeners
+    document.getElementById('doLoginBtn').addEventListener('click', login);
+    document.getElementById('doRegisterBtn').addEventListener('click', register);
+    document.getElementById('showRegisterLink').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('loginScreen').classList.remove('active'); document.getElementById('registerScreen').classList.add('active'); });
+    document.getElementById('backToLoginLink').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('registerScreen').classList.remove('active'); document.getElementById('loginScreen').classList.add('active'); });
+    document.querySelectorAll('.nav-item').forEach(nav => nav.addEventListener('click', (e) => { const tab = nav.dataset.tab; if(tab) switchBottomTab(tab); }));
+    window.logout = logout;
+
+    // Initialise
+    (async () => {
+        await initDB();
+        if(await loadUserFromDB()){
+            document.getElementById('loginScreen').classList.remove('active');
+            document.getElementById('appScreen').classList.add('active');
+            notes = await getAll('notes'); if(!notes.length){ notes=defaultNotes.map(n=>({...n})); for(let n of notes) await saveRecord('notes',n); }
+            items = await getAll('items');
+            motsheloGroups = await getAll('motshelo_groups');
+            motsheloContributions = await getAll('motshelo_contributions');
+            joinRequests = await getAll('join_requests');
+            switchBottomTab('home');
+        } else {
+            document.getElementById('loginScreen').classList.add('active');
+        }
+        updateOfflineBanner();
+    })();
+</script>
+</body>
+</html>

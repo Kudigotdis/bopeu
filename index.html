@@ -42,6 +42,7 @@
         .field { margin-bottom:14px; }
         .field label { font-size:12px; font-weight:600; color:var(--grey4); display:block; margin-bottom:4px; }
         input, select, textarea { width:100%; padding:12px 14px; border:1.5px solid var(--grey2); border-radius:10px; background:var(--white); font-size:14px; min-height:60px; }
+        textarea { min-height:80px; resize:none; }
         .toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%); background:var(--dark); color:white; padding:8px 20px; border-radius:40px; font-size:13px; z-index:1100; opacity:0; transition:opacity 0.2s; pointer-events:none; }
         .toast.show { opacity:1; }
         .offline-banner { background: var(--accent); color: var(--dark); text-align:center; padding:6px; font-size:12px; font-weight:600; display:none; }
@@ -110,6 +111,7 @@
                 if (!db.objectStoreNames.contains('motshelo_groups')) db.createObjectStore('motshelo_groups', { keyPath: 'id' });
                 if (!db.objectStoreNames.contains('motshelo_contributions')) db.createObjectStore('motshelo_contributions', { keyPath: 'id' });
                 if (!db.objectStoreNames.contains('join_requests')) db.createObjectStore('join_requests', { keyPath: 'id' });
+                if (!db.objectStoreNames.contains('vault_payouts')) db.createObjectStore('vault_payouts', { keyPath: 'id' });
             }
         });
         return db;
@@ -120,7 +122,7 @@
 
     // --------------------------------- STATE ------------------------------------------
     let currentUser = null, isUnionMember = false, activeTab = 'home', activeSubTab = null, currentGroupId = null;
-    let motsheloGroups = [], motsheloContributions = [], joinRequests = [];
+    let motsheloGroups = [], motsheloContributions = [], joinRequests = [], vaultPayouts = [];
     let notes = [], items = [];
     let budgetIncome = 18500, budgetLimit = 15000;
 
@@ -152,7 +154,7 @@
         let tabs = [];
         if (activeTab === 'home') tabs = ['Promos', 'Insurance'];
         else if (activeTab === 'lifulator') tabs = ['Budget', 'Goals'];
-        else if (activeTab === 'motshelo') tabs = ['My Groups', 'Registry', 'Collection', 'Vault', 'Boma'];
+        else if (activeTab === 'motshelo') tabs = ['My Groups', 'Requests', 'History', 'Registry', 'Collection', 'Vault', 'Boma'];
         else if (activeTab === 'profile') tabs = ['Profile'];
         if (!tabs.length) return;
         if (!activeSubTab || !tabs.includes(activeSubTab)) activeSubTab = tabs[0];
@@ -181,17 +183,29 @@
             cont.innerHTML += `<button class="btn btn-outline" onclick="addCategory()">+ Add Category</button>`;
         } else if (activeTab === 'motshelo') {
             if (activeSubTab === 'My Groups') {
-                cont.innerHTML = `<div class="card"><h3>Your Motshelo Groups</h3>${motsheloGroups.map(g=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--grey1);"><span>🤝 ${g.name} · P${g.amount}/mo</span><button class="btn-sm" onclick="selectGroup('${g.id}')">Open</button></div>`).join('')}<button class="btn" onclick="createGroup()">+ Create Group</button><button class="btn btn-outline" style="margin-top:8px" onclick="joinGroup()">Join Group</button></div>`;
+                const myGroups = motsheloGroups.filter(g => g.members.some(m => m.id === currentUser?.id));
+                cont.innerHTML = `<div class="card"><h3>Your Motshelo Groups</h3>${myGroups.length ? myGroups.map(g=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--grey1);"><span>🤝 ${g.name} · P${g.amount}/mo</span><button class="btn-sm" onclick="selectGroup('${g.id}')">Open</button></div>`).join('') : '<p style="color:var(--grey3);padding:8px 0;">No groups yet</p>'}<button class="btn" onclick="createGroup()">+ Create Group</button><button class="btn btn-outline" style="margin-top:8px" onclick="joinGroup()">Join Group</button></div>`;
+            } else if (activeSubTab === 'Requests' && currentGroupId) {
+                const group = motsheloGroups.find(g=>g.id===currentGroupId);
+                const pendingRequests = joinRequests.filter(r => r.groupId === currentGroupId && !r.status);
+                if(group) cont.innerHTML = `<div class="card"><h3>${group.name} · Join Requests</h3>${pendingRequests.length ? pendingRequests.map(r=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--grey1);"><span>${r.userName}</span><div style="display:flex;gap:8px;"><button class="btn-sm" style="background:var(--success);color:white;padding:4px 12px;border-radius:6px;" onclick="approveRequest('${r.id}')">✓</button><button class="btn-sm" style="background:var(--danger);color:white;padding:4px 12px;border-radius:6px;" onclick="rejectRequest('${r.id}')">✗</button></div></div>`).join('') : '<p style="color:var(--grey3);">No pending requests</p>'}</div>`;
+            } else if (activeSubTab === 'History' && currentGroupId) {
+                const group = motsheloGroups.find(g=>g.id===currentGroupId);
+                const groupContribs = motsheloContributions.filter(c => c.groupId === currentGroupId);
+                if(group) cont.innerHTML = `<div class="card"><h3>${group.name} · Contributions</h3>${group.members.map(m => { const memberContribs = groupContribs.filter(c => c.memberId === m.id); const total = memberContribs.reduce((s,c)=>s+(c.amount||0),0); return `<div style="padding:12px 0;border-bottom:1px solid var(--grey1);"><div style="font-weight:600;">${m.name}</div><div style="color:var(--grey4);font-size:13px;">Total: P${total.toFixed(2)} · ${memberContribs.length} payments</div></div>`; }).join('')}<div style="padding:12px 0;border-top:2px solid var(--grey2);margin-top:12px;"><div style="font-weight:700;">Group Total</div><div style="color:var(--primary);font-size:18px;">P${groupContribs.reduce((s,c)=>s+(c.amount||0),0).toFixed(2)}</div></div></div>`;
             } else if (activeSubTab === 'Registry' && currentGroupId) {
                 const group = motsheloGroups.find(g=>g.id===currentGroupId);
-                if(group) cont.innerHTML = `<div class="card"><h3>${group.name} · Members</h3>${group.members.map(m=>`<div style="display:flex;justify-content:space-between;padding:6px 0;"><span>${m.name}</span><button class="btn-sm" onclick="vouchMember('${currentGroupId}','${m.id}')">Vouch</button></div>`).join('')}<button class="btn" onclick="inviteMember()">Invite</button></div>`;
+                if(group) cont.innerHTML = `<div class="card"><h3>${group.name} · Members</h3>${group.members.map(m=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--grey1);"><span>${m.name}</span><button class="btn-sm" onclick="vouchMember('${currentGroupId}','${m.id}')">Vouch</button></div>`).join('')}<button class="btn" onclick="inviteMember()">Invite</button></div>`;
             } else if (activeSubTab === 'Collection' && currentGroupId) {
                 const group = motsheloGroups.find(g=>g.id===currentGroupId);
-                cont.innerHTML = `<div class="card"><h3>Record Contributions</h3>${group.members.map(m=>`<div style="display:flex;gap:8px;margin-bottom:8px;"><span>${m.name}</span><input type="number" id="amt-${m.id}" placeholder="Amount" style="width:100px;min-height:auto;"><button class="btn-sm" onclick="recordContribution('${currentGroupId}','${m.id}')">Record</button></div>`).join('')}</div>`;
+                cont.innerHTML = `<div class="card"><h3>Record Contributions</h3>${group.members.map(m=>`<div style="display:flex;gap:8px;margin-bottom:8px;"><span style="min-width:80px;">${m.name}</span><input type="number" id="amt-${m.id}" placeholder="P0.00" style="width:100px;min-height:auto;"><button class="btn-sm" style="background:var(--primary);color:white;padding:6px 12px;border-radius:6px;" onclick="recordContribution('${currentGroupId}','${m.id}')">✓</button></div>`).join('')}</div>`;
             } else if (activeSubTab === 'Vault') {
-                cont.innerHTML = `<div class="card"><h3>Social Vault</h3><div>Balance: P0.00</div><button class="btn btn-danger" onclick="startBereavement()">Report Tragedy (P2,000 bridge)</button></div>`;
+                const totalCollected = motsheloContributions.reduce((s,c)=>s+(c.amount||0),0);
+                const totalPayouts = vaultPayouts.reduce((s,p)=>s+(p.amount||0),0);
+                const vaultBalance = totalCollected - totalPayouts;
+                cont.innerHTML = `<div class="card" style="background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:white;"><div style="font-size:14px;">Vault Balance</div><div style="font-size:32px;font-weight:800;">P${vaultBalance.toFixed(2)}</div><div style="font-size:12px;opacity:0.8;margin-top:8px;">Collected: P${totalCollected.toFixed(2)} · Paid out: P${totalPayouts.toFixed(2)}</div></div><div class="card"><h3>Request Payout</h3><input id="payoutAmount" type="number" placeholder="Amount (P)" style="margin-bottom:12px;"><textarea id="payoutReason" placeholder="Reason for withdrawal" rows="2" style="margin-bottom:12px;"></textarea><button class="btn" onclick="requestPayout()">Submit Request</button></div><div class="card" style="background:var(--primary-light);"><h3>Bereavement</h3><p style="font-size:13px;margin-bottom:12px;">Report a tragedy to claim P2,000 bridge loan</p><button class="btn btn-danger" onclick="startBereavement()">Report Tragedy</button></div>`;
             } else if (activeSubTab === 'Boma') {
-                cont.innerHTML = `<div class="card"><h3>Archive & Paper Seal</h3><button class="btn" onclick="generatePaperSeal()">Generate Paper Seal</button><div id="sealDisplay"></div><button class="btn btn-outline" onclick="shareWhatsApp()">Share via WhatsApp</button></div>`;
+                cont.innerHTML = `<div class="card"><h3>Archive & Paper Seal</h3><button class="btn" onclick="generatePaperSeal()">Generate Paper Seal</button><div id="sealDisplay"></div><button class="btn btn-outline" onclick="shareWhatsApp()">Share via WhatsApp</button></div><div class="card"><h3>Close Group</h3><p style="font-size:13px;color:var(--grey4);margin-bottom:12px;">Permanently close this group and settle all members</p><button class="btn btn-danger" onclick="closeGroup()">Close Group</button></div>`;
             }
         } else if (activeTab === 'profile') {
             cont.innerHTML = `<div class="card"><div style="display:flex;gap:12px;"><div style="width:60px;height:60px;background:var(--primary-light);border-radius:60px;display:flex;align-items:center;justify-content:center;font-size:28px;">👤</div><div><h3>${currentUser?.name}</h3><div>${isUnionMember?'✅ Union Member':'⚠️ Basic'}</div></div></div><button class="btn btn-danger" style="margin-top:16px" onclick="logout()">Sign Out</button></div>`;
@@ -237,10 +251,44 @@
         let group = motsheloGroups.find(g=>g.id===code);
         if(!group){ showToast('Group not found'); return; }
         if(group.members.some(m=>m.id===currentUser.id)){ showToast('Already member'); return; }
-        let req = { id: Date.now().toString(), groupId: group.id, userId: currentUser.id, userName: currentUser.name };
+        let req = { id: Date.now().toString(), groupId: group.id, userId: currentUser.id, userName: currentUser.name, status: null };
         joinRequests.push(req);
         await saveRecord('join_requests', req);
         showToast('Join request sent to admin');
+        renderMainContent();
+    };
+    window.approveRequest = async (reqId) => {
+        const req = joinRequests.find(r=>r.id===reqId);
+        if(!req) return;
+        const group = motsheloGroups.find(g=>g.id===req.groupId);
+        if(!group) return;
+        const newMember = { id: req.userId, name: req.userName, vouches: 0 };
+        group.members.push(newMember);
+        req.status = 'approved';
+        await saveRecord('motshelo_groups', group);
+        await saveRecord('join_requests', req);
+        showToast(`${req.userName} added to group`);
+        renderMainContent();
+    };
+    window.rejectRequest = async (reqId) => {
+        const req = joinRequests.find(r=>r.id===reqId);
+        if(!req) return;
+        req.status = 'rejected';
+        await saveRecord('join_requests', req);
+        showToast('Request rejected');
+        renderMainContent();
+    };
+    window.requestPayout = async () => {
+        const amt = parseFloat(document.getElementById('payoutAmount').value);
+        const reason = document.getElementById('payoutReason').value.trim();
+        if(!amt || isNaN(amt) || amt <= 0){ showToast('Enter valid amount'); return; }
+        if(!reason){ showToast('Enter reason'); return; }
+        const payout = { id: Date.now().toString(), groupId: currentGroupId || null, amount: amt, reason, requestedBy: currentUser.name, status: 'pending', date: new Date().toISOString() };
+        vaultPayouts.push(payout);
+        await saveRecord('vault_payouts', payout);
+        showToast('Payout request submitted');
+        document.getElementById('payoutAmount').value = '';
+        document.getElementById('payoutReason').value = '';
         renderMainContent();
     };
     window.startBereavement = () => { showToast('Bereavement claim: P2,000 bridge loan approved. Upload death certificate.'); };
@@ -248,6 +296,19 @@
         let seal = Math.random().toString(36).substring(2,10).toUpperCase();
         document.getElementById('sealDisplay').innerHTML = `<div style="background:var(--accent-light);padding:16px;border-radius:16px;text-align:center;font-family:monospace;font-size:28px;margin-top:12px;">📜 ${seal}</div><p style="font-size:12px;margin-top:8px;">Write this in your notebook.</p>`;
         showToast(`Paper Seal: ${seal} — write it down!`);
+    };
+    window.closeGroup = async () => {
+        if(!confirm('Are you sure? This cannot be undone.')) return;
+        const group = motsheloGroups.find(g=>g.id===currentGroupId);
+        if(!group) return;
+        const totalContribs = motsheloContributions.filter(c=>c.groupId===currentGroupId).reduce((s,c)=>s+(c.amount||0),0);
+        const perMember = group.members.length > 0 ? (totalContribs / group.members.length).toFixed(2) : '0.00';
+        if(confirm(`Close "${group.name}"?\nTotal: P${totalContribs.toFixed(2)}\nPer member: P${perMember}`)) {
+            group.closed = true;
+            await saveRecord('motshelo_groups', group);
+            showToast('Group closed');
+            switchBottomTab('motshelo');
+        }
     };
     window.shareWhatsApp = () => { window.open(`https://wa.me/?text=${encodeURIComponent('Motshelo update: group active.')}`,'_blank'); };
 
@@ -295,6 +356,7 @@
         motsheloGroups = await getAll('motshelo_groups');
         motsheloContributions = await getAll('motshelo_contributions');
         joinRequests = await getAll('join_requests');
+        vaultPayouts = await getAll('vault_payouts');
         switchBottomTab('home');
     }
     async function login() {
@@ -314,6 +376,7 @@
         motsheloGroups = await getAll('motshelo_groups');
         motsheloContributions = await getAll('motshelo_contributions');
         joinRequests = await getAll('join_requests');
+        vaultPayouts = await getAll('vault_payouts');
         switchBottomTab('home');
     }
 
@@ -331,12 +394,13 @@
         if(await loadUserFromDB()){
             document.getElementById('loginScreen').classList.remove('active');
             document.getElementById('appScreen').classList.add('active');
-            notes = await getAll('notes'); if(!notes.length){ notes=defaultNotes.map(n=>({...n})); for(let n of notes) await saveRecord('notes',n); }
-            items = await getAll('items');
-            motsheloGroups = await getAll('motshelo_groups');
-            motsheloContributions = await getAll('motshelo_contributions');
-            joinRequests = await getAll('join_requests');
-            switchBottomTab('home');
+notes = await getAll('notes'); if(!notes.length){ notes=defaultNotes.map(n=>({...n})); for(let n of notes) await saveRecord('notes',n); }
+        items = await getAll('items');
+        motsheloGroups = await getAll('motshelo_groups');
+        motsheloContributions = await getAll('motshelo_contributions');
+        joinRequests = await getAll('join_requests');
+        vaultPayouts = await getAll('vault_payouts');
+        switchBottomTab('home');
         } else {
             document.getElementById('loginScreen').classList.add('active');
         }

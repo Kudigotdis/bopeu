@@ -198,11 +198,6 @@ window.BOPEU_LOGOS = {
         desc: 'Official BOPEU emblem (default)',
         src: 'Assets/logo/bopeu_logo.webp'
     },
-    mokaulengwe: {
-        label: 'Mokaulengwe (legacy)',
-        desc: 'Legacy welfare shield emblem',
-        src: "data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23D32F2F;stop-opacity:1'/%3E%3Cstop offset='100%25' style='stop-color:%23B71C1C;stop-opacity:1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M 100 20 Q 140 35 150 80 L 150 120 Q 150 155 100 180 Q 50 155 50 120 L 50 80 Q 60 35 100 20' fill='url(%23grad)' stroke='white' stroke-width='4'/%3E%3Ccircle cx='100' cy='70' r='35' fill='white' opacity='0.9'/%3E%3Cpath d='M 75 65 Q 85 60 95 65 Q 105 60 115 65 Q 120 70 115 75 Q 105 80 95 75 Q 85 80 75 75 Q 70 70 75 65' fill='%23D32F2F' stroke='%23D32F2F' stroke-width='2'/%3E%3Cpath d='M 60 110 Q 50 115 45 130' stroke='%23D32F2F' stroke-width='6' fill='none' stroke-linecap='round'/%3E%3Cpath d='M 55 105 Q 40 112 35 135' stroke='%23D32F2F' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Cpath d='M 140 110 Q 150 115 155 130' stroke='%23D32F2F' stroke-width='6' fill='none' stroke-linecap='round'/%3E%3Cpath d='M 145 105 Q 160 112 165 135' stroke='%23D32F2F' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"
-    },
     file: {
         label: 'Uploaded logo',
         desc: 'Your own uploaded image',

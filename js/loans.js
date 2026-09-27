@@ -315,7 +315,6 @@ function membershipStep(step) {
     return '<div class="onboarding-step"><h3>Member Registration</h3>' +
         '<p class="stepper-sub">Complete the 3-step registration wizard to create your BOPEU member profile.</p>' +
         '<div class="stat-chips"><span class="stat-chip">?<small>3 Steps</small></span><span class="stat-chip">✓<small>KYC + Employment + Forms</small></span></div>' +
-        (step === 0 ? '<div class="alert alert-info">This form mirrors the Nalcgpwu-era onboarding but registers you as a BOPEU member. Continue to open the wizard.</div>' : '') +
         '</div>';
 }
 

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Roles & Permissions · BOPEU Admin</title><link rel="stylesheet" href="design-system.css">
+<style>
+body.bop{background:#F2F5F9}
+.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+.admin-mark{width:32px;height:32px;border-radius:8px;background:#D32F2F;display:grid;place-items:center;font-weight:800;color:#fff}
+.admin-nav{display:flex;gap:16px;font-size:13px}
+.admin-nav a{color:#fff;text-decoration:none;font-weight:600;opacity:.85}
+.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}
+.admin-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}
+.admin-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}
+.admin-side a.active{background:#FFEBEE;color:#D32F2F}
+.admin-main{padding:24px;max-width:1100px}
+.admin-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;font-size:12px}
+.admin-table th{background:#F7F9FC;text-align:left;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#718096;padding:10px;border-bottom:1px solid #E2E8F0}
+.admin-table td{padding:10px;border-bottom:1px solid #E2E8F0;color:#1A202C}
+.admin-table input{width:16px;height:16px;accent-color:#D32F2F}
+@media(max-width:820px){.admin-layout{grid-template-columns:1fr}.admin-side{display:none}}
+</style></head>
+<body class="bop">
+<header class="admin-header">
+  <div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Staff Portal</div></div></div>
+  <nav class="admin-nav"><a href="admin-staff.html">Staff</a><a href="admin-login.html">Sign out</a></nav>
+</header>
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-dashboard.html">📊 Dashboard</a>
+    <a href="admin-staff.html">👔 Staff</a>
+    <a href="admin-users-roles.html">🔐 Users &amp; Roles</a>
+    <a href="admin-roles-permissions.html" class="active">🔒 Permission Matrix</a>
+  </aside>
+  <main class="admin-main">
+    <h1 style="font-size:22px;font-weight:800;margin:0 0 4px;">Role Permission Matrix</h1>
+    <p style="color:#718096;font-size:14px;margin:0 0 20px;">Fine-grained access control per role.</p>
+    <table class="admin-table"><thead><tr><th>Capability</th><th>Super admin</th><th>Processing</th><th>Management</th><th>Marketing</th><th>Sales</th><th>Auditor</th></tr></thead>
+      <tbody id="permMatrix"></tbody></table>
+  </main>
+</div>
+<script src="js/data.js"></script><script src="js/app.js"></script>
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+<script>
+var CAPS = ['View members','Edit members','View submissions','Approve submissions','Manage content','Manage partners','Manage staff','View reports','View audit log','Manage rate settings'];
+var ROLES = ['Super admin','Processing','Management','Marketing','Sales','Auditor'];
+var DEFAULT_PERMS = {
+  'Super admin':[1,1,1,1,1,1,1,1,1,1],
+  'Processing':[1,1,1,1,0,0,0,1,0,0],
+  'Management':[1,1,1,1,1,1,1,1,1,1],
+  'Marketing':[1,0,0,0,1,0,0,1,0,0],
+  'Sales':[1,0,1,0,0,0,0,1,0,0],
+  'Auditor':[1,0,1,0,0,0,0,1,1,0]
+};
+document.addEventListener('DOMContentLoaded', function(){
+  var saved = LocalStore.get('bopeu_perms') || DEFAULT_PERMS;
+  document.getElementById('permMatrix').innerHTML = CAPS.map(function(c,i){
+    return '<tr><td><strong>'+c+'</strong></td>'+ROLES.map(function(r){
+      return '<td><input type="checkbox" '+(saved[r][i]?'checked':'')+' data-cap="'+i+'" data-role="'+r+'" onchange="savePerm(this)"></td>';
+    }).join('')+'</tr>';
+  }).join('');
+});
+function savePerm(el){
+  var saved = LocalStore.get('bopeu_perms') || JSON.parse(JSON.stringify(DEFAULT_PERMS));
+  saved[el.dataset.role][+el.dataset.cap] = el.checked ? 1 : 0;
+  LocalStore.set('bopeu_perms', saved);
+}
+</script>
+</body></html>

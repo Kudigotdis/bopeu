@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Bursary Applications · BOPEU Welfare</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+body.bop{background:#F2F5F9}
+.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+.admin-mark{width:32px;height:32px;border-radius:8px;background:#D32F2F;display:grid;place-items:center;font-weight:800;color:#fff}
+.admin-nav{display:flex;gap:16px;font-size:13px}
+.admin-nav a{color:#fff;text-decoration:none;font-weight:600;opacity:.85}
+.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}
+.admin-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}
+.admin-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}
+.admin-side a.active{background:#FFEBEE;color:#D32F2F}
+.admin-main{padding:24px;max-width:1200px}
+.grid{display:grid;grid-template-columns:340px 1fr;gap:16px}
+.list{background:#fff;border:1px solid #E2E8F0;border-radius:12px;overflow:hidden}
+.list-item{padding:12px;border-bottom:1px solid #E2E8F0;cursor:pointer;transition:background .15s}
+.list-item:hover{background:#FAFBFD}
+.list-item.active{background:#FFEBEE;border-left:3px solid #D32F2F}
+.list-item .name{font-weight:800;font-size:14px}
+.list-item .meta{font-size:12px;color:#718096;margin-top:2px}
+.detail{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:20px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+@media(max-width:820px){.admin-layout{grid-template-columns:1fr}.admin-side{display:none}}
+</style>
+</head>
+<body class="bop">
+<header class="admin-header">
+  <div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Bursary Queue</div></div></div>
+  <nav class="admin-nav"><a href="admin-funeral-claims.html">Welfare</a><a href="admin-login.html">Sign out</a></nav>
+</header>
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-funeral-claims.html">⚰️ Funeral Claims</a>
+    <a href="admin-bursary-queue.html" class="active">🎓 Bursary Queue</a>
+    <a href="admin-loan-queue.html">💰 Loan Queue</a>
+    <a href="admin-insurance-quotes.html">🛡️ Insurance Quotes</a>
+  </aside>
+  <main class="admin-main">
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:4px;">Bursary Applications</h1>
+    <p style="color:#718096;font-size:14px;margin-bottom:20px;">Educational assistance review queue</p>
+    <div class="grid">
+      <div class="list" id="list"></div>
+      <div class="detail" id="detail"><div class="empty">Select a bursary application.</div></div>
+    </div>
+  </main>
+</div>
+<script>
+var APPS = [
+  { id:'BUR-2026-018', member:'Mercy Peters', institution:'University of Botswana', course:'BSc Nursing Year 2', amount:18500, requested:'2026-10-06', status:'in-review', docs:{admission:true,payslip:true,omang:true,invoice:false,school:false} },
+  { id:'BUR-2026-019', member:'Patricia Kgaope', institution:'Botho University', course:'BA Accounting Year 3', amount:22000, requested:'2026-10-10', status:'pending-docs', docs:{admission:true,payslip:true,omang:true,invoice:true,school:false} },
+  { id:'BUR-2026-020', member:'Kabelo Modise', institution:'University of Botswana', course:'MBA Year 1', amount:30000, requested:'2026-10-15', status:'docs-complete', docs:{admission:true,payslip:true,omang:true,invoice:true,school:true} }
+];
+
+function renderList() {
+  var html = '';
+  APPS.forEach((a, i) => {
+    html += '<div class="list-item' + (i===0?' active':'') + '" onclick="openApp(' + i + ')">' +
+      '<div class="name">' + a.member + '</div>' +
+      '<div class="meta">' + a.id + ' · P ' + a.amount.toLocaleString() + '</div>' +
+      '<div class="meta">' + a.status + '</div>' +
+      '</div>';
+  });
+  document.getElementById('list').innerHTML = html;
+  openApp(0);
+}
+
+function openApp(i) {
+  document.querySelectorAll('.list-item').forEach((el, idx) => el.classList.toggle('active', idx===i));
+  var a = APPS[i];
+  var docsHtml = '';
+  Object.keys(a.docs).forEach(k => {
+    docsHtml += '<div class="checklist-item"><input type="checkbox" ' + (a.docs[k] ? 'checked' : '') + ' disabled><span style="flex:1;text-transform:capitalize;">' + k + ' document</span><span class="badge ' + (a.docs[k] ? 'badge-green' : 'badge-red') + '">' + (a.docs[k] ? 'RECEIVED' : 'MISSING') + '</span></div>';
+  });
+  var docsMissing = Object.values(a.docs).filter(v => !v).length;
+  document.getElementById('detail').innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">' +
+      '<div><h2 style="margin:0;font-size:18px;">' + a.member + '</h2><p style="color:#718096;font-size:13px;margin:4px 0 0;">' + a.id + ' · Submitted ' + a.requested + '</p></div>' +
+      '<span class="badge badge-blue">' + a.status + '</span>' +
+    '</div>' +
+    '<div class="stat"><div class="stat-label">Institution</div><div class="stat-value" style="font-size:14px;">' + a.institution + '</div></div>' +
+    '<div class="stat" style="margin-top:10px;"><div class="stat-label">Course</div><div class="stat-value" style="font-size:14px;">' + a.course + '</div></div>' +
+    '<div class="stat" style="margin-top:10px;"><div class="stat-label">Amount requested</div><div class="stat-value" style="font-size:16px;color:#D32F2F;">P ' + a.amount.toLocaleString() + '</div></div>' +
+    '<h3 style="margin:16px 0 8px;font-size:14px;">Document checklist (' + (Object.keys(a.docs).length - docsMissing) + '/' + Object.keys(a.docs).length + ')</h3>' + docsHtml +
+    '<div class="callout" style="margin-top:14px;background:' + (docsMissing ? '#FFF3E0' : '#E8F5E9') + ';border-left-color:' + (docsMissing ? '#E65100' : '#2E7D32') + ';">' +
+      '<span class="callout-label">' + (docsMissing ? 'Action needed' : 'Ready for approval') + '</span>' +
+      '<p>' + (docsMissing ? 'Request the ' + docsMissing + ' missing document(s) from the member.' : 'All documents verified. Eligible for approval.') + '</p>' +
+    '</div>' +
+    '<div class="btn-row mt-md">' +
+      '<button class="btn btn-secondary" onclick="alert(\'Request docs from member (demo).\')">Request documents</button>' +
+      '<button class="btn btn-primary" ' + (docsMissing ? 'disabled' : '') + ' onclick="approve(\'' + a.id + '\')">Approve bursary</button>' +
+    '</div>';
+}
+
+function approve(id) {
+  if (!confirm('Approve bursary ' + id + ' for payment?')) return;
+  var a = APPS.find(x => x.id === id);
+  if (a) a.status = 'approved';
+  alert('Approved. Payment scheduled to member bank account.');
+  openApp(APPS.indexOf(a));
+}
+
+renderList();
+</script>
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

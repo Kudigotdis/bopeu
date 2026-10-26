@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Case Detail · BOPEU</title><link rel="stylesheet" href="design-system.css"></head>
+<body class="bop">
+<header style="background:#fff;border-bottom:1px solid #E2E8F0;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;">
+  <a href="application-tracker.html" style="display:flex;gap:10px;align-items:center;text-decoration:none;color:inherit;">
+    <div style="width:32px;height:32px;border-radius:8px;background:#D32F2F;color:#fff;display:grid;place-items:center;font-weight:800;">B</div>
+    <div><div style="font-weight:800;font-size:14px;">BOPEU</div><div style="font-size:10px;color:#718096;">MEMBER SERVICES</div></div>
+  </a>
+  <a href="application-tracker.html" style="font-size:13px;font-weight:700;color:#D32F2F;text-decoration:none;">← Tracker</a>
+</header>
+<main class="page stack" id="caseMain">
+  <div class="empty">Loading…</div>
+</main>
+<script src="js/data.js"></script><script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var id = new URLSearchParams(location.search).get('id');
+  var app = (LocalStore.get('bopeu_applications')||[]).find(function(a){return a.id===id;});
+  if (!app){ document.getElementById('caseMain').innerHTML='<div class="empty">Case not found. Provide a valid ?id=.</div>'; return; }
+  var messages = LocalStore.get('bopeu_case_'+id) || [
+    { from:'you', text:'Submitted ' + app.label, at:app.submittedAt },
+    { from:'system', text:'Reference ' + app.id + ' assigned. Awaiting office review.', at:app.submittedAt }
+  ];
+  var html = '<div class="card"><div class="card-head"><h2>'+app.label+'</h2><div class="card-sub">Ref '+app.id+' · '+app.officeName+'</div></div>' +
+    '<div class="card-body"><div class="checklist-item"><span class="chk-num">📅</span><span>Submitted '+new Date(app.submittedAt).toLocaleString()+'</span></div>' +
+    '<div class="checklist-item"><span class="chk-num">📍</span><span>Status: <strong>'+app.status+'</strong></span></div></div></div>';
+  html += '<div class="card"><div class="card-header"><h2>Thread</h2></div><div class="card-body" id="caseThread">' +
+    messages.map(function(m){
+      var clr = m.from==='you' ? '#F7F9FC' : (m.from==='staff' ? '#FFEBEE' : '#F2F5F9');
+      return '<div style="background:'+clr+';padding:10px 12px;border-radius:10px;margin-bottom:8px;font-size:14px;"><div style="font-size:11px;font-weight:800;color:#718096;text-transform:uppercase;margin-bottom:4px;">'+m.from+' · '+new Date(m.at).toLocaleString()+'</div>'+m.text+'</div>';
+    }).join('') + '</div></div>';
+  html += '<div class="card"><div class="card-header"><h2>Reply</h2></div><div class="card-body">' +
+    '<textarea id="caseReply" rows="3" style="width:100%;padding:10px;border:1px solid #E2E8F0;border-radius:10px;font-family:inherit;font-size:14px;" placeholder="Type your message…"></textarea>' +
+    '<div class="btn-row mt-md"><button class="btn btn-secondary" onclick="attachDoc()">Attach</button><button class="btn btn-primary" onclick="sendCaseReply(\''+id+'\')">Send</button></div>' +
+    '</div></div>';
+  document.getElementById('caseMain').innerHTML = html;
+});
+function sendCaseReply(id){
+  var txt = document.getElementById('caseReply').value.trim();
+  if (!txt){ alert('Type a message.'); return; }
+  var key = 'bopeu_case_'+id;
+  var msgs = LocalStore.get(key) || [];
+  msgs.push({from:'you', text:txt, at:new Date().toISOString()});
+  LocalStore.set(key, msgs);
+  alert('Reply sent.'); location.reload();
+}
+function attachDoc(){ alert('File attachment (demo) — implement uploads on the backend.'); }
+</script>
+</body></html>

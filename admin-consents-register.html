@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Consent Register · BOPEU DPO</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+body.bop{background:#F2F5F9}
+.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+.admin-mark{width:32px;height:32px;border-radius:8px;background:#D32F2F;display:grid;place-items:center;font-weight:800;color:#fff}
+.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}
+.admin-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}
+.admin-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}
+.admin-side a.active{background:#FFEBEE;color:#D32F2F}
+.admin-main{padding:24px;max-width:1200px}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:20px}
+.kpi{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px}
+.kpi .lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#718096}
+.kpi .val{font-size:26px;font-weight:800;color:#1A202C;margin-top:6px;line-height:1}
+.admin-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}
+.admin-table th{background:#F7F9FC;text-align:left;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#718096;padding:12px;border-bottom:1px solid #E2E8F0}
+.admin-table td{padding:12px;border-bottom:1px solid #E2E8F0;font-size:13px}
+@media(max-width:820px){.admin-layout{grid-template-columns:1fr}.admin-side{display:none}}
+</style>
+</head>
+<body class="bop">
+<header class="admin-header">
+  <div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Data Protection</div></div></div>
+  <nav style="display:flex;gap:16px;font-size:13px;"><a href="admin-data-requests.html" style="color:#fff;text-decoration:none;font-weight:600;opacity:.85;">DSRs</a><a href="admin-login.html" style="color:#fff;text-decoration:none;font-weight:600;opacity:.85;">Sign out</a></nav>
+</header>
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-data-requests.html">📋 Data Requests</a>
+    <a href="admin-consents-register.html" class="active">✅ Consent Register</a>
+    <a href="admin-audit-log.html">📜 Audit Log</a>
+  </aside>
+  <main class="admin-main">
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:4px;">Consent Register</h1>
+    <p style="color:#718096;font-size:14px;margin-bottom:20px;">Botswana DPA 2024 compliance · Otsile Sechele · DPO</p>
+
+    <div class="kpi-grid">
+      <div class="kpi"><div class="lbl">Total members</div><div class="val">37,412</div></div>
+      <div class="kpi"><div class="lbl">Core processing consent</div><div class="val" style="color:#2E7D32;">37,412</div></div>
+      <div class="kpi"><div class="lbl">Marketing consent</div><div class="val" style="color:#F0A92B;">24,187</div></div>
+      <div class="kpi"><div class="lbl">Partner data consent</div><div class="val" style="color:#F0A92B;">19,850</div></div>
+      <div class="kpi"><div class="lbl">Analytics consent</div><div class="val">29,102</div></div>
+      <div class="kpi"><div class="lbl">Revoked (last 30d)</div><div class="val" style="color:#B71C1C;">142</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h2>Recent consent changes</h2></div>
+      <div class="card-body">
+        <table class="admin-table">
+          <thead><tr><th>Date</th><th>Member</th><th>Consent type</th><th>Action</th><th>Channel</th></tr></thead>
+          <tbody>
+            <tr><td>2026-10-25 08:42</td><td>BOPEU-DEMO-M-001</td><td>Marketing</td><td><span class="badge badge-red">REVOKED</span></td><td>App</td></tr>
+            <tr><td>2026-10-24 16:15</td><td>BOPEU-DEMO-F-004</td><td>Partner data</td><td><span class="badge badge-green">GRANTED</span></td><td>App</td></tr>
+            <tr><td>2026-10-24 14:03</td><td>BOPEU-DEMO-M-003</td><td>Analytics</td><td><span class="badge badge-green">GRANTED</span></td><td>App</td></tr>
+            <tr><td>2026-10-23 11:22</td><td>BOPEU-DEMO-F-006</td><td>Funeral cover</td><td><span class="badge badge-green">GRANTED</span></td><td>Paper form</td></tr>
+            <tr><td>2026-10-22 19:45</td><td>BOPEU-DEMO-M-002</td><td>Marketing</td><td><span class="badge badge-red">REVOKED</span></td><td>App</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:20px;">
+      <span class="callout-label">Botswana DPA 2024</span>
+      <p>Every consent grant/revocation must be logged with timestamp, method, and version of the privacy notice. This register is the audit trail for DPA compliance. Data can be exported for regulatory review.</p>
+    </div>
+
+    <div class="btn-row mt-md">
+      <button class="btn btn-secondary" onclick="alert('Export consent register (demo).')">Export CSV</button>
+      <button class="btn btn-primary" onclick="alert('Generate DPA compliance report (demo).')">Generate DPA report</button>
+    </div>
+  </main>
+</div>
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

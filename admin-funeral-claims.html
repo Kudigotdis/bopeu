@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Funeral Claims · BOPEU Welfare</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+body.bop { background:#F2F5F9; }
+.admin-header { background:#1A202C; color:#fff; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:20; }
+.admin-mark { width:32px; height:32px; border-radius:8px; background:#D32F2F; display:grid; place-items:center; font-weight:800; color:#fff; }
+.admin-nav { display:flex; gap:16px; font-size:13px; }
+.admin-nav a { color:#fff; text-decoration:none; font-weight:600; opacity:.85; }
+.admin-layout { display:grid; grid-template-columns:220px 1fr; min-height:calc(100vh - 56px); }
+.admin-side { background:#fff; border-right:1px solid #E2E8F0; padding:16px 12px; }
+.admin-side a { display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:8px; font-size:13px; font-weight:600; color:#4A5568; text-decoration:none; margin-bottom:2px; }
+.admin-side a.active { background:#FFEBEE; color:#D32F2F; }
+.admin-main { padding:24px; max-width:1200px; }
+.claim-grid { display:grid; grid-template-columns:340px 1fr; gap:16px; }
+@media(max-width:900px){ .claim-grid { grid-template-columns:1fr; } }
+.claim-list { background:#fff; border:1px solid #E2E8F0; border-radius:12px; overflow:hidden; }
+.claim-item { padding:12px; border-bottom:1px solid #E2E8F0; cursor:pointer; transition:background .15s; }
+.claim-item:hover { background:#FAFBFD; }
+.claim-item.active { background:#FFEBEE; border-left:3px solid #D32F2F; }
+.claim-item .name { font-weight:800; font-size:14px; }
+.claim-item .meta { font-size:12px; color:#718096; margin-top:2px; }
+.claim-detail { background:#fff; border:1px solid #E2E8F0; border-radius:12px; padding:20px; }
+.checkbox-check { display:flex; align-items:flex-start; gap:8px; padding:8px 0; border-bottom:1px dashed #E2E8F0; font-size:13px; }
+.checkbox-check input { margin-top:2px; }
+.dep-table { width:100%; border-collapse:collapse; font-size:13px; margin:10px 0; }
+.dep-table th { background:#F7F9FC; padding:8px; text-align:left; font-size:11px; color:#718096; text-transform:uppercase; }
+.dep-table td { padding:8px; border-bottom:1px solid #E2E8F0; }
+@media(max-width:820px){ .admin-layout { grid-template-columns:1fr; } .admin-side { display:none; } }
+</style>
+</head>
+<body class="bop">
+
+<header class="admin-header">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="admin-mark">B</div>
+    <div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Welfare & Claims</div></div>
+  </div>
+  <nav class="admin-nav">
+    <a href="admin-funeral-claims.html">Claims</a>
+    <a href="admin-login.html">Sign out</a>
+  </nav>
+</header>
+
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-funeral-claims.html" class="active">⚰️ Funeral Claims</a>
+    <a href="admin-funeral-claims.html#bursary">🎓 Bursary Applications</a>
+    <a href="admin-funeral-claims.html#welfare">🤝 Welfare Grants</a>
+    <a href="admin-feedback.html">💬 Feedback</a>
+  </aside>
+
+  <main class="admin-main">
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:4px;">Funeral Claims Queue</h1>
+    <p style="color:#718096;font-size:14px;margin-bottom:20px;">Welfare & Insurance Claims · Boitumelo Kgosidintsi</p>
+
+    <div class="claim-grid">
+      <div class="claim-list" id="claimList"></div>
+      <div class="claim-detail" id="claimDetail">
+        <div class="empty">Select a claim from the queue on the left.</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+var CLAIMS = [
+  { id: 'DEMO-CLAIM-022', member: 'BOPEU-DEMO-M-001 · Jackson Michaels', deceased: 'Masego Michaels (Spouse)', dateOfDeath: '2026-10-15', status: 'documents-missing', benefit: 'P60,000', progress: 60 },
+  { id: 'DEMO-CLAIM-023', member: 'BOPEU-DEMO-F-006 · Patricia Kgaope', deceased: 'Demo-Mother PK', dateOfDeath: '2026-10-18', status: 'under-review', benefit: 'P60,000 (extended)', progress: 80 },
+  { id: 'DEMO-CLAIM-024', member: 'BOPEU-DEMO-M-003 · Kabelo Modise', deceased: 'Demo-Child KM A', dateOfDeath: '2026-10-20', status: 'ready', benefit: 'P30,000', progress: 100 }
+];
+
+var DOCS = [
+  { label: 'Death Certificate', required: true, done: false },
+  { label: 'Claimant ID / Omang', required: true, done: true },
+  { label: 'Claimant Bank Details', required: true, done: true },
+  { label: 'Relationship Proof (Marriage/Birth Cert)', required: true, done: false },
+  { label: 'Insurer Handoff Form', required: false, done: false }
+];
+
+function renderClaims() {
+  var html = '';
+  CLAIMS.forEach(function(c, i){
+    var active = i === 0 ? ' active' : '';
+    html += '<div class="claim-item' + active + '" onclick="openClaim(' + i + ')">' +
+      '<div class="name">' + c.deceased + '</div>' +
+      '<div class="meta">' + c.member + '</div>' +
+      '<div class="meta">' + c.id + ' · ' + c.status + '</div>' +
+      '</div>';
+  });
+  document.getElementById('claimList').innerHTML = html;
+  openClaim(0);
+}
+
+function openClaim(i) {
+  document.querySelectorAll('.claim-item').forEach(function(el, idx){ el.classList.toggle('active', idx === i); });
+  var c = CLAIMS[i];
+  var depsHtml = '<table class="dep-table"><thead><tr><th>Name</th><th>Relationship</th><th>DOB</th><th>Status</th></tr></thead><tbody>' +
+    '<tr><td>' + c.deceased + '</td><td>' + (c.deceased.indexOf('Spouse') > -1 ? 'Spouse' : c.deceased.indexOf('Child') > -1 ? 'Child' : 'Extended') + '</td><td>—</td><td>✓ Covered</td></tr>' +
+    '</tbody></table>';
+
+  var docsHtml = DOCS.map(function(d, idx){
+    return '<div class="checkbox-check"><input type="checkbox" ' + (d.done ? 'checked' : '') + ' onchange="toggleDoc(' + idx + ')"><span style="flex:1;">' + d.label + (d.required ? ' <strong style="color:#B71C1C;">*</strong>' : '') + '</span></div>';
+  }).join('');
+
+  document.getElementById('claimDetail').innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">' +
+      '<div><h2 style="margin:0;font-size:18px;">' + c.deceased + '</h2>' +
+      '<p style="color:#718096;font-size:13px;margin:4px 0 0;">' + c.id + ' · Claimed benefit: ' + c.benefit + '</p></div>' +
+      '<span class="badge badge-' + (c.progress === 100 ? 'green' : 'blue') + '">' + c.status + '</span>' +
+    '</div>' +
+    '<div class="stat"><div class="stat-label">Member</div><div class="stat-value" style="font-size:14px;">' + c.member + '</div></div>' +
+    '<h3 style="margin:16px 0 6px;font-size:14px;">Dependent verification</h3>' + depsHtml +
+    '<h3 style="margin:16px 0 6px;font-size:14px;">Document checklist</h3>' + docsHtml +
+    '<div class="callout" style="margin-top:14px;"><span class="callout-label">Next action</span><p>' +
+      (c.progress === 100 ? 'All documents received. Ready to submit to insurer.' :
+        'Requesting: ' + DOCS.filter(function(d){ return !d.done; }).map(function(d){ return d.label; }).join(', ')) +
+    '</p></div>' +
+    '<div class="btn-row mt-md">' +
+      '<button class="btn btn-secondary" onclick="alert(\'Request missing docs from member (demo).\')">Request documents</button>' +
+      '<button class="btn btn-primary" ' + (c.progress < 100 ? 'disabled' : '') + ' onclick="alert(\'Submitted to Metropolitan Life. Reference: ' + c.id + '\')">Submit to insurer</button>' +
+    '</div>';
+}
+
+function toggleDoc(idx) {
+  DOCS[idx].done = !DOCS[idx].done;
+}
+
+document.addEventListener('DOMContentLoaded', renderClaims);
+</script>
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

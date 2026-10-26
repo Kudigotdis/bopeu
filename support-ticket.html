@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>New Support Ticket · BOPEU</title>
+<link rel="stylesheet" href="design-system.css">
+</head>
+<body class="bop">
+<header style="background:#fff;border-bottom:1px solid #E2E8F0;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;">
+  <a href="help-tab.html" style="display:flex;gap:10px;align-items:center;text-decoration:none;color:inherit;">
+    <div style="width:32px;height:32px;border-radius:8px;background:#D32F2F;color:#fff;display:grid;place-items:center;font-weight:800;">B</div>
+    <div><div style="font-weight:800;font-size:14px;">BOPEU</div><div style="font-size:10px;color:#718096;">SUPPORT</div></div>
+  </a>
+  <a href="help-tab.html" style="font-size:13px;font-weight:700;color:#D32F2F;text-decoration:none;">← Help</a>
+</header>
+<main class="page stack">
+  <div class="card">
+    <div class="card-head"><h2>Open a support ticket</h2><div class="card-sub">Our team responds within 2 working days. For urgent matters (funeral claims, suspension letters, disciplinary hearings), call +267 393 4222.</div></div>
+    <div class="card-body" style="padding:20px;">
+      <div class="form-group"><label class="form-label">Category *</label>
+        <select id="category">
+          <option value="">Select…</option>
+          <option>Login & account</option>
+          <option>Membership & subscription</option>
+          <option>Benefits & partner offers</option>
+          <option>Application status</option>
+          <option>Funeral claim</option>
+          <option>Loan / SACCOS</option>
+          <option>Digital card</option>
+          <option>Technical issue</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Subject *</label><input type="text" id="subject" placeholder="Short summary of your issue"></div>
+      <div class="form-group"><label class="form-label">Priority</label>
+        <select id="priority">
+          <option value="normal">Normal — 2 working days</option>
+          <option value="high">High — 1 working day</option>
+          <option value="urgent">Urgent — same day (only for legal/deadline matters)</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Description *</label><textarea id="desc" rows="6" placeholder="Describe what happened, what you've tried, and what outcome you need. Include reference numbers where relevant."></textarea></div>
+      <div class="form-group"><label class="form-label">Attachment (optional)</label><input type="file" accept="image/*,.pdf" id="attach"></div>
+      <div class="checklist-item">
+        <input type="checkbox" id="agree">
+        <label for="agree" style="font-size:12px;">I confirm this ticket does not contain passwords or full Omang numbers. I understand support will reply via email and/or WhatsApp to the contacts on my profile.</label>
+      </div>
+      <button class="btn btn-primary btn-block mt-md" onclick="submitTicket()">Submit ticket</button>
+    </div>
+  </div>
+</main>
+<script>
+function submitTicket() {
+  var cat = document.getElementById('category').value;
+  var subj = document.getElementById('subject').value.trim();
+  var desc = document.getElementById('desc').value.trim();
+  if (!cat || !subj || !desc) { alert('Please complete category, subject and description.'); return; }
+  if (!document.getElementById('agree').checked) { alert('Please accept the confirmation.'); return; }
+
+  var ref = 'TKT-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random()*9000)+1000);
+  var ticket = {
+    id: ref, category: cat, subject: subj, description: desc,
+    priority: document.getElementById('priority').value,
+    status: 'open', openedAt: new Date().toISOString(),
+    messages: [{ from:'member', text: desc, at: new Date().toISOString() }]
+  };
+  try {
+    var list = JSON.parse(localStorage.getItem('bopeu_tickets') || '[]');
+    list.unshift(ticket);
+    localStorage.setItem('bopeu_tickets', JSON.stringify(list));
+  } catch(e){}
+
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(15,23,32,.6);display:flex;align-items:center;justify-content:center;padding:20px;';
+  overlay.innerHTML = '<div style="background:#fff;border-radius:16px;padding:32px;max-width:400px;text-align:center;">' +
+    '<div style="font-size:56px;margin-bottom:12px;">✓</div>' +
+    '<h2 style="font-size:20px;font-weight:800;margin-bottom:8px;">Ticket submitted</h2>' +
+    '<p style="font-size:13px;color:#718096;margin-bottom:8px;">Your reference</p>' +
+    '<div style="font-family:monospace;font-size:18px;font-weight:800;color:#D32F2F;margin-bottom:20px;">' + ref + '</div>' +
+    '<p style="font-size:13px;color:#718096;margin-bottom:20px;">You will receive a reply within 2 working days to your registered contact.</p>' +
+    '<a href="support-ticket-detail.html?id=' + ref + '" class="btn btn-primary btn-block">View ticket</a>' +
+    '</div>';
+  document.body.appendChild(overlay);
+}
+</script>
+</body>
+</html>

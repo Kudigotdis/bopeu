@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benefits & Services - BOPEU Member App</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* ============================================================
+           BENEFITS PAGE SPECIFIC STYLES (built from benefits-tab.html)
+           ============================================================ */
+        body {
+            margin: 0;
+            padding: 0;
+            background: #FDF5F5;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #0F172A;
+            font-size: 16px;
+            line-height: 1.45;
+        }
+        
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        }
+        
+        /* Header */
+        .app-header {
+            background: white;
+            border-bottom: 1px solid #E3E9EF;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .app-logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            border-radius: 0;
+        }
+
+/* Content Area */
+        .content-area {
+            padding: 24px;
+        }
+        
+        /* Benefits Grid */
+        #benefitsList {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .service-tile {
+            background: white;
+            border: 1px solid #E3E9EF;
+            border-radius: 14px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            position: relative;
+        }
+        
+        .service-tile:hover {
+            transform: translateY(-2px);
+            border-color: #F0BEBE;
+            box-shadow: 0 10px 24px -16px rgba(211,47,47,0.35);
+        }
+
+        .service-tile:focus-visible {
+            outline: 3px solid rgba(211,47,47,0.35);
+            outline-offset: 2px;
+        }
+        
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            background: linear-gradient(150deg, #FDEDED, #F8DADA);
+            border: 1px solid #F3CACA;
+        }
+        
+        .service-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0F172A;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+        
+        .service-desc {
+            font-size: 0.85rem;
+            color: #5B6B7C;
+            line-height: 1.45;
+        }
+        
+        /* Accordions */
+        .card.acc {
+            margin-bottom: 20px;
+            border-radius: 16px;
+            box-shadow: 0 1px 2px rgba(16,24,40,0.04), 0 10px 30px -18px rgba(16,24,40,0.35);
+            overflow: hidden;
+        }
+        
+        .acc-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 20px;
+            font-size: 1.02rem;
+            font-weight: 700;
+            cursor: pointer;
+            background: linear-gradient(180deg, #FFFFFF, #FEF8F8);
+            transition: background 0.2s ease;
+            border-bottom: 1px solid transparent;
+        }
+        
+        .acc-head::before {
+            content: "";
+            flex: 0 0 auto;
+            width: 6px;
+            height: 22px;
+            border-radius: 3px;
+            background: #D32F2F;
+        }
+        
+        .acc-head:hover {
+            background: #FEF8F8;
+        }
+        
+        .acc-head:focus-visible {
+            outline: 3px solid rgba(211,47,47,0.35);
+            outline-offset: -3px;
+        }
+        
+        /* Closed by default — only .open shows the body */
+        .acc-body {
+            display: none;
+            padding: 16px 20px 20px;
+            background: white;
+        }
+        
+        .acc.open > .acc-body {
+            display: block;
+        }
+        
+        /* Form Launchers */
+        .form-launcher {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 14px;
+            margin-bottom: 12px;
+            background: #FDF7F7;
+            border: 1px solid #E3E9EF;
+            border-radius: 14px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.18s ease;
+        }
+        
+        .form-launcher:last-child {
+            margin-bottom: 0;
+        }
+        
+        .form-launcher:hover {
+            transform: translateY(-2px);
+            border-color: #F0BEBE;
+            box-shadow: 0 10px 24px -16px rgba(211,47,47,0.35);
+        }
+        
+        .fl-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #0F172A;
+            margin-bottom: 4px;
+        }
+        
+        .fl-desc {
+            font-size: 0.82rem;
+            color: #5B6B7C;
+        }
+        
+        /* Calculator Launchers */
+        .calc-launchers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 14px;
+        }
+        
+        .calc-launcher {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 14px;
+            background: #FDF7F7;
+            border: 1px solid #E3E9EF;
+            border-radius: 14px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.18s ease;
+        }
+        
+        .calc-launcher:hover {
+            transform: translateY(-2px);
+            border-color: #F0BEBE;
+            box-shadow: 0 10px 24px -16px rgba(211,47,47,0.35);
+        }
+        
+        .calc-logo-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: white;
+            border: 1px solid #E3E9EF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .calc-logo-box img {
+            max-width: 36px;
+            max-height: 36px;
+            object-fit: contain;
+            padding: 12px;
+        }
+        
+        .cl-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #0F172A;
+            margin-bottom: 4px;
+        }
+        
+        .cl-desc {
+            font-size: 0.82rem;
+            color: #5B6B7C;
+        }
+        
+        /* Partner Benefits */
+        .partner-intro h3 {
+            margin: 0 0 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #D32F2F;
+        }
+        
+        .partner-filter {
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: calc((100% - 24px) / 4);
+            gap: 8px;
+            width: 100%;
+            margin: 16px 0 0;
+            padding: 0 0 2px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            overscroll-behavior-x: contain;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x proximity;
+            scrollbar-width: none;
+        }
+        
+        .partner-filter::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .chip-btn {
+            width: 100%;
+            min-width: 0;
+            font-family: inherit;
+            font-size: clamp(0.56rem, 2.9vw, 0.82rem);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            padding: 7px 2px;
+            border-radius: 999px;
+            border: 1px solid #E3E9EF;
+            background: #FDF7F7;
+            color: #5B6B7C;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            white-space: nowrap;
+            text-align: center;
+            scroll-snap-align: start;
+        }
+        
+        .chip-btn:hover {
+            border-color: #F0BEBE;
+            color: #D32F2F;
+        }
+        
+        .chip-btn.active {
+            background: #D32F2F;
+            border-color: #D32F2F;
+            color: white;
+        }
+        
+        #partnerList {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            padding: 0;
+        }
+        
+        .partner-tile {
+            display: grid;
+            grid-template-columns: 90px minmax(0, 1fr);
+            align-items: center;
+            gap: 16px;
+            min-width: 0;
+            padding: 14px;
+            background: white;
+            border: 1px solid #E3E9EF;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            margin: 0;
+            position: relative;
+            text-align: left;
+        }
+        
+        .partner-tile:hover {
+            transform: translateY(-2px);
+            border-color: #F0BEBE;
+            box-shadow: 0 10px 24px -16px rgba(211,47,47,0.35);
+        }
+        
+        .partner-tile:focus-visible {
+            outline: 3px solid rgba(211,47,47,0.35);
+            outline-offset: 2px;
+        }
+        
+        .partner-logo-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 16px;
+            background: #FDF7F7;
+            border: 1px solid #E3E9EF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 0;
+        }
+        
+        .partner-logo-img img {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        
+        .partner-logo-img .no-logo {
+            font-size: 1.35rem;
+        }
+        
+        .partner-tile .pt-info {
+            min-width: 0;
+            padding-right: 12px;
+        }
+        
+        .partner-tile .pt-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            line-height: 1.3;
+            margin-bottom: 3px;
+            color: #0F172A;
+            display: block;
+            overflow: visible;
+            -webkit-line-clamp: unset;
+        }
+        
+        .partner-tile .pt-desc {
+            font-size: 0.82rem;
+            color: #5B6B7C;
+            line-height: 1.4;
+            display: block;
+            overflow: visible;
+            -webkit-line-clamp: unset;
+        }
+        
+        .partner-tile .partner-status {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            display: block;
+            width: 10px;
+            height: 10px;
+            padding: 0;
+            margin: 0;
+            border: 0;
+            border-radius: 50%;
+            font-size: 0;
+            line-height: 0;
+            flex: 0 0 auto;
+            align-self: auto;
+        }
+        
+        .partner-tile .partner-status::before {
+            display: none;
+            content: none;
+        }
+        
+        .partner-tile .partner-status.verified {
+            background: #D32F2F;
+            color: #D32F2F;
+            border-color: #D32F2F;
+            box-shadow: 0 0 0 3px rgba(211,47,47,0.16);
+        }
+        
+        .partner-tile .partner-status.coming {
+            background: #f0a92b;
+            box-shadow: 0 0 0 3px rgba(240,169,43,0.20);
+        }
+        
+        /* Worker Education Card */
+        a.card-link {
+            display: block;
+            padding: 26px 20px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.18s ease;
+        }
+        
+        a.card-link:hover {
+            transform: translateY(-2px);
+            border-color: #F0BEBE;
+            box-shadow: 0 10px 24px -16px rgba(211,47,47,0.35);
+        }
+        
+        /* Small screens */
+        @media (max-width: 720px) {
+            #partnerList { grid-template-columns: 1fr; }
+
+            .partner-logo-img {
+                width: 90px;
+                height: 90px;
+            }
+
+            .calc-logo-box {
+                width: 90px;
+                height: 90px;
+                flex: 0 0 90px;
+                border-radius: 16px;
+                padding: 0;
+            }
+
+            .calc-logo-box img {
+                width: 100%;
+                height: 100%;
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+                padding: 12px;
+                box-sizing: border-box;
+            }
+
+            .calc-logo-box .no-logo {
+                font-size: 1.5rem;
+            }
+
+            .form-launcher .service-icon {
+                width: 90px;
+                height: 90px;
+                flex: 0 0 90px;
+                border-radius: 16px;
+                font-size: 2.25rem;
+            }
+        }
+        
+        @media (max-width: 620px) {
+            #benefitsList,
+            #partnerList,
+            .calc-launchers { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 380px) {
+            #partnerBenefitCard .acc-body,
+            #acc-forms .acc-body,
+            #acc-calc .acc-body {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+            
+            .partner-tile {
+                gap: 12px;
+                padding: 12px;
+            }
+            
+            .partner-tile .pt-info {
+                padding-right: 8px;
+            }
+
+            .form-launcher,
+            .calc-launcher {
+                gap: 12px;
+                padding: 12px;
+            }
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #D32F2F;
+            border-top: 1px solid #B71C1C;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 1000;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+        }
+        
+        .nav-item.active {
+            background: transparent;
+        }
+        
+        .nav-item img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Modals placeholder */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,32,0.55);
+            backdrop-filter: blur(3px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        
+        .modal.open {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 88vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.38);
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #F7F9FC;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Floating service detail modal */
+        body.service-modal-open {
+            overflow: hidden;
+        }
+
+        .service-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background: rgba(4, 8, 14, 0.84);
+            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.18s ease, visibility 0.18s ease;
+            overscroll-behavior: contain;
+        }
+
+        .service-modal.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .service-modal-panel {
+            position: relative;
+            width: 100%;
+            max-width: 560px;
+            max-height: 86vh;
+            display: flex;
+            flex-direction: column;
+            background: #FFFFFF;
+            border-radius: 16px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+            overflow: hidden;
+            transform: scale(0.97);
+            transition: transform 0.2s ease;
+        }
+
+        .service-modal.open .service-modal-panel {
+            transform: scale(1);
+        }
+
+        .service-modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 2;
+            width: 38px;
+            height: 38px;
+            border: none;
+            border-radius: 50%;
+            background: #F1F5F9;
+            color: #0F172A;
+            font-size: 1.15rem;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.18s ease, transform 0.18s ease;
+        }
+
+        .service-modal-close:hover {
+            background: #E2E8F0;
+            transform: scale(1.04);
+        }
+
+        .service-modal-close:focus-visible {
+            outline: 3px solid rgba(211,47,47,0.35);
+            outline-offset: 2px;
+        }
+
+        .service-modal-body {
+            padding: 28px 24px 24px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+        }
+
+        .service-modal-hero {
+            padding-right: 38px;
+        }
+
+        .service-modal-eyebrow {
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #D32F2F;
+            margin-bottom: 8px;
+        }
+
+        .service-modal-title {
+            margin: 0 0 8px;
+            font-size: 1.4rem;
+            line-height: 1.25;
+            color: #0F172A;
+            font-weight: 800;
+        }
+
+        .service-modal-desc {
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.55;
+            color: #5B6B7C;
+        }
+
+        .service-modal-chips {
+            margin: 14px 0 4px;
+        }
+
+        .service-modal-chips .stat-chip {
+            background: #FDEDED;
+            color: #D32F2F;
+            border: 1px solid #F3CACA;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 6px 10px;
+        }
+
+        .service-modal-section {
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid #E9EEF3;
+        }
+
+        .service-modal-section h3 {
+            margin: 0 0 7px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #D32F2F;
+        }
+
+        .service-modal-section p {
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #435466;
+        }
+
+        .service-modal-list {
+            margin: 9px 0 0;
+            padding-left: 18px;
+        }
+
+        .service-modal-list li {
+            margin: 0 0 5px;
+            font-size: 0.9rem;
+            line-height: 1.55;
+            color: #435466;
+        }
+
+        .service-modal-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .service-modal-note {
+            margin-top: 20px;
+            padding: 13px 14px;
+            border-left: 3px solid #D32F2F;
+            border-radius: 8px;
+            background: #FFF1F1;
+            font-size: 0.85rem;
+            line-height: 1.55;
+            color: #6B2F2F;
+        }
+
+        .service-modal-note strong {
+            display: block;
+            margin-bottom: 3px;
+            color: #D32F2F;
+        }
+
+        .service-modal-disclaimer {
+            margin: 18px 0 0;
+            font-size: 0.72rem;
+            line-height: 1.5;
+            color: #7A8794;
+        }
+
+        .service-modal-done {
+            width: 100%;
+            margin-top: 16px;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 10px;
+            background: #D32F2F;
+            color: #FFFFFF;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.18s ease;
+        }
+
+        .service-modal-done:hover {
+            background: #B71C1C;
+        }
+
+        .service-modal-done:focus-visible {
+            outline: 3px solid rgba(211,47,47,0.35);
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 620px) {
+            .service-modal { padding: 12px; }
+
+            .service-modal-panel {
+                max-height: 88vh;
+                border-radius: 14px;
+            }
+
+            .service-modal-body { padding: 24px 18px 20px; }
+
+            .service-modal-title { font-size: 1.25rem; }
+        }
+        
+        /* Floating partner detail modal */
+        body.partner-tile-modal-open {
+            overflow: hidden;
+        }
+
+        .partner-tile-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 3100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            background: rgba(2, 6, 12, 0.90);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.18s ease, visibility 0.18s ease;
+            overscroll-behavior: contain;
+        }
+
+        .partner-tile-modal.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .partner-tile-modal-panel {
+            position: relative;
+            width: 100%;
+            max-width: 620px;
+            max-height: 88vh;
+            display: flex;
+            flex-direction: column;
+            background: #FFFFFF;
+            border-radius: 18px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            transform: scale(0.97);
+            transition: transform 0.2s ease;
+        }
+
+        .partner-tile-modal.open .partner-tile-modal-panel {
+            transform: scale(1);
+        }
+
+        .partner-tile-modal-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 2;
+            width: 38px;
+            height: 38px;
+            border: none;
+            border-radius: 50%;
+            background: #F1F5F9;
+            color: #0F172A;
+            font-size: 1.15rem;
+            line-height: 1;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.18s ease, transform 0.18s ease;
+        }
+
+        .partner-tile-modal-close:hover {
+            background: #E2E8F0;
+            transform: scale(1.04);
+        }
+
+        .partner-tile-modal-close:focus-visible {
+            outline: 3px solid rgba(211,47,47,0.35);
+            outline-offset: 2px;
+        }
+
+        .partner-tile-modal-body {
+            padding: 28px 24px 24px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+        }
+
+        .partner-modal-hero {
+            display: grid;
+            grid-template-columns: 90px minmax(0, 1fr);
+            gap: 16px;
+            align-items: center;
+            padding-right: 38px;
+        }
+
+        .partner-modal-logo {
+            width: 90px;
+            height: 90px;
+            border-radius: 18px;
+            background: #FDF7F7;
+            border: 1px solid #E3E9EF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .partner-modal-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+
+        .partner-modal-logo .no-logo {
+            font-size: 1.35rem;
+        }
+
+        .partner-modal-eyebrow {
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #D32F2F;
+            margin-bottom: 6px;
+        }
+
+        .partner-modal-title {
+            margin: 0 0 5px;
+            font-size: 1.35rem;
+            line-height: 1.25;
+            color: #0F172A;
+            font-weight: 800;
+        }
+
+        .partner-modal-category {
+            margin: 0 0 8px;
+            font-size: 0.82rem;
+            line-height: 1.4;
+            color: #5B6B7C;
+        }
+
+        .partner-modal-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 9px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+        }
+
+        .partner-modal-status::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .partner-modal-status.verified {
+            background: #FFEBEE;
+            color: #C62828;
+            border: 1px solid #EF9A9A;
+        }
+
+        .partner-modal-status.coming {
+            background: #FDF0DC;
+            color: #8A6D1B;
+            border: 1px solid #E7D3A0;
+        }
+
+        .partner-modal-summary {
+            margin: 18px 0 0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #435466;
+        }
+
+        .partner-modal-highlight {
+            margin-top: 12px;
+            padding: 13px 14px;
+            border-left: 3px solid #D32F2F;
+            border-radius: 8px;
+            background: #FFF1F1;
+            font-size: 0.88rem;
+            line-height: 1.55;
+            color: #6B2F2F;
+        }
+
+        .partner-modal-section {
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid #E9EEF3;
+        }
+
+        .partner-modal-section h3 {
+            margin: 0 0 8px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #D32F2F;
+        }
+
+        .partner-modal-section p {
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #435466;
+        }
+
+        .partner-modal-list {
+            margin: 8px 0 0;
+            padding-left: 18px;
+        }
+
+        .partner-modal-list li {
+            margin: 0 0 6px;
+            font-size: 0.9rem;
+            line-height: 1.55;
+            color: #435466;
+        }
+
+        .partner-modal-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .partner-benefit-item {
+            margin-top: 10px;
+        }
+
+        .partner-benefit-item:first-of-type {
+            margin-top: 0;
+        }
+
+        .partner-benefit-item strong {
+            display: block;
+            margin-bottom: 2px;
+            font-size: 0.9rem;
+            color: #0F172A;
+        }
+
+        .partner-benefit-item p {
+            font-size: 0.88rem;
+            line-height: 1.55;
+            color: #5B6B7C;
+        }
+
+        .partner-contact-grid {
+            display: grid;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .partner-contact-item {
+            min-width: 0;
+        }
+
+        .partner-contact-item strong {
+            display: block;
+            margin-bottom: 2px;
+            font-size: 0.78rem;
+            color: #D32F2F;
+        }
+
+        .partner-contact-item p,
+        .partner-contact-item a {
+            margin: 0;
+            font-size: 0.86rem;
+            line-height: 1.5;
+            color: #435466;
+            overflow-wrap: anywhere;
+        }
+
+        .partner-contact-item a {
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .partner-modal-disclaimer {
+            margin: 18px 0 0;
+            font-size: 0.72rem;
+            line-height: 1.5;
+            color: #7A8794;
+        }
+
+        .partner-modal-done {
+            width: 100%;
+            margin-top: 16px;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 10px;
+            background: #D32F2F;
+            color: #FFFFFF;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.18s ease;
+        }
+
+        .partner-modal-done:hover {
+            background: #B71C1C;
+        }
+
+        .partner-modal-done:focus-visible {
+            outline: 3px solid rgba(211,47,47,0.35);
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 620px) {
+            .partner-tile-modal { padding: 12px; }
+
+            .partner-tile-modal-panel {
+                max-height: 90vh;
+                border-radius: 14px;
+            }
+
+            .partner-tile-modal-body { padding: 24px 18px 20px; }
+
+            .partner-modal-hero {
+                grid-template-columns: 72px minmax(0, 1fr);
+                gap: 12px;
+            }
+
+            .partner-modal-logo {
+                width: 72px;
+                height: 72px;
+            }
+
+            .partner-modal-title { font-size: 1.2rem; }
+        }
+
+        /* Scripts container */
+        .scripts-container {
+            display: none;
+        }
+    </style>
+    
+    <!-- ALL MODALS FROM ORIGINAL INDEX.HTML -->
+    
+    <!-- Login -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('login-modal')">✕</button>
+            <div id="loginModalBody"></div>
+        </div>
+    </div>
+    
+    <!-- Other modals would continue here... -->
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="app-header">
+            <img src="./Assets/logo/bopeu_logo.webp" alt="BOPEU Logo" class="app-logo" data-logo-key="bopeu">
+        </div>
+        
+        <!-- Content Area -->
+        <div class="content-area">
+            
+            <!-- Our Services -->
+            <div class="card acc open" id="acc-services">
+                <div class="acc-head card-header" role="button" tabindex="0" aria-expanded="true" onclick="toggleBenefitAccordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleBenefitAccordion(this);}">
+                    Our Services
+                </div>
+                <div class="acc-body">
+                    <div id="benefitsList"></div>
+                </div>
+            </div>
+            
+            <!-- Benefit Forms & Calculators -->
+            <div class="card acc" id="acc-forms">
+                <div class="acc-head card-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleBenefitAccordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleBenefitAccordion(this);}">
+                    Benefit Forms & Calculators
+                </div>
+                <div class="acc-body">
+                    <div class="card-sub">Open the official BOPEU benefit forms and premium calculators. Each page has a header and a bottom nav back to this app.</div>
+                    
+                    <a class="form-launcher" href="calculators/BOPEU_BLIC_FAMILY - EXTENDED FAMILY.html">
+                        <span class="service-icon">🛡️</span>
+                        <span style="flex:1;min-width:0;">
+                            <div class="fl-title">Extended Family Application</div>
+                            <div class="fl-desc">BLIC · BOPEU Group Funeral Scheme</div>
+                        </span>
+                    </a>
+                    
+                    <a class="form-launcher" href="calculators/BOPEU_BLIC-APPLICATION - GROUP LIFE ASSURANCE NOMINATION OF BENEFICIARIES.html">
+                        <span class="service-icon">👥</span>
+                        <span style="flex:1;min-width:0;">
+                            <div class="fl-title">Group Life Nomination of Beneficiaries</div>
+                            <div class="fl-desc">BLIC · Group Life Assurance form</div>
+                        </span>
+                    </a>
+                    
+                    <a class="form-launcher" href="calculators/BOPEU_BLIC-KNOW YOUR CUSTOMER.html">
+                        <span class="service-icon">🪪</span>
+                        <span style="flex:1;min-width:0;">
+                            <div class="fl-title">Know Your Customer (KYC)</div>
+                            <div class="fl-desc">BLIC · Group Funeral Scheme claim form</div>
+                        </span>
+                    </a>
+                    
+                    <a class="form-launcher" href="calculators/BOPEU_BABEREKI_AMMENDMENT FORM.html">
+                        <span class="service-icon">✍️</span>
+                        <span style="flex:1;min-width:0;">
+                            <div class="fl-title">Funeral Cover Amendment</div>
+                            <div class="fl-desc">Babereki Insurance Brokers · Bona Life</div>
+                        </span>
+                    </a>
+                    
+                    <a class="form-launcher" href="calculators/BOPEU_BABEREKI_MEMBERSHIP  APPLICATION FORM.html">
+                        <span class="service-icon">📋</span>
+                        <span style="flex:1;min-width:0;">
+                            <div class="fl-title">Membership Application</div>
+                            <div class="fl-desc">Babereki Insurance Brokers · Bona Life</div>
+                        </span>
+                    </a>
+                    
+                    <a class="form-launcher" href="calculators/BOPEU_FAMILY - EXTENDED FAMILY.html">
+                        <span class="service-icon">🏠</span>
+                        <span style="flex:1;min-width:0;">
+                            <div class="fl-title">Extended Family (Funeral Cover)</div>
+                            <div class="fl-desc">BOPEU Group Funeral Scheme · BLIC</div>
+                        </span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Insurance Calculators -->
+            <div class="card acc" id="acc-calc">
+                <div class="acc-head card-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleBenefitAccordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleBenefitAccordion(this);}">
+                    Insurance Calculators
+                </div>
+                <div class="acc-body">
+                    <div class="card-sub">Live premium calculators rebuilt for the demo — rates pulled from the official BOPEU application forms (Bona Life & BLIC).</div>
+                    <div id="calcLaunchers">
+                        <div class="calc-launchers">
+                            <a class="calc-launcher" href="calculators/BOPEU_BABEREKI_MEMBERSHIP  APPLICATION FORM.html">
+                                <div class="calc-logo-box"><div class="no-logo">P</div></div>
+                                <div class="cl-info">
+                                    <div class="cl-title">Membership Calculator</div>
+                                    <div class="cl-desc">1% of basic salary, capped P50.00 – P120.00</div>
+                                </div>
+                            </a>
+                            
+                            <a class="calc-launcher" href="calculators/BOPEU_FAMILY - EXTENDED FAMILY.html">
+                                <div class="calc-logo-box"><img src="Assets/logo/forms/bona_life_logo.webp" alt="Funeral Cover – New Family" onerror="this.outerHTML='&lt;div class=&quot;no-logo&quot;&gt;F&lt;/div&gt;';"></div>
+                                <div class="cl-info">
+                                    <div class="cl-title">Funeral Cover – New Family</div>
+                                    <div class="cl-desc">Bona Life · member, spouse & children</div>
+                                </div>
+                            </a>
+                            
+                            <a class="calc-launcher" href="calculators/BOPEU_BABEREKI_AMMENDMENT FORM.html">
+                                <div class="calc-logo-box"><img src="Assets/logo/forms/bona_life_logo.webp" alt="Funeral Cover – Amendment" onerror="this.outerHTML='&lt;div class=&quot;no-logo&quot;&gt;A&lt;/div&gt;';"></div>
+                                <div class="cl-info">
+                                    <div class="cl-title">Funeral Cover – Amendment</div>
+                                    <div class="cl-desc">Change your compulsory premium schedule</div>
+                                </div>
+                            </a>
+                            
+                            <a class="calc-launcher" href="calculators/BOPEU_BLIC_FAMILY - EXTENDED FAMILY.html">
+                                <div class="calc-logo-box"><img src="Assets/logo/forms/blic_logo.webp" alt="BLIC Extended Family" onerror="this.outerHTML='&lt;div class=&quot;no-logo&quot;&gt;E&lt;/div&gt;';"></div>
+                                <div class="cl-info">
+                                    <div class="cl-title">BLIC Extended Family</div>
+                                    <div class="cl-desc">Optional – parents, extended family & adult children</div>
+                                </div>
+                            </a>
+                            
+                            <a class="calc-launcher" href="calculators/BOPEU_BLIC-APPLICATION - GROUP LIFE ASSURANCE NOMINATION OF BENEFICIARIES.html">
+                                <div class="calc-logo-box"><img src="Assets/logo/forms/blic_logo.webp" alt="GLA Nomination of Beneficiaries" onerror="this.outerHTML='&lt;div class=&quot;no-logo&quot;&gt;G&lt;/div&gt;';"></div>
+                                <div class="cl-info">
+                                    <div class="cl-title">GLA Nomination of Beneficiaries</div>
+                                    <div class="cl-desc">Allocate your Group Life benefit</div>
+                                </div>
+                            </a>
+                            
+                            <a class="calc-launcher" href="calculators/BOPEU_BLIC-KNOW YOUR CUSTOMER.html">
+                                <div class="calc-logo-box"><div class="no-logo">K</div></div>
+                                <div class="cl-info">
+                                    <div class="cl-title">Know Your Customer (KYC)</div>
+                                    <div class="cl-desc">Identity, address & contact verification</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Partner Benefits -->
+            <div class="card acc" id="partnerBenefitCard">
+                <div class="acc-head card-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleBenefitAccordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleBenefitAccordion(this);}">
+                    Partner Benefits Network
+                </div>
+                <div class="acc-body">
+                    <div class="card-sub">Verified offers carry a red dot. Amber dots await the current partner schedule.</div>
+                    
+                    <div id="partnerBenefitSection"></div>
+                </div>
+            </div>
+            
+            <!-- Worker Education -->
+            <a class="card card-link" href="education.html">
+                <div class="card-header">Worker Education</div>
+                <div class="card-sub">BOPEU at a Glance and a quick quiz on the union's history, membership and coverage.</div>
+            </a>
+        </div>
+        
+        <!-- Bottom Navigation -->
+        
+    </div>
+
+    <!-- Floating service detail modal -->
+    <div class="service-modal" id="service-modal" role="dialog" aria-modal="true" aria-labelledby="serviceModalTitle" aria-hidden="true">
+        <div class="service-modal-panel" role="document">
+            <button type="button" class="service-modal-close" aria-label="Close service details" onclick="closeServiceModal()">✕</button>
+            <div class="service-modal-body" id="serviceModalBody"></div>
+        </div>
+    </div>
+    
+    <!-- Floating partner detail modal -->
+    <div class="partner-tile-modal" id="partner-tile-modal" role="dialog" aria-modal="true" aria-labelledby="partnerTileModalTitle" aria-hidden="true">
+        <div class="partner-tile-modal-panel" role="document">
+            <button type="button" class="partner-tile-modal-close" aria-label="Close partner details" onclick="closePartnerDetail()">✕</button>
+            <div class="partner-tile-modal-body" id="partnerTileModalBody"></div>
+        </div>
+    </div>
+    
+    <!-- JavaScript Files -->
+    <script src="js/app.js"></script>
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+    <script src="js/bopeu-benefit-partners.js"></script>
+    <script src="js/benefits.js"></script>
+
+    <script src="js/load-bottom-nav.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof loadBottomNav === 'function') {
+                loadBottomNav('benefits');
+            }
+        });
+    </script>
+</body>
+</html>

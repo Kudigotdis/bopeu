@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Global Search · BOPEU Admin</title><link rel="stylesheet" href="design-system.css">
+<style>
+body.bop{background:#F2F5F9}
+.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+.admin-mark{width:32px;height:32px;border-radius:8px;background:#D32F2F;display:grid;place-items:center;font-weight:800;color:#fff}
+.admin-nav{display:flex;gap:16px;font-size:13px}
+.admin-nav a{color:#fff;text-decoration:none;font-weight:600;opacity:.85}
+.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}
+.admin-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}
+.admin-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}
+.admin-side a.active{background:#FFEBEE;color:#D32F2F}
+.admin-main{padding:24px;max-width:1100px}
+@media(max-width:820px){.admin-layout{grid-template-columns:1fr}.admin-side{display:none}}
+</style></head>
+<body class="bop">
+<header class="admin-header">
+  <div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Staff Portal</div></div></div>
+  <nav class="admin-nav"><a href="admin-dashboard.html">Dashboard</a><a href="admin-global-search.html" style="text-decoration:underline;">Search</a><a href="admin-login.html">Sign out</a></nav>
+</header>
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-dashboard.html">📊 Dashboard</a>
+    <a href="admin-members.html">👥 Members</a>
+    <a href="admin-staff.html">👔 Staff</a>
+    <a href="admin-sales-pipeline.html">🎯 Sales</a>
+    <a href="admin-partners.html">🤝 Partners</a>
+    <a href="admin-global-search.html" class="active">🔍 Search</a>
+  </aside>
+  <main class="admin-main">
+    <h1 style="font-size:22px;font-weight:800;margin:0 0 4px;">Global 360° Search</h1>
+    <p style="color:#718096;font-size:14px;margin:0 0 20px;">Search across members, staff, leads and partners.</p>
+    <div class="search" style="margin-bottom:20px;">
+      <div class="search-input">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.2-3.2"></path></svg>
+        <input type="text" id="gSearch" placeholder="Name, Omang, member no., email…" oninput="runSearch()">
+      </div>
+    </div>
+    <div id="gResults"></div>
+  </main>
+</div>
+<script src="js/data.js"></script><script src="js/app.js"></script>
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+<script>
+function runSearch(){
+  var q = (document.getElementById('gSearch').value||'').toLowerCase().trim();
+  var box = document.getElementById('gResults');
+  if (!q){ box.innerHTML = '<div class="empty">Start typing to search across all records.</div>'; return; }
+  var matches = [];
+  (BOPEU_MOCK_MEMBERS||[]).forEach(function(m){ if ((m.name+' '+m.omang+' '+m.memberNo+' '+m.employer).toLowerCase().indexOf(q)>=0) matches.push({type:'Member', name:m.name, ref:m.memberNo, href:'admin-member-detail.html?omang='+m.omang}); });
+  (LocalStore.get('bopeu_staff')||[]).forEach(function(s){ if ((s.name+' '+s.email).toLowerCase().indexOf(q)>=0) matches.push({type:'Staff', name:s.name, ref:s.email, href:'admin-staff-detail.html?id='+s.id}); });
+  (LocalStore.get('bopeu_leads')||[]).forEach(function(l){ if ((l.name+' '+(l.phone||'')+' '+(l.employer||'')).toLowerCase().indexOf(q)>=0) matches.push({type:'Lead', name:l.name, ref:l.id, href:'admin-lead-detail.html?id='+l.id}); });
+  (BOPEU_BENEFIT_PARTNERS||[]).forEach(function(p){ if ((p.name+' '+p.sector).toLowerCase().indexOf(q)>=0) matches.push({type:'Partner', name:p.name, ref:p.sector, href:'admin-partner-detail.html?id='+p.id}); });
+  box.innerHTML = matches.length ? matches.map(function(m){
+    return '<a class="row" href="'+m.href+'"><div class="row-icon">'+m.type.charAt(0)+'</div><div class="row-body"><div class="row-title">'+m.name+'</div><div class="row-desc">'+m.type+' · '+m.ref+'</div></div></a>';
+  }).join('') : '<div class="empty">No matches.</div>';
+}
+document.addEventListener('DOMContentLoaded', function(){ document.getElementById('gResults').innerHTML='<div class="empty">Start typing to search across all records.</div>'; });
+</script>
+</body></html>

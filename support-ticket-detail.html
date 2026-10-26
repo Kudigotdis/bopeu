@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Ticket Detail · BOPEU</title>
+<link rel="stylesheet" href="design-system.css">
+</head>
+<body class="bop">
+<header style="background:#fff;border-bottom:1px solid #E2E8F0;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;">
+  <a href="support-ticket.html" style="display:flex;gap:10px;align-items:center;text-decoration:none;color:inherit;">
+    <div style="width:32px;height:32px;border-radius:8px;background:#D32F2F;color:#fff;display:grid;place-items:center;font-weight:800;">B</div>
+    <div><div style="font-weight:800;font-size:14px;">BOPEU</div><div style="font-size:10px;color:#718096;">SUPPORT</div></div>
+  </a>
+  <a href="profile.html" style="font-size:13px;font-weight:700;color:#D32F2F;text-decoration:none;">← Profile</a>
+</header>
+<main class="page stack" id="main">
+  <div class="empty">Loading ticket…</div>
+</main>
+<script>
+var TICKET = null;
+
+function load() {
+  var id = new URLSearchParams(location.search).get('id');
+  try {
+    var list = JSON.parse(localStorage.getItem('bopeu_tickets') || '[]');
+    TICKET = list.find(t => t.id === id);
+  } catch(e){}
+  if (!TICKET) {
+    // Demo seed
+    TICKET = {
+      id: id || 'TKT-2026-0421',
+      category: 'Funeral claim',
+      subject: 'Documents uploaded but status not updated',
+      description: 'I uploaded the death certificate and Omang on Monday but my claim still shows "documents missing". Please check.',
+      priority: 'high', status: 'open', openedAt: '2026-10-22T09:00:00Z',
+      messages: [
+        { from:'member', text:'I uploaded the death certificate and Omang on Monday but my claim still shows "documents missing". Please check.', at:'2026-10-22T09:00:00Z' },
+        { from:'staff', text:'Hello Kabelo — thanks for flagging. We can see both documents on your file. The claim status has been corrected. Please check the app now and confirm.', at:'2026-10-22T14:32:00Z' },
+        { from:'member', text:'Confirmed — status now shows "Under review". Thanks!', at:'2026-10-22T16:15:00Z' }
+      ]
+    };
+  }
+  render();
+}
+
+function render() {
+  var statusLabels = { open:'Open', in_progress:'In progress', resolved:'Resolved', closed:'Closed' };
+  var statusCls = { open:'badge-blue', in_progress:'badge-blue', resolved:'badge-green', closed:'badge-grey' };
+  var html = '';
+  html += '<div class="card"><div class="card-head"><h2>' + TICKET.subject + '</h2><div class="card-sub">' + TICKET.id + ' · ' + TICKET.category + ' · Opened ' + new Date(TICKET.openedAt).toLocaleDateString() + '</div></div>';
+  html += '<div class="card-body"><span class="badge ' + statusCls[TICKET.status] + '">' + statusLabels[TICKET.status] + '</span><div style="margin-top:14px;font-size:13px;color:#4A5568;line-height:1.6;"><strong>Priority:</strong> ' + TICKET.priority + '</div></div></div>';
+
+  html += '<div class="card"><div class="card-header"><h2>Conversation</h2></div><div class="card-body">';
+  TICKET.messages.forEach(m => {
+    var bg = m.from === 'member' ? '#F7F9FC' : '#FFEBEE';
+    var label = m.from === 'member' ? 'You' : 'BOPEU Support';
+    html += '<div style="background:' + bg + ';padding:12px 14px;border-radius:10px;margin-bottom:10px;font-size:13px;line-height:1.55;">';
+    html += '<div style="font-size:11px;font-weight:800;color:#718096;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">' + label + ' · ' + new Date(m.at).toLocaleString() + '</div>';
+    html += m.text + '</div>';
+  });
+  html += '</div></div>';
+
+  if (TICKET.status !== 'resolved' && TICKET.status !== 'closed') {
+    html += '<div class="card"><div class="card-header"><h2>Reply</h2></div><div class="card-body">';
+    html += '<textarea id="reply" rows="3" placeholder="Type your reply…" style="width:100%;padding:12px;border:1px solid #E2E8F0;border-radius:10px;font-family:inherit;font-size:14px;"></textarea>';
+    html += '<div class="btn-row mt-md"><button class="btn btn-secondary" onclick="closeTicket()">Mark resolved</button><button class="btn btn-primary" onclick="sendReply()">Send reply</button></div></div></div>';
+  }
+
+  document.getElementById('main').innerHTML = html;
+}
+
+function sendReply() {
+  var txt = document.getElementById('reply').value.trim();
+  if (!txt) return;
+  TICKET.messages.push({ from:'member', text: txt, at: new Date().toISOString() });
+  try {
+    var list = JSON.parse(localStorage.getItem('bopeu_tickets') || '[]');
+    var idx = list.findIndex(t => t.id === TICKET.id);
+    if (idx >= 0) { list[idx] = TICKET; localStorage.setItem('bopeu_tickets', JSON.stringify(list)); }
+  } catch(e){}
+  render();
+}
+
+function closeTicket() {
+  if (!confirm('Mark this ticket as resolved? You can still view it later.')) return;
+  TICKET.status = 'resolved';
+  try {
+    var list = JSON.parse(localStorage.getItem('bopeu_tickets') || '[]');
+    var idx = list.findIndex(t => t.id === TICKET.id);
+    if (idx >= 0) { list[idx] = TICKET; localStorage.setItem('bopeu_tickets', JSON.stringify(list)); }
+  } catch(e){}
+  render();
+}
+
+load();
+</script>
+</body>
+</html>

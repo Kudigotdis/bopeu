@@ -112,7 +112,7 @@ function renderClaimSteps(claim) {
     const pct = Math.round((done / total) * 100);
     container.innerHTML =
         '<div class="claim-header">' +
-        '<div class="member-avatar" style="width:44px;height:44px;font-size:17px;">' + initialsOf(claim.deceased) + '</div>' +
+        '<div class="member-avatar" style="width:44px;height:44px;font-size:20px;">' + initialsOf(claim.deceased) + '</div>' +
         '<div><div class="member-name">' + esc(claim.deceased) + '</div>' +
         '<div class="member-details">' + esc(claim.relation) + ' &bull; ' + esc(claim.benefit) + '</div></div></div>' +
         '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
@@ -209,8 +209,8 @@ function openClaimDetail(id) {
     document.getElementById('benefitModalTitle').textContent = 'Claim Details';
     const statusMap = { initiated: 'Initiated', ready: 'Ready to Submit', processing: 'At Metropolitan', paid: 'Paid Out' };
     body.innerHTML =
-        '<h3 style="font-size:15px;color:var(--text-dark);margin-bottom:2px;">' + esc(claim.deceased) + '</h3>' +
-        '<p style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">' + esc(claim.relation) + ' &bull; ' + esc(claim.benefit) + '</p>' +
+        '<h3 style="font-size:18px;color:var(--text-dark);margin-bottom:2px;">' + esc(claim.deceased) + '</h3>' +
+        '<p style="font-size:16px;color:var(--text-muted);margin-bottom:10px;">' + esc(claim.relation) + ' &bull; ' + esc(claim.benefit) + '</p>' +
         '<div class="tag ' + (claim.status === 'paid' ? 'green' : 'blue') + '">' + (statusMap[claim.status] || claim.status) + '</div>' +
         '<div class="form-group" style="margin-top:10px;"><label class="form-label">Claim Reference</label><input value="' + esc(claim.id) + '" readonly></div>' +
         '<div class="form-group"><label class="form-label">Date of Death</label><input value="' + esc(claim.dateOfDeath || 'N/A') + '" readonly></div>' +
@@ -277,8 +277,8 @@ function viewVaultDoc(id) {
     const body = document.getElementById('benefitModalBody');
     document.getElementById('benefitModalTitle').textContent = 'Document Vault';
     body.innerHTML =
-        '<h3 style="font-size:15px;color:var(--text-dark);margin-bottom:6px;">' + esc(doc.label) + '</h3>' +
-        '<p style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">' + esc(doc.name) + '</p>' +
+        '<h3 style="font-size:18px;color:var(--text-dark);margin-bottom:6px;">' + esc(doc.label) + '</h3>' +
+        '<p style="font-size:16px;color:var(--text-muted);margin-bottom:10px;">' + esc(doc.name) + '</p>' +
         '<img src="' + doc.data + '" class="vault-preview" alt="' + esc(doc.label) + '"/>';
     openModal('benefit-modal');
 }
@@ -320,7 +320,7 @@ function renderClaimChecklistSupport() {
         '<div class="checklist-item"><span class="chk-num">2</span>Gather the required documents</div>' +
         '<div class="checklist-item"><span class="chk-num">3</span>Use the managed funeral experience</div>' +
         '<div class="checklist-item"><span class="chk-num">4</span>Funds are settled to your nominated bank</div>' +
-        '<p style="font-size:10px;color:var(--text-muted);margin-top:8px;">Documents valid up to 12 months. Minimal red tape — easy to claim.</p></div>';
+        '<p style="font-size:13px;color:var(--text-muted);margin-top:8px;">Documents valid up to 12 months. Minimal red tape — easy to claim.</p></div>';
 }
 
 document.addEventListener('DOMContentLoaded', () => {

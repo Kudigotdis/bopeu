@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grievance Cases · BOPEU Legal</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+body.bop { background:#F2F5F9; }
+.admin-header { background:#1A202C; color:#fff; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:20; }
+.admin-mark { width:32px; height:32px; border-radius:8px; background:#D32F2F; display:grid; place-items:center; font-weight:800; color:#fff; }
+.admin-nav { display:flex; gap:16px; font-size:13px; }
+.admin-nav a { color:#fff; text-decoration:none; font-weight:600; opacity:.85; }
+.admin-layout { display:grid; grid-template-columns:220px 1fr; min-height:calc(100vh - 56px); }
+.admin-side { background:#fff; border-right:1px solid #E2E8F0; padding:16px 12px; }
+.admin-side a { display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:8px; font-size:13px; font-weight:600; color:#4A5568; text-decoration:none; margin-bottom:2px; }
+.admin-side a.active { background:#FFEBEE; color:#D32F2F; }
+.admin-main { padding:24px; max-width:1200px; }
+.case-list { background:#fff; border:1px solid #E2E8F0; border-radius:12px; overflow:hidden; margin-bottom:16px; }
+.case-row { padding:14px; border-bottom:1px solid #E2E8F0; cursor:pointer; transition:background .15s; display:grid; grid-template-columns:1fr 120px 120px 100px; gap:12px; align-items:center; font-size:13px; }
+.case-row:hover { background:#FAFBFD; }
+.case-row.open { background:#FFEBEE; }
+.case-row .ref { font-family:monospace; font-size:12px; color:#718096; }
+.case-row .case-type { font-weight:800; color:#1A202C; }
+.case-detail { background:#fff; border:1px solid #E2E8F0; border-radius:12px; padding:20px; display:none; }
+.case-detail.open { display:block; }
+.timeline { border-left:2px solid #E2E8F0; padding-left:16px; margin:16px 0; }
+.timeline-item { position:relative; padding-bottom:14px; }
+.timeline-item::before { content:""; position:absolute; left:-22px; top:2px; width:10px; height:10px; border-radius:50%; background:#D32F2F; }
+.timeline-item .tl-date { font-size:11px; font-weight:700; color:#718096; text-transform:uppercase; }
+.timeline-item .tl-text { font-size:13px; color:#1A202C; margin-top:2px; }
+.status-pill { display:inline-block; padding:3px 10px; border-radius:12px; font-size:11px; font-weight:800; text-transform:uppercase; }
+.status-mediation { background:#FFF3E0; color:#E65100; }
+.status-arbitration { background:#FFEBEE; color:#B71C1C; }
+.status-resolved { background:#E8F5E9; color:#2E7D32; }
+.status-assigned { background:#E3F2FD; color:#0D47A1; }
+@media(max-width:820px){ .admin-layout { grid-template-columns:1fr; } .admin-side { display:none; } .case-row { grid-template-columns:1fr; } }
+</style>
+</head>
+<body class="bop">
+
+<header class="admin-header">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="admin-mark">B</div>
+    <div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Legal Services</div></div>
+  </div>
+  <nav class="admin-nav">
+    <a href="admin-grievances.html">Grievances</a>
+    <a href="admin-login.html">Sign out</a>
+  </nav>
+</header>
+
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-grievances.html" class="active">⚖️ Grievance Cases</a>
+    <a href="admin-grievances.html#alerts">📢 Bargaining Alerts</a>
+    <a href="admin-grievances.html#escalations">🔺 Escalations</a>
+  </aside>
+
+  <main class="admin-main">
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:4px;">Grievance & Dispute Cases</h1>
+    <p style="color:#718096;font-size:14px;margin-bottom:20px;">Industrial Relations & Legal · Dineo Tlhabi</p>
+
+    <div class="btn-row" style="margin-bottom:16px;">
+      <button class="btn btn-primary" onclick="alert('New case form (demo).')">+ New case</button>
+      <button class="btn btn-secondary" onclick="alert('Draft bargaining alert (demo).')">+ Draft bargaining alert</button>
+    </div>
+
+    <div class="case-list" id="caseList"></div>
+    <div class="case-detail" id="caseDetail"></div>
+  </main>
+</div>
+
+<script>
+var CASES = [
+  { ref: 'DEMO-GRV-2026-041', member: 'Kabelo Modise', type: 'Shift / overtime allowance discrepancy', employer: 'BURS', status: 'arbitration', officer: 'Dineo Tlhabi', opened: '2026-10-20' },
+  { ref: 'DEMO-GRV-2026-044', member: 'James Dudumang', type: 'Payroll / transfer reconciliation', employer: 'Ministry of Health', status: 'assigned', officer: 'Thabo Motsamai', opened: '2026-10-22' },
+  { ref: 'DEMO-GRV-2026-038', member: 'Siyanda Kefitlile', type: 'Overtime allowance enquiry', employer: 'District Admin Ghanzi', status: 'mediation', officer: 'Lorato Tsheko', opened: '2026-10-23' },
+  { ref: 'DEMO-GRV-2026-031', member: 'Jackson Michaels', type: 'Payroll deduction query', employer: 'Auditor General', status: 'resolved', officer: 'Thabo Motsamai', opened: '2026-10-08' }
+];
+
+var STATUSES = {
+  'mediation': { label: 'Mediation', cls: 'status-mediation' },
+  'arbitration': { label: 'Arbitration', cls: 'status-arbitration' },
+  'resolved': { label: 'Resolved', cls: 'status-resolved' },
+  'assigned': { label: 'Assigned', cls: 'status-assigned' }
+};
+
+var TIMELINES = {
+  'DEMO-GRV-2026-041': [
+    { date: '2026-10-20', text: 'Case opened by member via app' },
+    { date: '2026-10-20', text: 'Assigned to Dineo Tlhabi — Industrial Relations' },
+    { date: '2026-10-21', text: 'Member submitted payslip and shift roster' },
+    { date: '2026-10-22', text: 'Initial review complete — escalated to mediation' },
+    { date: '2026-10-23', text: 'Arbitration hearing scheduled for 2026-11-05' }
+  ],
+  'DEMO-GRV-2026-044': [
+    { date: '2026-10-22', text: 'Case opened — payroll transfer issue' },
+    { date: '2026-10-22', text: 'Assigned to finance team' }
+  ],
+  'DEMO-GRV-2026-038': [
+    { date: '2026-10-23', text: 'Case opened via shop steward' },
+    { date: '2026-10-23', text: 'Local triage started' }
+  ],
+  'DEMO-GRV-2026-031': [
+    { date: '2026-10-08', text: 'Payroll deduction query opened' },
+    { date: '2026-10-08', text: 'Explanation issued by finance' },
+    { date: '2026-10-08', text: 'Case resolved' }
+  ]
+};
+
+function renderCases() {
+  var html = '';
+  CASES.forEach(function(c, i){
+    var s = STATUSES[c.status];
+    html += '<div class="case-row" onclick="openCase(' + i + ', this)">' +
+      '<div><div class="case-type">' + c.type + '</div><div class="ref">' + c.ref + ' · ' + c.member + '</div></div>' +
+      '<div style="font-size:12px;color:#718096;">' + c.employer + '</div>' +
+      '<div><span class="status-pill ' + s.cls + '">' + s.label + '</span></div>' +
+      '<div style="font-size:11px;color:#718096;">' + c.opened + '</div>' +
+      '</div>';
+  });
+  document.getElementById('caseList').innerHTML = html;
+}
+
+function openCase(i, row) {
+  document.querySelectorAll('.case-row').forEach(function(el){ el.classList.remove('open'); });
+  if (row) row.classList.add('open');
+  var c = CASES[i];
+  var s = STATUSES[c.status];
+  var tl = TIMELINES[c.ref] || [];
+  var tlHtml = tl.map(function(t){ return '<div class="timeline-item"><div class="tl-date">' + t.date + '</div><div class="tl-text">' + t.text + '</div></div>'; }).join('');
+  document.getElementById('caseDetail').innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">' +
+      '<div><h2 style="margin:0;font-size:18px;">' + c.type + '</h2>' +
+      '<p style="color:#718096;font-size:13px;margin:4px 0 0;">' + c.ref + ' · ' + c.member + ' · ' + c.employer + '</p></div>' +
+      '<span class="status-pill ' + s.cls + '">' + s.label + '</span>' +
+    '</div>' +
+    '<div class="stat"><div class="stat-label">Assigned officer</div><div class="stat-value" style="font-size:14px;">' + c.officer + '</div></div>' +
+    '<h3 style="margin:16px 0 6px;font-size:14px;">Case timeline</h3>' +
+    '<div class="timeline">' + tlHtml + '</div>' +
+    '<h3 style="margin:16px 0 6px;font-size:14px;">Case actions</h3>' +
+    '<div class="btn-row">' +
+      '<button class="btn btn-secondary btn-small" onclick="alert(\'Request documents from member (demo).\')">Request documents</button>' +
+      '<button class="btn btn-secondary btn-small" onclick="alert(\'Add case note (demo).\')">Add note</button>' +
+      '<button class="btn btn-primary btn-small" onclick="alert(\'Status advanced (demo).\')">Advance status</button>' +
+    '</div>';
+  document.getElementById('caseDetail').classList.add('open');
+}
+
+document.addEventListener('DOMContentLoaded', renderCases);
+</script>
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

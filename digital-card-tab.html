@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Member Card - BOPEU Member App</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* ============================================================
+           DIGITAL CARD PAGE SPECIFIC STYLES (built from digital-card-tab.html)
+           ============================================================ */
+        body {
+            margin: 0;
+            padding: 0;
+            background: #F7F9FC;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #1A202C;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        }
+        
+        /* Header */
+        .app-header {
+            background: white;
+            border-bottom: 1px solid #E4E9F0;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .app-logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            border-radius: 0;
+        }
+        
+        /* Content Area */
+        .content-area {
+            padding: 24px;
+        }
+        
+        /* Digital Card */
+        .digital-card {
+            position: relative;
+            border-radius: 20px;
+            padding: 18px;
+            color: white;
+            background: linear-gradient(135deg, #D32F2F 0%, #A81E1E 55%, #7E1414 100%);
+            box-shadow: 0 14px 32px rgba(211,47,47,0.30);
+            overflow: hidden;
+            isolation: isolate;
+            margin-bottom: 20px;
+        }
+        
+        .digital-card::after {
+            content: "";
+            position: absolute;
+            right: -46px;
+            top: -46px;
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.09);
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .dc-head {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        
+        .dc-brand {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            line-height: 1.1;
+        }
+        
+        .dc-brand small {
+            display: block;
+            margin-top: 3px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            opacity: 0.78;
+        }
+        
+        .dc-body {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        
+        .dc-photo {
+            flex: 0 0 auto;
+            width: 90px;
+            height: 90px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.32);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+        }
+        
+        .dc-info {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+        
+        .dc-name {
+            font-size: 20px;
+            font-weight: 800;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+            margin-bottom: 6px;
+        }
+        
+        .dc-no {
+            margin-top: 4px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            opacity: 0.92;
+        }
+        
+        .dc-meta {
+            margin-top: 10px;
+            font-size: 13px;
+            line-height: 1.5;
+            opacity: 0.84;
+        }
+        
+        .dc-qr {
+            flex: 0 0 auto;
+            width: 100px;
+            height: 100px;
+            padding: 8px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.94);
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            grid-auto-rows: 1fr;
+            gap: 1px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+        }
+        
+        .dc-qr i {
+            background: #B71C1C;
+            border-radius: 1px;
+            display: block;
+        }
+        
+        .dc-qr i.off {
+            background: transparent;
+        }
+        
+        .btn-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .btn-row .btn {
+            flex: 1 1 160px;
+        }
+        
+        /* Profile Card */
+        .card {
+            background: white;
+            border: 1px solid #E4E9F0;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .card-header {
+            padding: 20px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #1A202C;
+            letter-spacing: -0.01em;
+        }
+        
+        /* Member Card (profile) */
+        .member-card {
+            display: grid;
+            grid-template-columns: 90px 1fr;
+            gap: 12px 20px;
+            align-items: start;
+            padding: 20px;
+            border-radius: 18px;
+            background: #F2F5F9;
+            border: 1px solid #E4E9F0;
+            margin-bottom: 16px;
+        }
+        
+        .member-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 18px;
+            font-size: 26px;
+            font-weight: 800;
+            grid-row: 1;
+            grid-column: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #FFEBEE;
+            color: #D32F2F;
+            border: 1px solid #F3C3C8;
+        }
+        
+        .member-name {
+            font-size: 1.1rem;
+            font-weight: 800;
+            grid-row: 1;
+            grid-column: 2;
+            align-self: center;
+            line-height: 1.3;
+            color: #1A202C;
+        }
+        
+        .member-details {
+            grid-row: 2;
+            grid-column: 1 / -1;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #718096;
+            margin-top: 4px;
+        }
+        
+        .member-tags {
+            grid-row: 3;
+            grid-column: 1 / -1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border-radius: 999px;
+            padding: 3px 9px;
+            line-height: 1.4;
+        }
+        
+        .tag.green {
+            color: #1B5E20;
+            background: #E8F5E9;
+        }
+        
+        .tag.blue {
+            color: #0D47A1;
+            background: #E3F2FD;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: none;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            line-height: 1.2;
+            border-radius: 12px;
+            padding: 14px 20px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .btn-primary {
+            background: #D32F2F;
+            color: white;
+            box-shadow: 0 6px 14px rgba(211,47,47,0.22);
+        }
+        
+        .btn-primary:hover {
+            background: #B71C1C;
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #1A202C;
+            border: 1px solid #E4E9F0;
+        }
+        
+        .btn-secondary:hover {
+            background: #F7F9FC;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #D32F2F;
+            border-top: 1px solid #B71C1C;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 1000;
+            box-shadow: 0 -4px 20px rgba(211,47,47,0.3);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+        }
+        
+        .nav-item.active {
+            background: transparent;
+        }
+        
+        .nav-item img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Modals placeholder */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,32,0.55);
+            backdrop-filter: blur(3px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        
+        .modal.open {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 88vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.38);
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #F7F9FC;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Scripts container */
+        .scripts-container {
+            display: none;
+        }
+    </style>
+    
+    <!-- ALL MODALS FROM ORIGINAL INDEX.HTML -->
+    
+    <!-- Login -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('login-modal')">✕</button>
+            <div id="loginModalBody"></div>
+        </div>
+    </div>
+    
+    <!-- Other modals would continue here... -->
+    
+    <div class="scripts-container">
+        <script src="js/app.js"></script>
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+        <script src="js/loans.js"></script>
+    </div>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="app-header">
+            <img src="./Assets/logo/bopeu_logo.webp" alt="BOPEU" class="app-logo">
+        </div>
+        
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Digital Membership Card -->
+            <div class="digital-card">
+                <div class="dc-head">
+                    <div class="dc-brand">
+                        BOPEU
+                        <small>BOTSWANA PUBLIC EMPLOYEES UNION</small>
+                    </div>
+                    <div class="dc-brand">MEMBER</div>
+                </div>
+                
+                <div class="dc-body">
+                    <div class="dc-photo">KM</div>
+                    <div class="dc-info">
+                        <div class="dc-name">Kabelo Modise</div>
+                        <div class="dc-no">BOPEU-37K-1001</div>
+                    </div>
+                </div>
+                
+                <div class="dc-meta">
+                    Central Government<br>
+                    Station: Gaborone · Member since: 2023-04-10 · Valid until: 2028-10-23
+                </div>
+            </div>
+            
+            <!-- Bottom Navigation -->
+        
+    </div>
+    
+    <!-- JavaScript Files -->
+    <script src="js/app.js"></script>
+    <script src="js/loans.js"></script>
+
+    <script src="js/load-bottom-nav.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof loadBottomNav === 'function') {
+                loadBottomNav('digital');
+            }
+        });
+    </script>
+    </div>
+</body>
+</html>

@@ -6,12 +6,6 @@
     <title>Worker Education - BOPEU Digital Platform</title>
     <link rel="stylesheet" href="css/styles.css">
     <style>
-        .header-title-text {
-            font-size: 15px;
-            font-weight: 800;
-            color: var(--text-dark);
-            letter-spacing: -0.01em;
-        }
         .bottom-nav a.nav-item {
             text-decoration: none;
             color: #fff;
@@ -22,10 +16,7 @@
     <div class="app-container" id="appContainer">
 
         <div class="app-header">
-            <div class="header-left">
-                <a class="tb-home" href="index.html" title="Back to BOPEU app"><img src="Assets/logo/bopeu_logo.webp" alt="BOPEU Logo" class="app-logo"></a>
-                <div class="header-title-text">Worker Education</div>
-            </div>
+            <a class="tb-home" href="index.html" title="Back to BOPEU app"><img src="Assets/logo/bopeu_logo.webp" alt="BOPEU Logo" class="app-logo"></a>
         </div>
 
         <div class="content-area">
@@ -42,29 +33,7 @@
             </div>
         </div>
 
-        <div class="bottom-nav">
-            <a class="nav-item active" href="index.html">
-                <img src="Assets/icons/timeline_icon.webp" alt="Timeline">
-                <span class="nav-label">Timeline</span>
-            </a>
-            <a class="nav-item" href="index.html">
-                <img src="Assets/icons/notices_icon.webp" alt="Updates">
-                <span class="nav-label">Updates</span>
-            </a>
-            <a class="nav-item" href="index.html">
-                <img src="Assets/icons/benefits_icon.webp" alt="Benefits">
-                <span class="nav-label">Benefits</span>
-            </a>
-            <a class="nav-item" href="index.html">
-                <img src="Assets/icons/claims_icon.webp" alt="Card">
-                <span class="nav-label">Card</span>
-            </a>
-            <a class="nav-item" href="index.html">
-                <img src="Assets/icons/menu_icon.webp" alt="Help">
-                <span class="nav-label">Help</span>
-            </a>
-        </div>
-    </div>
+</div>
 
     <script>
         function esc(str) {
@@ -77,5 +46,14 @@
     </script>
     <script src="js/data.js"></script>
     <script src="js/education.js"></script>
+
+    <script src="js/load-bottom-nav.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof loadBottomNav === 'function') {
+                loadBottomNav('');
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submission Detail · BOPEU Admin</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+  body.bop { background:#F2F5F9; }
+  .admin-header { background:#1A202C; color:#fff; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:20; }
+  .admin-brand { display:flex; align-items:center; gap:10px; }
+  .admin-mark { width:32px; height:32px; border-radius:8px; background:#D32F2F; display:grid; place-items:center; font-weight:800; color:#fff; }
+  .admin-nav { display:flex; gap:16px; font-size:13px; }
+  .admin-nav a { color:#fff; text-decoration:none; font-weight:600; opacity:.85; }
+  .admin-layout { display:grid; grid-template-columns:220px 1fr; min-height:calc(100vh - 56px); }
+  .admin-side { background:#fff; border-right:1px solid #E2E8F0; padding:16px 12px; }
+  .admin-side a { display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:8px; font-size:13px; font-weight:600; color:#4A5568; text-decoration:none; margin-bottom:2px; }
+  .admin-side a.active { background:#FFEBEE; color:#D32F2F; }
+  .admin-main { padding:24px; max-width:900px; }
+  .detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .detail-item { padding:12px; background:#F7F9FC; border-radius:10px; border:1px solid #E2E8F0; }
+  .detail-item .lbl { font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:#718096; font-weight:800; margin-bottom:4px; }
+  .detail-item .val { font-size:14px; font-weight:600; color:#1A202C; }
+  @media (max-width:820px) { .admin-layout { grid-template-columns:1fr; } .admin-side { display:none; } .detail-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body class="bop">
+
+<header class="admin-header">
+  <div class="admin-brand">
+    <div class="admin-mark">B</div>
+    <div><div style="font-weight:800; font-size:14px;">BOPEU Admin</div><div style="font-size:10px; opacity:.7;">Staff Portal</div></div>
+  </div>
+  <nav class="admin-nav">
+    <a href="admin-dashboard.html">Dashboard</a>
+    <a href="admin-submissions.html" style="text-decoration:underline;">Submissions</a>
+    <a href="admin-members.html">Members</a>
+    <a href="admin-login.html">Sign out</a>
+  </nav>
+</header>
+
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-dashboard.html">📊 Dashboard</a>
+    <a href="admin-submissions.html" class="active">📥 Submissions</a>
+    <a href="admin-members.html">👥 Members</a>
+    <a href="admin-content.html">📰 Content</a>
+    <a href="admin-users-roles.html">🔐 Users &amp; Roles</a>
+    <a href="admin-audit-log.html">📜 Audit Log</a>
+    <a href="admin-reports.html">📈 Reports</a>
+  </aside>
+
+  <main class="admin-main">
+    <a href="admin-submissions.html" style="font-size:13px;font-weight:700;color:#D32F2F;text-decoration:none;">← Back to Submissions</a>
+
+    <h1 id="detailTitle" style="font-size:22px;font-weight:800;margin:8px 0 4px;">Submission</h1>
+    <p id="detailSub" style="color:#718096;font-size:14px;margin-bottom:20px;">Loading…</p>
+
+    <div class="card">
+      <div class="card-header"><h2>Submission details</h2></div>
+      <div class="card-body">
+        <div class="detail-grid" id="detailGrid">
+          <!-- rendered by JS -->
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h2>Actions</h2></div>
+      <div class="card-body">
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="adminAction('approve')">Approve</button>
+          <button class="btn btn-secondary" onclick="adminAction('comment')">Add comment</button>
+          <button class="btn btn-secondary" onclick="adminAction('verify')">Verify</button>
+          <button class="btn btn-ghost" style="color:#B71C1C;" onclick="adminAction('reject')">Reject</button>
+        </div>
+        <div style="margin-top:16px;">
+          <label class="form-label">Notes</label>
+          <textarea id="detailNotes" rows="4" style="width:100%;padding:10px;border:1px solid #E2E8F0;border-radius:10px;font-family:inherit;font-size:14px;" placeholder="Internal notes or applicant-visible comment…"></textarea>
+          <button class="btn btn-primary btn-small" style="margin-top:8px;" onclick="saveNotes()">Save notes</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h2>Audit trail</h2></div>
+      <div class="card-body">
+        <div class="checklist-item"><span class="chk-num">1</span><span>Submission received at <span id="audit1">—</span>.</span></div>
+        <div class="checklist-item"><span class="chk-num">2</span><span>Auto-reference number assigned.</span></div>
+        <div class="checklist-item"><span class="chk-num">3</span><span>Awaiting staff review.</span></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="modal" id="admin-modal" style="position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(15,23,32,.55);">
+  <div style="width:100%;max-width:560px;max-height:88vh;overflow-y:auto;background:#fff;border-radius:16px;padding:20px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #E2E8F0;">
+      <h2 style="font-size:18px;font-weight:800;margin:0;" id="adminModalTitle">Admin</h2>
+      <button style="background:none;border:none;font-size:24px;cursor:pointer;color:#718096;" onclick="closeModal('admin-modal')">&times;</button>
+    </div>
+    <div id="adminModalBody"></div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  var DEMO_DETAILS = {
+    'BUR-1730000001': { type:'bursary',   label:'Educational Bursary',   applicant:'Kabelo Modise',      officeName:'Gaborone',  submittedAt:'2026-09-10T09:12:00Z', status:'office_review' },
+    'LOA-1730000002': { type:'loan',      label:'BOPEU Direct Loan',     applicant:'Kelebogile Moseki',  officeName:'Palapye',   submittedAt:'2026-09-12T14:30:00Z', status:'submitted' },
+    'FUN-1730000003': { type:'funeral',   label:'BOPEU Funeral Cover',   applicant:'Tumelo Rantao',      officeName:'Gaborone',  submittedAt:'2026-09-13T11:05:00Z', status:'verified' },
+    'BUI-1730000004': { type:'building',  label:'Building Materials',    applicant:'Boitumelo Lesego',   officeName:'Maun',      submittedAt:'2026-09-14T08:00:00Z', status:'approved' },
+    'GRI-1730000005': { type:'grievance', label:'Grievance / Support',   applicant:'Olorato Keaikitse',  officeName:'Francistown', submittedAt:'2026-09-15T16:45:00Z', status:'submitted' },
+    'BUR-1730000006': { type:'bursary',   label:'Educational Bursary',   applicant:'Moakofi Sethunya',   officeName:'Gaborone',  submittedAt:'2026-09-16T10:20:00Z', status:'rejected' }
+  };
+
+  function loadSubmission() {
+    var id = new URLSearchParams(location.search).get('id');
+    var live = (LocalStore.get('bopeu_applications') || []).find(function (a) { return a.id === id; });
+    var d = live || DEMO_DETAILS[id] || null;
+    if (!d) {
+      document.getElementById('detailTitle').textContent = 'Not found';
+      document.getElementById('detailSub').textContent = 'Reference ' + (id || '(missing)');
+      document.getElementById('detailGrid').innerHTML = '<div class="empty">No submission found for this reference.</div>';
+      return;
+    }
+    document.getElementById('detailTitle').textContent = d.label || d.type;
+    document.getElementById('detailSub').textContent = 'Reference ' + id;
+    document.getElementById('detailGrid').innerHTML =
+      '<div class="detail-item"><div class="lbl">Reference</div><div class="val" style="font-family:ui-monospace,monospace;">' + id + '</div></div>' +
+      '<div class="detail-item"><div class="lbl">Type</div><div class="val">' + (d.type || '—') + '</div></div>' +
+      '<div class="detail-item"><div class="lbl">Applicant</div><div class="val">' + (d.applicant || '—') + '</div></div>' +
+      '<div class="detail-item"><div class="lbl">Office</div><div class="val">' + (d.officeName || '—') + '</div></div>' +
+      '<div class="detail-item"><div class="lbl">Submitted</div><div class="val">' + new Date(d.submittedAt).toLocaleString() + '</div></div>' +
+      '<div class="detail-item"><div class="lbl">Status</div><div class="val">' + (d.status || 'submitted') + '</div></div>';
+    document.getElementById('audit1').textContent = new Date(d.submittedAt).toLocaleString();
+  }
+
+  function adminAction(kind) {
+    var id = new URLSearchParams(location.search).get('id');
+    LocalStore.set('bopeu_last_admin_action', { action: kind, ref: id, at: new Date().toISOString() });
+    alert('Action "' + kind + '" recorded for ' + id + ' (demo).');
+  }
+
+  function saveNotes() {
+    var id = new URLSearchParams(location.search).get('id');
+    var notes = document.getElementById('detailNotes').value;
+    LocalStore.set('bopeu_note_' + id, notes);
+    alert('Notes saved for ' + id + '.');
+  }
+
+  document.addEventListener('DOMContentLoaded', loadSubmission);
+</script>
+</body>
+</html>

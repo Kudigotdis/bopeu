@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Welfare Queue · BOPEU</title>
+<link rel="stylesheet" href="design-system.css">
+<style>body.bop{background:#F2F5F9}.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20}.admin-mark{width:32px;height:32px;border-radius:8px;background:#D32F2F;display:grid;place-items:center;font-weight:800;color:#fff}.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}.admin-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}.admin-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}.admin-side a.active{background:#FFEBEE;color:#D32F2F}.admin-main{padding:24px;max-width:1100px}.admin-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}.admin-table th{background:#F7F9FC;text-align:left;font-size:11px;font-weight:800;text-transform:uppercase;color:#718096;padding:12px;border-bottom:1px solid #E2E8F0}.admin-table td{padding:12px;border-bottom:1px solid #E2E8F0;font-size:13px}</style>
+</head>
+<body class="bop">
+<header class="admin-header"><div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Welfare Queue</div></div></div></header>
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-funeral-claims.html">⚰️ Funeral Claims</a>
+    <a href="admin-bursary-queue.html">🎓 Bursary Queue</a>
+    <a href="admin-loan-queue.html">💰 Loan Queue</a>
+    <a href="admin-insurance-quotes.html">🛡️ Insurance</a>
+    <a href="admin-welfare-queue.html" class="active">🤝 Welfare Grants</a>
+  </aside>
+  <main class="admin-main">
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:4px;">Welfare Grants Queue</h1>
+    <p style="color:#718096;font-size:14px;margin-bottom:20px;">Emergency financial assistance — fast-track review</p>
+    <div class="chip-row" style="margin-bottom:16px;"><button class="chip active">Pending (3)</button><button class="chip">Approved</button><button class="chip">Declined</button></div>
+    <table class="admin-table">
+      <thead><tr><th>Reference</th><th>Member</th><th>Reason</th><th>Amount</th><th>Submitted</th><th>Priority</th><th></th></tr></thead>
+      <tbody>
+        <tr><td><strong>WGR-2026-014</strong></td><td>Patricia Kgaope</td><td>Fire damage — home</td><td>P15,000</td><td>2026-10-24</td><td><span class="badge badge-red">URGENT</span></td><td><button class="btn btn-primary btn-small" onclick="alert('Approve grant (demo).')">Approve</button></td></tr>
+        <tr><td><strong>WGR-2026-015</strong></td><td>James Dudumang</td><td>Medical emergency</td><td>P8,500</td><td>2026-10-23</td><td><span class="badge badge-blue">HIGH</span></td><td><button class="btn btn-primary btn-small" onclick="alert('Approve grant (demo).')">Approve</button></td></tr>
+        <tr><td><strong>WGR-2026-016</strong></td><td>Siyanda Kefitlile</td><td>Family bereavement</td><td>P5,000</td><td>2026-10-22</td><td><span class="badge badge-grey">NORMAL</span></td><td><button class="btn btn-primary btn-small" onclick="alert('Approve grant (demo).')">Approve</button></td></tr>
+      </tbody>
+    </table>
+  </main>
+</div>
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

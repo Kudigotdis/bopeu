@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Refer a Colleague · BOPEU</title>
+<link rel="stylesheet" href="design-system.css">
+</head>
+<body class="bop">
+<header style="background:#fff;border-bottom:1px solid #E2E8F0;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;">
+  <a href="profile.html" style="display:flex;gap:10px;align-items:center;text-decoration:none;color:inherit;">
+    <div style="width:32px;height:32px;border-radius:8px;background:#D32F2F;color:#fff;display:grid;place-items:center;font-weight:800;">B</div>
+    <div><div style="font-weight:800;font-size:14px;">BOPEU</div><div style="font-size:10px;color:#718096;">MEMBER SERVICES</div></div>
+  </a>
+  <a href="profile.html" style="font-size:13px;font-weight:700;color:#D32F2F;text-decoration:none;">← Profile</a>
+</header>
+<main class="page stack">
+  <div class="callout">
+    <span class="callout-label">Refer a colleague</span>
+    <p>Know someone who would benefit from BOPEU membership? Refer them and help build our collective strength. A recruitment officer will follow up within 3 working days.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Referral details</h2></div>
+    <div class="card-body" style="padding:20px;">
+      <div class="form-group"><label class="form-label">Full name *</label><input type="text" id="refName" placeholder="First Middle Surname"></div>
+      <div class="form-group"><label class="form-label">Phone number *</label><input type="tel" id="refPhone" placeholder="+267 7X XXX XXX"></div>
+      <div class="form-group"><label class="form-label">Email (optional)</label><input type="email" id="refEmail"></div>
+      <div class="form-group"><label class="form-label">Employer / Ministry *</label><input type="text" id="refEmployer" placeholder="e.g. Ministry of Health"></div>
+      <div class="form-group"><label class="form-label">Job title (optional)</label><input type="text" id="refJob" placeholder="e.g. Stores Supervisor"></div>
+      <div class="form-group"><label class="form-label">Your relationship to them</label>
+        <select id="relationship">
+          <option>Colleague</option><option>Friend</option><option>Family</option><option>Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Notes (optional)</label><textarea id="refNotes" rows="3" placeholder="Anything they should know before we contact them?"></textarea></div>
+      <div class="checklist-item">
+        <input type="checkbox" id="consent">
+        <label for="consent" style="font-size:12px;">I confirm this person has given me permission to share their contact details with BOPEU for recruitment purposes.</label>
+      </div>
+      <button class="btn btn-primary btn-block mt-md" onclick="submitReferral()">Submit referral</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2>Your referrals</h2></div>
+    <div class="card-body" id="myReferrals"></div>
+  </div>
+</main>
+<script>
+function submitReferral() {
+  var name = document.getElementById('refName').value.trim();
+  var phone = document.getElementById('refPhone').value.trim();
+  var employer = document.getElementById('refEmployer').value.trim();
+  if (!name || !phone || !employer) { alert('Please complete name, phone and employer.'); return; }
+  if (!document.getElementById('consent').checked) { alert('Please confirm their consent to be contacted.'); return; }
+
+  var ref = {
+    id: 'REF-' + Date.now(),
+    name, phone, employer,
+    email: document.getElementById('refEmail').value,
+    job: document.getElementById('refJob').value,
+    relationship: document.getElementById('relationship').value,
+    notes: document.getElementById('refNotes').value,
+    status: 'submitted',
+    submittedAt: new Date().toISOString()
+  };
+  try {
+    var list = JSON.parse(localStorage.getItem('bopeu_referrals') || '[]');
+    list.unshift(ref);
+    localStorage.setItem('bopeu_referrals', JSON.stringify(list));
+  } catch(e){}
+  alert('Referral submitted! A recruitment officer will contact ' + name + ' within 3 working days. You earn recognition when they join.');
+  document.getElementById('refName').value = '';
+  document.getElementById('refPhone').value = '';
+  document.getElementById('refEmployer').value = '';
+  document.getElementById('refEmail').value = '';
+  document.getElementById('refJob').value = '';
+  document.getElementById('refNotes').value = '';
+  document.getElementById('consent').checked = false;
+  renderReferrals();
+}
+
+function renderReferrals() {
+  var list = [];
+  try { list = JSON.parse(localStorage.getItem('bopeu_referrals') || '[]'); } catch(e){}
+  if (!list.length) { document.getElementById('myReferrals').innerHTML = '<div class="empty">No referrals yet. Refer a colleague to get started.</div>'; return; }
+  var html = '';
+  list.forEach(r => {
+    html += '<div class="row"><div class="row-icon">👤</div><div class="row-body"><div class="row-title">' + r.name + '</div><div class="row-desc">' + r.employer + ' · ' + new Date(r.submittedAt).toLocaleDateString() + '</div></div><span class="badge badge-blue">' + r.status + '</span></div>';
+  });
+  document.getElementById('myReferrals').innerHTML = html;
+}
+
+renderReferrals();
+</script>
+</body>
+</html>

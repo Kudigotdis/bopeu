@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Notice Boards · BOPEU Admin</title><link rel="stylesheet" href="design-system.css">
+<style>
+body.bop{background:#F2F5F9}
+.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+.admin-mark{width:32px;height:32px;border-radius:8px;background:#D32F2F;display:grid;place-items:center;font-weight:800;color:#fff}
+.admin-nav{display:flex;gap:16px;font-size:13px}
+.admin-nav a{color:#fff;text-decoration:none;font-weight:600;opacity:.85}
+.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}
+.admin-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}
+.admin-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}
+.admin-side a.active{background:#FFEBEE;color:#D32F2F}
+.admin-main{padding:24px;max-width:1100px}
+.admin-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.03)}
+.admin-table th{background:#F7F9FC;text-align:left;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#718096;padding:12px;border-bottom:1px solid #E2E8F0}
+.admin-table td{padding:12px;border-bottom:1px solid #E2E8F0;font-size:14px;color:#1A202C}
+@media(max-width:820px){.admin-layout{grid-template-columns:1fr}.admin-side{display:none}}
+</style></head>
+<body class="bop">
+<header class="admin-header">
+  <div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Staff Portal</div></div></div>
+  <nav class="admin-nav"><a href="admin-promotions.html">Marketing</a><a href="admin-login.html">Sign out</a></nav>
+</header>
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-dashboard.html">📊 Dashboard</a>
+    <a href="admin-promotions.html">📣 Promotions</a>
+    <a href="admin-noticeboards.html" class="active">📌 Notice Boards</a>
+    <a href="admin-content-analytics.html">📊 Analytics</a>
+  </aside>
+  <main class="admin-main">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <div><h1 style="font-size:22px;font-weight:800;margin:0;">Notice Boards</h1><p style="color:#718096;font-size:14px;margin:4px 0 0;">Manage notices and pinned announcements.</p></div>
+      <a href="admin-notice-edit.html" class="btn btn-primary">+ New notice</a>
+    </div>
+    <table class="admin-table"><thead><tr><th>Title</th><th>Category</th><th>Pinned</th><th>Published</th><th></th></tr></thead><tbody id="noticeList"></tbody></table>
+  </main>
+</div>
+<script src="js/data.js"></script><script src="js/app.js"></script>
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var custom = LocalStore.get('bopeu_admin_notices')||[];
+  var seed = (BOPEU_NOTICES||[]).map(function(n){ return {id:n.id,title:n.title,category:'General',pinned:false,date:n.date,status:'published'}; });
+  var rows = custom.concat(seed);
+  document.getElementById('noticeList').innerHTML = rows.map(function(n){
+    return '<tr><td><strong>'+n.title+'</strong></td><td>'+n.category+'</td><td>'+(n.pinned?'📌':'—')+'</td><td>'+(n.date||'')+'</td><td><a href="admin-notice-edit.html?id='+n.id+'" style="font-weight:700;color:#D32F2F;text-decoration:none;">Edit →</a></td></tr>';
+  }).join('');
+});
+</script>
+</body></html>

@@ -153,7 +153,7 @@ function buildingStep(step) {
             '</select></div>' +
             (freeDel ? '<div class="alert alert-success">✓ FREE nationwide delivery (value above P 100,000)</div>' : '<div class="alert alert-warning">Delivery added for values under P 100,000</div>') +
             '<div class="stat-box"><div class="stat-label">Estimated Monthly Payment (4% on reduced balance)</div><div class="stat-value">P ' + monthly.toFixed(2) + '</div></div>' +
-            '<p style="font-size:10px;color:var(--text-muted);">P 145,000 over 36 months = P 7,668.60 as illustrated on the BOPEU website.</p>';
+            '<p style="font-size:13px;color:var(--text-muted);">P 145,000 over 36 months = P 7,668.60 as illustrated on the BOPEU website.</p>';
     }
     if (step === 2) {
         return uploadDocs(['Certified Omang', 'Most recent Payslip', 'Confirmation of Employment Letter']) + officeSelectHtml() +
@@ -236,7 +236,7 @@ function loanStep(step) {
         return '<div class="form-group"><label class="form-label">Repayment Term</label><div class="slider-label"><span>Months</span><span id="fLoanMonthsLbl">' + months + '</span></div>' +
             '<input type="range" id="fLoanMonths" min="1" max="24" value="' + months + '"></div>' +
             '<div class="stat-box"><div class="stat-label">Estimated Monthly Repayment</div><div class="stat-value">P ' + monthlyInst.toFixed(2) + '</div></div>' +
-            '<p style="font-size:10px;color:var(--text-muted);">Borrowing more than you can afford can lead to severe financial difficulties.</p>';
+            '<p style="font-size:13px;color:var(--text-muted);">Borrowing more than you can afford can lead to severe financial difficulties.</p>';
     }
     if (step === 2) {
         return '<div class="card"><div class="card-header">Required Documents Checklist</div>' +
@@ -276,7 +276,7 @@ function accessStep(step) {
     if (step === 2) {
         return '<div class="alert alert-info">Send the word <strong>"payslip"</strong> via WhatsApp to continue your Access Bank application.</div>' +
             '<div class="call-bar"><button class="btn btn-success" onclick="openAccessWhatsapp()">WhatsApp "payslip"</button></div>' +
-            '<p style="font-size:10px;color:var(--text-muted);text-align:center;">+267 75 750 701 / +267 73 240 284</p>' +
+            '<p style="font-size:13px;color:var(--text-muted);text-align:center;">+267 75 750 701 / +267 73 240 284</p>' +
             '<div class="form-group" style="margin-top:10px;"><label class="form-label">Or visit any Access Bank branch</label><input type="text" placeholder="Nearest branch name"></div>';
     }
     return '';
@@ -542,8 +542,8 @@ function openAppDetail(id) {
         { key: 'disbursed', label: 'Disbursed' }
     ];
     const reached = ['submitted', 'verified', 'office_review', 'approved', 'disbursed'].indexOf(app.status);
-    let html = '<h3 style="font-size:15px;color:var(--text-dark);margin-bottom:2px;">' + esc(app.label) + '</h3>' +
-        '<p style="font-size:11px;color:var(--text-muted);margin-bottom:10px;">Ref ' + esc(app.id) + ' &bull; ' + esc(app.officeName) + '</p>';
+    let html = '<h3 style="font-size:18px;color:var(--text-dark);margin-bottom:2px;">' + esc(app.label) + '</h3>' +
+        '<p style="font-size:16px;color:var(--text-muted);margin-bottom:10px;">Ref ' + esc(app.id) + ' &bull; ' + esc(app.officeName) + '</p>';
     steps.forEach((s, i) => {
         const active = i <= reached && app.status !== 'rejected';
         const isBreak = app.status === 'rejected' && i === reached + 1;

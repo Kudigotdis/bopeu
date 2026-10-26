@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Regional Meetings · BOPEU Regional Operations</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+body.bop { background:#F2F5F9; }
+.admin-header { background:#1A202C; color:#fff; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:20; }
+.admin-mark { width:32px; height:32px; border-radius:8px; background:#D32F2F; display:grid; place-items:center; font-weight:800; color:#fff; }
+.admin-nav { display:flex; gap:16px; font-size:13px; }
+.admin-nav a { color:#fff; text-decoration:none; font-weight:600; opacity:.85; }
+.admin-layout { display:grid; grid-template-columns:220px 1fr; min-height:calc(100vh - 56px); }
+.admin-side { background:#fff; border-right:1px solid #E2E8F0; padding:16px 12px; }
+.admin-side a { display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:8px; font-size:13px; font-weight:600; color:#4A5568; text-decoration:none; margin-bottom:2px; }
+.admin-side a.active { background:#FFEBEE; color:#D32F2F; }
+.admin-main { padding:24px; max-width:1100px; }
+.meeting-card { background:#fff; border:1px solid #E2E8F0; border-radius:12px; padding:16px; margin-bottom:12px; }
+.meeting-card .head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+.meeting-card h3 { font-size:15px; font-weight:800; margin:0; }
+.meeting-card .meta { font-size:12px; color:#718096; margin-top:4px; }
+.meeting-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:12px; }
+.meeting-stats .s { background:#F7F9FC; padding:10px; border-radius:8px; text-align:center; }
+.meeting-stats .s .v { font-size:20px; font-weight:800; color:#1A202C; }
+.meeting-stats .s .l { font-size:11px; color:#718096; text-transform:uppercase; font-weight:800; margin-top:2px; }
+@media(max-width:820px){ .admin-layout { grid-template-columns:1fr; } .admin-side { display:none; } }
+</style>
+</head>
+<body class="bop">
+
+<header class="admin-header">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="admin-mark">B</div>
+    <div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Regional Operations</div></div>
+  </div>
+  <nav class="admin-nav">
+    <a href="admin-regional-meetings.html">Meetings</a>
+    <a href="admin-login.html">Sign out</a>
+  </nav>
+</header>
+
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-regional-meetings.html" class="active">📅 Regional Meetings</a>
+    <a href="admin-regional-meetings.html#escalations">🔺 Escalations</a>
+    <a href="admin-regional-meetings.html#stewards">👥 Shop Stewards</a>
+  </aside>
+
+  <main class="admin-main">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
+      <div><h1 style="font-size:22px;font-weight:800;margin:0;">Regional Meetings & Triage</h1>
+      <p style="color:#718096;font-size:14px;margin:4px 0 0;">Lorato Tsheko · North-East · Central · North-West (assigned districts)</p></div>
+      <button class="btn btn-primary" onclick="alert('Schedule new meeting (demo).')">+ Schedule meeting</button>
+    </div>
+
+    <div id="meetingList"></div>
+
+    <h2 style="font-size:16px;font-weight:800;margin:24px 0 12px;">Local escalations awaiting triage</h2>
+    <div class="card"><div class="card-body" id="escalationList"></div></div>
+
+    <h2 style="font-size:16px;font-weight:800;margin:24px 0 12px;">Active shop stewards in assigned region</h2>
+    <div class="card"><div class="card-body" id="stewardList"></div></div>
+  </main>
+</div>
+
+<script>
+var MEETINGS = [
+  { title: 'Francistown Member Check-Off Q&A', date: '2026-11-04', location: 'BOPEU North-East Regional Desk, Francistown', attendance: 42, capacity: 60, status: 'upcoming' },
+  { title: 'Central District Payroll Clinic', date: '2026-11-11', location: 'Palapye Community Hall', attendance: 28, capacity: 50, status: 'upcoming' },
+  { title: 'Monthly Shop Steward Sync', date: '2026-10-28', location: 'BOPEU HQ, Gaborone (hybrid)', attendance: 14, capacity: 15, status: 'confirmed' }
+];
+
+var ESCALATIONS = [
+  { ref: 'ESC-2026-031', member: 'Siyanda Kefitlile', issue: 'Overtime allowance enquiry', daysOpen: 2, region: 'Ghanzi' },
+  { ref: 'ESC-2026-032', member: 'Kabelo Modise', issue: 'Shift allowance discrepancy', daysOpen: 4, region: 'Francistown' },
+  { ref: 'ESC-2026-033', member: 'Demo-Member F-007', issue: 'Suspension letter query', daysOpen: 1, region: 'Palapye' }
+];
+
+var STEWARDS = [
+  { name: 'Kabelo Modise', region: 'Francistown / North-East', active: 4 },
+  { name: 'Siyanda Kefitlile', region: 'Ghanzi District', active: 3 },
+  { name: 'Demo-Steward F-014', region: 'Palapye', active: 2 }
+];
+
+function renderMeetings() {
+  var html = '';
+  MEETINGS.forEach(function(m){
+    var cls = m.status === 'upcoming' ? 'badge-blue' : 'badge-green';
+    html += '<div class="meeting-card">' +
+      '<div class="head">' +
+        '<div><h3>' + m.title + '</h3>' +
+        '<div class="meta">📅 ' + m.date + ' · 📍 ' + m.location + '</div></div>' +
+        '<span class="badge ' + cls + '">' + m.status + '</span>' +
+      '</div>' +
+      '<div class="meeting-stats">' +
+        '<div class="s"><div class="v">' + m.attendance + '</div><div class="l">Registered</div></div>' +
+        '<div class="s"><div class="v">' + m.capacity + '</div><div class="l">Capacity</div></div>' +
+        '<div class="s"><div class="v">' + Math.round(m.attendance / m.capacity * 100) + '%</div><div class="l">Filled</div></div>' +
+      '</div>' +
+      '<div class="btn-row mt-md">' +
+        '<button class="btn btn-secondary btn-small" onclick="alert(\'View attendance (demo).\')">Attendance</button>' +
+        '<button class="btn btn-secondary btn-small" onclick="alert(\'Upload minutes (demo).\')">Upload minutes</button>' +
+        '<button class="btn btn-primary btn-small" onclick="alert(\'Send reminder (demo).\')">Send reminder</button>' +
+      '</div>' +
+    '</div>';
+  });
+  document.getElementById('meetingList').innerHTML = html;
+
+  var escHtml = ESCALATIONS.map(function(e){
+    return '<div class="row"><div class="row-icon">🔺</div><div class="row-body"><div class="row-title">' + e.issue + '</div><div class="row-desc">' + e.ref + ' · ' + e.member + ' · ' + e.region + ' · ' + e.daysOpen + ' day(s) open</div></div><div style="display:flex;gap:6px;"><button class="btn btn-secondary btn-small" onclick="alert(\'Resolve locally (demo).\')">Resolve</button><button class="btn btn-primary btn-small" onclick="alert(\'Escalate to National Legal (demo).\')">Escalate</button></div></div>';
+  }).join('');
+  document.getElementById('escalationList').innerHTML = escHtml;
+
+  var stewHtml = STEWARDS.map(function(s){
+    return '<div class="row"><div class="row-icon">👤</div><div class="row-body"><div class="row-title">' + s.name + '</div><div class="row-desc">' + s.region + ' · ' + s.active + ' active local cases</div></div></div>';
+  }).join('');
+  document.getElementById('stewardList').innerHTML = stewHtml;
+}
+
+document.addEventListener('DOMContentLoaded', renderMeetings);
+</script>
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

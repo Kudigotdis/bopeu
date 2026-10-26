@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Data Import · BOPEU Admin</title>
+<link rel="stylesheet" href="design-system.css">
+<style>body.bop{background:#F2F5F9}.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20}.admin-mark{width:32px;height:32px;border-radius:8px;background:#D32F2F;display:grid;place-items:center;font-weight:800;color:#fff}.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}.admin-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}.admin-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}.admin-side a.active{background:#FFEBEE;color:#D32F2F}.admin-main{padding:24px;max-width:900px}.import-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:20px;margin-bottom:16px}</style>
+</head>
+<body class="bop">
+<header class="admin-header"><div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Data Import</div></div></div></header>
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-dashboard.html">📊 Dashboard</a>
+    <a href="admin-data-import.html" class="active">📥 Data Import</a>
+    <a href="admin-reports.html">📈 Reports</a>
+  </aside>
+  <main class="admin-main">
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:4px;">Bulk Data Import</h1>
+    <p style="color:#718096;font-size:14px;margin-bottom:20px;">Upload member lists, payroll batches, partner contacts, or historical records</p>
+    <div class="import-card"><h3 style="font-size:15px;font-weight:800;margin-bottom:12px;">1. Choose import type</h3>
+      <select id="importType" style="width:100%;padding:12px;border:1px solid #E2E8F0;border-radius:10px;font-family:inherit;font-size:14px;">
+        <option value="members">Member list (new registrations)</option>
+        <option value="payroll">Payroll deduction batch</option>
+        <option value="partners">Partner contacts</option>
+        <option value="historical_claims">Historical claim records</option>
+        <option value="historical_apps">Historical applications</option>
+      </select>
+    </div>
+    <div class="import-card"><h3 style="font-size:15px;font-weight:800;margin-bottom:12px;">2. Download template</h3>
+      <button class="btn btn-secondary" onclick="downloadTemplate()">Download CSV template</button>
+    </div>
+    <div class="import-card"><h3 style="font-size:15px;font-weight:800;margin-bottom:12px;">3. Upload file</h3>
+      <input type="file" accept=".csv" id="importFile" style="margin-bottom:12px;" onchange="previewFile(event)">
+      <div id="preview" style="display:none;">
+        <div style="background:#F7F9FC;padding:12px;border-radius:8px;font-size:13px;margin-bottom:12px;" id="previewInfo"></div>
+        <button class="btn btn-primary" onclick="commitImport()">Commit import</button>
+      </div>
+    </div>
+    <div class="callout"><span class="callout-label">Import rules</span><p>Duplicate detection runs automatically on Omang / member number. Invalid rows are skipped and reported. All imports are logged in the audit trail with staff user ID.</p></div>
+  </main>
+</div>
+<script>
+function downloadTemplate() {
+  var type = document.getElementById('importType').value;
+  var templates = {
+    members: 'name,omang,phone,email,employer,job_title,district,status',
+    payroll: 'member_number,basic_salary,subscription,group_life,funeral_fee,month',
+    partners: 'partner_name,contact_name,email,phone,category',
+    historical_claims: 'claim_id,member,deceased,date_of_death,status,amount',
+    historical_apps: 'app_id,member,type,amount,status,submitted_date'
+  };
+  var blob = new Blob([templates[type] || 'column1,column2,column3'], { type: 'text/csv' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'template-' + type + '.csv';
+  a.click();
+}
+function previewFile(e) {
+  var f = e.target.files[0];
+  if (!f) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    var text = ev.target.result;
+    var lines = text.split('\n').filter(l => l.trim());
+    var rows = lines.length - 1;
+    document.getElementById('preview').style.display = 'block';
+    document.getElementById('previewInfo').innerHTML = '<strong>File:</strong> ' + f.name + '<br><strong>Rows:</strong> ' + rows + '<br><strong>Type:</strong> ' + document.getElementById('importType').value + '<br><br>Duplicate rows will be skipped automatically.';
+  };
+  reader.readAsText(f);
+}
+function commitImport() {
+  alert('Import queued. You will receive an email when processing completes.\n\nAll changes are logged in the audit trail.');
+}
+</script>
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

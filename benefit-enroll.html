@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Enrol in a Benefit · BOPEU</title>
+<link rel="stylesheet" href="design-system.css">
+</head>
+<body class="bop">
+<header style="background:#fff;border-bottom:1px solid #E2E8F0;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;">
+  <a href="my-benefits.html" style="display:flex;gap:10px;align-items:center;text-decoration:none;color:inherit;">
+    <div style="width:32px;height:32px;border-radius:8px;background:#D32F2F;color:#fff;display:grid;place-items:center;font-weight:800;">B</div>
+    <div><div style="font-weight:800;font-size:14px;">BOPEU</div><div style="font-size:10px;color:#718096;">BENEFITS</div></div>
+  </a>
+  <a href="my-benefits.html" style="font-size:13px;font-weight:700;color:#D32F2F;text-decoration:none;">← Benefits</a>
+</header>
+<main class="page stack">
+  <div class="card">
+    <div class="card-head"><h2 id="benefitTitle">Enrol in benefit</h2><div class="card-sub" id="benefitDesc">Loading…</div></div>
+    <div class="card-body" style="padding:20px;">
+      <div class="form-group"><label class="form-label">Full name</label><input type="text" id="fullName" value="Kabelo Modise" readonly></div>
+      <div class="form-group"><label class="form-label">Membership number</label><input type="text" id="memberNo" value="BOPEU-DEMO-M-003" readonly></div>
+      <div class="form-group"><label class="form-label">Basic salary (from payroll)</label><input type="text" id="salary" value="P 12,100.00" readonly></div>
+
+      <div id="benefitFields"></div>
+
+      <div id="premiumBox" style="background:#FFEBEE;padding:16px;border-radius:10px;margin:16px 0;">
+        <div style="font-size:11px;font-weight:800;color:#D32F2F;text-transform:uppercase;letter-spacing:.05em;">Estimated monthly premium</div>
+        <div style="font-size:22px;font-weight:800;color:#1A202C;margin-top:4px;" id="premiumAmount">P 0.00</div>
+        <div style="font-size:11px;color:#718096;margin-top:2px;">Deducted via payroll stop-order from next payroll cycle</div>
+      </div>
+
+      <div class="checklist-item">
+        <input type="checkbox" id="consent">
+        <label for="consent" style="font-size:12px;">I consent to the monthly payroll deduction for this benefit and confirm I have read the terms and conditions.</label>
+      </div>
+
+      <button class="btn btn-primary btn-block mt-md" onclick="enrol()">Confirm enrolment</button>
+    </div>
+  </div>
+</main>
+<script>
+var BENEFITS = {
+  funeral: { title:'BOPEU Funeral Cover', desc:'Group funeral cover underwritten by Metropolitan Life.', fields:'funeral', base:100 },
+  extended: { title:'Extended Family Cover', desc:'Optional cover for parents, in-laws and adult children.', fields:'extended', base:100 },
+  airtime: { title:'Airtime Scheme (Mascom/Orange)', desc:'Discounted airtime deducted via payroll.', fields:'airtime', base:65 },
+  group_life: { title:'Group Life & Disability', desc:'Compulsory group life cover.', fields:'group_life', base:70 }
+};
+
+var benefitId = new URLSearchParams(location.search).get('benefit') || 'funeral';
+var benefit = BENEFITS[benefitId] || BENEFITS.funeral;
+
+document.getElementById('benefitTitle').textContent = benefit.title;
+document.getElementById('benefitDesc').textContent = benefit.desc;
+
+function calcPremium() {
+  var total = benefit.base;
+  if (benefitId === 'extended') {
+    var n = parseInt(document.getElementById('extCount')?.value || '0', 10);
+    total += n * 88;
+  }
+  if (benefitId === 'airtime') {
+    var band = document.getElementById('airtimeBand')?.value;
+    total = band === 'P100' ? 100 : band === 'P200' ? 200 : band === 'P400' ? 400 : 65;
+  }
+  document.getElementById('premiumAmount').textContent = 'P ' + total.toFixed(2);
+  return total;
+}
+
+function renderFields() {
+  var fields = document.getElementById('benefitFields');
+  if (benefitId === 'funeral') {
+    fields.innerHTML = '<div class="callout" style="margin-bottom:12px;"><span class="callout-label">Cover level</span><p>Core cover of P60,000 for you, your spouse and children under 21. Premium is 1% of your basic salary, capped P39.90 – P100.00.</p></div>';
+  } else if (benefitId === 'extended') {
+    fields.innerHTML = '<div class="callout" style="margin-bottom:12px;"><span class="callout-label">Extended family</span><p>You can add up to 8 extended family members at P88/month each. Parents, in-laws, and adult children are eligible.</p></div>' +
+      '<div class="form-group"><label class="form-label">Number of extended family members</label><input type="number" id="extCount" min="0" max="8" value="0" oninput="calcPremium()"></div>';
+  } else if (benefitId === 'airtime') {
+    fields.innerHTML = '<div class="callout" style="margin-bottom:12px;"><span class="callout-label">Airtime scheme</span><p>Choose your monthly airtime band. Added to your payroll deduction.</p></div>' +
+      '<div class="form-group"><label class="form-label">Airtime band</label><select id="airtimeBand" onchange="calcPremium()"><option value="P65">P65</option><option value="P100">P100</option><option value="P200">P200</option><option value="P400">P400</option></select></div>';
+  } else {
+    fields.innerHTML = '<div class="callout"><span class="callout-label">Compulsory</span><p>Group Life & Disability cover is included in your membership. Flat fee of P70/month.</p></div>';
+  }
+  calcPremium();
+}
+
+renderFields();
+
+function enrol() {
+  if (!document.getElementById('consent').checked) { alert('Please tick the consent box.'); return; }
+  var ref = 'ENR-' + new Date().getFullYear() + '-' + String(Math.floor(Math.random()*9000)+1000);
+  var enrol = {
+    id: ref, benefit: benefitId, title: benefit.title,
+    premium: document.getElementById('premiumAmount').textContent,
+    status: 'pending-payroll',
+    enrolledAt: new Date().toISOString()
+  };
+  try {
+    var list = JSON.parse(localStorage.getItem('bopeu_enrolments') || '[]');
+    list.unshift(enrol);
+    localStorage.setItem('bopeu_enrolments', JSON.stringify(list));
+  } catch(e){}
+  alert('Enrolment submitted!\nReference: ' + ref + '\n\nEffective from the 1st of next month. First deduction on next payroll cycle.');
+  location.href = 'my-benefits.html';
+}
+</script>
+</body>
+</html>

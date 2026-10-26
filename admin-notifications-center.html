@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Notifications Center · BOPEU Admin</title>
+<link rel="stylesheet" href="design-system.css">
+<style>body.bop{background:#F2F5F9}.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20}.admin-mark{width:32px;height:32px;border-radius:8px;background:#D32F2F;display:grid;place-items:center;font-weight:800;color:#fff}.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}.admin-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}.admin-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}.admin-side a.active{background:#FFEBEE;color:#D32F2F}.admin-main{padding:24px;max-width:1100px}.admin-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}.admin-table th{background:#F7F9FC;text-align:left;font-size:11px;font-weight:800;text-transform:uppercase;color:#718096;padding:12px;border-bottom:1px solid #E2E8F0}.admin-table td{padding:12px;border-bottom:1px solid #E2E8F0;font-size:13px}</style>
+</head>
+<body class="bop">
+<header class="admin-header"><div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Notifications</div></div></div></header>
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-notifications-center.html" class="active">🔔 Notification Center</a>
+    <a href="admin-email-templates.html">✉️ Email Templates</a>
+    <a href="admin-sms-templates.html">📱 SMS Templates</a>
+    <a href="admin-whatsapp-templates.html">💬 WhatsApp Templates</a>
+  </aside>
+  <main class="admin-main">
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:4px;">Notification Center</h1>
+    <p style="color:#718096;font-size:14px;margin-bottom:20px;">All outbound communications — email, SMS, WhatsApp, in-app</p>
+    <div style="display:flex;gap:8px;margin-bottom:16px;">
+      <button class="btn btn-primary" onclick="alert('Compose new broadcast (demo).')">+ New broadcast</button>
+      <button class="btn btn-secondary" onclick="alert('Export delivery log (demo).')">Export log</button>
+    </div>
+    <div class="kpi-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:20px;">
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px;"><div style="font-size:11px;font-weight:800;color:#718096;text-transform:uppercase;">Sent (30d)</div><div style="font-size:26px;font-weight:800;">14,832</div></div>
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px;"><div style="font-size:11px;font-weight:800;color:#718096;text-transform:uppercase;">Delivered</div><div style="font-size:26px;font-weight:800;color:#2E7D32;">14,621</div></div>
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px;"><div style="font-size:11px;font-weight:800;color:#718096;text-transform:uppercase;">Failed</div><div style="font-size:26px;font-weight:800;color:#B71C1C;">211</div></div>
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px;"><div style="font-size:11px;font-weight:800;color:#718096;text-transform:uppercase;">Delivery rate</div><div style="font-size:26px;font-weight:800;">98.6%</div></div>
+    </div>
+    <table class="admin-table">
+      <thead><tr><th>Date</th><th>Channel</th><th>Template</th><th>Audience</th><th>Sent</th><th>Delivered</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>2026-10-25 09:15</td><td>SMS</td><td>Monthly subscription reminder</td><td>All members</td><td>37,412</td><td>36,987</td><td><span class="badge badge-green">COMPLETE</span></td></tr>
+        <tr><td>2026-10-24 14:30</td><td>WhatsApp</td><td>Bargaining update</td><td>Central Gov</td><td>18,240</td><td>17,982</td><td><span class="badge badge-green">COMPLETE</span></td></tr>
+        <tr><td>2026-10-22 08:00</td><td>Email</td><td>October newsletter</td><td>Opted-in</td><td>24,187</td><td>23,109</td><td><span class="badge badge-green">COMPLETE</span></td></tr>
+        <tr><td>2026-10-20 16:45</td><td>SMS</td><td>Funeral claim action needed</td><td>Specific</td><td>12</td><td>11</td><td><span class="badge badge-blue">IN PROGRESS</span></td></tr>
+      </tbody>
+    </table>
+  </main>
+</div>
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

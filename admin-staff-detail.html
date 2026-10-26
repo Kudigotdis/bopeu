@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Staff Detail · BOPEU Admin</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+body.bop { background:#F2F5F9; }
+.admin-header { background:#1A202C; color:#fff; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:20; }
+.admin-brand { display:flex; align-items:center; gap:10px; }
+.admin-mark { width:32px; height:32px; border-radius:8px; background:#D32F2F; display:grid; place-items:center; font-weight:800; color:#fff; }
+.admin-nav { display:flex; gap:16px; font-size:13px; }
+.admin-nav a { color:#fff; text-decoration:none; font-weight:600; opacity:.85; }
+.admin-nav a:hover, .admin-nav a.active { opacity:1; text-decoration:underline; }
+.admin-layout { display:grid; grid-template-columns:220px 1fr; min-height:calc(100vh - 56px); }
+.admin-side { background:#fff; border-right:1px solid #E2E8F0; padding:16px 12px; }
+.admin-side a { display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:8px; font-size:13px; font-weight:600; color:#4A5568; text-decoration:none; margin-bottom:2px; }
+.admin-side a:hover { background:#F7F9FC; color:#D32F2F; }
+.admin-side a.active { background:#FFEBEE; color:#D32F2F; }
+.admin-main { padding:24px; max-width:900px; }
+.form-row-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media(max-width:820px) {
+  .admin-layout { grid-template-columns:1fr; }
+  .admin-side { display:none; }
+  .form-row-2 { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body class="bop">
+
+<header class="admin-header">
+  <div class="admin-brand">
+    <div class="admin-mark">B</div>
+    <div>
+      <div style="font-weight:800;font-size:14px;">BOPEU Admin</div>
+      <div style="font-size:10px;opacity:.7;">Staff Portal</div>
+    </div>
+  </div>
+  <nav class="admin-nav">
+    <a href="admin-dashboard.html">Dashboard</a>
+    <a href="admin-submissions.html">Submissions</a>
+    <a href="admin-members.html">Members</a>
+    <a href="admin-content.html">Content</a>
+    <a href="admin-reports.html">Reports</a>
+    <a href="admin-login.html">Sign out</a>
+  </nav>
+</header>
+
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-dashboard.html">📊 Dashboard</a>
+    <a href="admin-submissions.html">📥 Submissions</a>
+    <a href="admin-members.html">👥 Members</a>
+    <a href="admin-content.html">📰 Content</a>
+    <a href="admin-users-roles.html">🔐 Users &amp; Roles</a>
+    <a href="admin-staff.html" class="active">👔 Staff</a>
+    <a href="admin-audit-log.html">📜 Audit Log</a>
+    <a href="admin-reports.html">📈 Reports</a>
+  </aside>
+
+  <main class="admin-main">
+    <a href="admin-staff.html" style="font-size:13px;font-weight:700;color:#D32F2F;text-decoration:none;">← Staff</a>
+
+    <h1 id="staffTitle" style="font-size:22px;font-weight:800;margin:8px 0 4px;">New Staff Member</h1>
+    <p id="staffSub" style="color:#718096;font-size:14px;margin:0 0 20px;">Create a staff account and assign access.</p>
+
+    <!-- ============================================================
+         Account state strip
+         ============================================================ -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-body" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+        <div>
+          <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#718096;">Account status</div>
+          <div id="acctLabel" style="font-size:15px;font-weight:800;color:#1A202C;margin-top:2px;">New</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <a href="admin-staff.html" class="btn btn-secondary">Cancel</a>
+          <button class="btn btn-primary" onclick="saveStaff()">Save staff</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Identity
+         ============================================================ -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-header"><h2>Identity</h2></div>
+      <div class="card-body">
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">First name <span style="color:#D32F2F;">*</span></label>
+            <input type="text" id="sFirst" oninput="previewInitials()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Surname <span style="color:#D32F2F;">*</span></label>
+            <input type="text" id="sSurname" oninput="previewInitials()">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Work email <span style="color:#D32F2F;">*</span></label>
+          <input type="email" id="sEmail" placeholder="e.g. n.sekgoma@bopeu.org.bw">
+          <div class="text-small text-muted" style="margin-top:6px;">Use the official BOPEU staff email. An invite will be sent to this address.</div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Mobile (optional)</label>
+            <input type="tel" id="sPhone" placeholder="+267 …">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Job title (optional)</label>
+            <input type="text" id="sTitle" placeholder="e.g. Membership Officer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Role & scope
+         ============================================================ -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-header"><h2>Role &amp; Scope</h2></div>
+      <div class="card-body">
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Department</label>
+            <select id="sDept">
+              <option value="">Select…</option>
+              <option>Membership</option>
+              <option>Marketing</option>
+              <option>Sales / Recruitment</option>
+              <option>Management</option>
+              <option>ICT</option>
+              <option>Compliance / DPO</option>
+              <option>Finance</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Role <span style="color:#D32F2F;">*</span></label>
+            <select id="sRole" onchange="onRoleChange()">
+              <option value="">Select…</option>
+              <option value="Super admin">Super admin</option>
+              <option value="Processing / admin">Processing / admin</option>
+              <option value="Management">Management</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Sales">Sales</option>
+              <option value="Auditor">Auditor</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Reports to (manager)</label>
+            <input type="text" id="sMgr" placeholder="e.g. Ruth Mogwe">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Office</label>
+            <select id="sOffice">
+              <option>Gaborone HQ</option>
+              <option>Francistown</option>
+              <option>Palapye</option>
+              <option>Maun</option>
+              <option>Kang</option>
+            </select>
+          </div>
+        </div>
+        <div class="callout" style="margin-top:6px;">
+          <span class="callout-label">Scope</span>
+          <p id="roleScope">Select a role to see what this account will be able to do.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Security
+         ============================================================ -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-header"><h2>Security</h2></div>
+      <div class="card-body">
+        <div class="checklist-item">
+          <input type="checkbox" id="sForceReset" checked>
+          <label for="sForceReset">Force password reset on first sign-in</label>
+        </div>
+        <div class="form-row-2" style="margin-top:8px;">
+          <div class="form-group">
+            <label class="form-label">Session timeout (minutes)</label>
+            <select id="sTimeout">
+              <option>15</option>
+              <option selected>30</option>
+              <option>60</option>
+              <option>120</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Allowed IP range (optional)</label>
+            <input type="text" id="sIp" placeholder="e.g. 41.220.0.0/16">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Status
+         ============================================================ -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-header"><h2>Status</h2></div>
+      <div class="card-body">
+        <div class="form-group">
+          <label class="form-label">Account status</label>
+          <select id="sStatus" onchange="updateAcctLabel()">
+            <option value="active">Active</option>
+            <option value="invited">Invited (awaiting first sign-in)</option>
+            <option value="suspended">Suspended</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Deactivation reason (required if not active)</label>
+          <input type="text" id="sDeactReason" placeholder="e.g. Resigned, transferred, contract ended">
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Recent activity
+         ============================================================ -->
+    <div class="card" id="activityCard" style="display:none;margin-bottom:16px;">
+      <div class="card-header"><h2>Recent activity</h2></div>
+      <div class="card-body" id="activityList"></div>
+    </div>
+
+    <!-- ============================================================
+         Danger zone
+         ============================================================ -->
+    <div class="card" id="dangerCard" style="display:none;margin-bottom:16px;">
+      <div class="card-header"><h2 style="color:#B71C1C;">Danger zone</h2></div>
+      <div class="card-body">
+        <p class="text-small text-muted">Deactivating an account revokes all sessions and prevents sign-in. Audit history is preserved.</p>
+        <button class="btn btn-ghost" style="color:#B71C1C;" onclick="deactivateStaff()">Deactivate account</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+<script>
+/* ============================================================
+   DEMO SEED
+   ============================================================ */
+var DEMO_STAFF = {
+  'S-1': { id:'S-1', first:'Kabelo', surname:'Modise', email:'k.modise@bopeu.org.bw', phone:'', title:'ICT Manager',
+           department:'ICT', role:'Super admin', manager:'', office:'Gaborone HQ', status:'active', forceReset:false, timeout:'30', ip:'' },
+  'S-2': { id:'S-2', first:'Naledi', surname:'Sekgoma', email:'n.sekgoma@bopeu.org.bw', phone:'', title:'Membership Officer',
+           department:'Membership', role:'Processing / admin', manager:'Ruth Mogwe', office:'Gaborone HQ', status:'active', forceReset:false, timeout:'30', ip:'' },
+  'S-3': { id:'S-3', first:'Tshepo', surname:'Molefe', email:'t.molefe@bopeu.org.bw', phone:'', title:'Marketing Officer',
+           department:'Marketing', role:'Marketing', manager:'Ruth Mogwe', office:'Gaborone HQ', status:'active', forceReset:false, timeout:'30', ip:'' },
+  'S-4': { id:'S-4', first:'Ruth', surname:'Mogwe', email:'r.mogwe@bopeu.org.bw', phone:'', title:'Operations Manager',
+           department:'Management', role:'Management', manager:'', office:'Gaborone HQ', status:'active', forceReset:false, timeout:'30', ip:'' },
+  'S-5': { id:'S-5', first:'Patrick', surname:'Ketlhoilwe', email:'p.ketlhoilwe@bopeu.org.bw', phone:'', title:'Compliance Officer',
+           department:'Compliance', role:'Auditor', manager:'Ruth Mogwe', office:'Gaborone HQ', status:'inactive', forceReset:false, timeout:'30', ip:'' }
+};
+
+var ROLE_SCOPES = {
+  'Super admin': 'Full access to all modules, staff management, permission matrix, audit log.',
+  'Processing / admin': 'View/edit members, process submissions, manage content, view reports. Cannot change staff or permissions.',
+  'Management': 'Approve submissions, approve promotions and partner offers, view all reports and audit log.',
+  'Marketing': 'Create and edit promotions and notices. Read-only access to member and submission lists.',
+  'Sales': 'Manage lead pipeline, view members and submissions. No content or partner access.',
+  'Auditor': 'Read-only access to members, submissions, audit log and reports. Cannot modify anything.'
+};
+
+var EDIT_ID = null;
+
+/* ============================================================
+   LOAD
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', function () {
+  EDIT_ID = new URLSearchParams(location.search).get('id');
+
+  if (!EDIT_ID) {
+    document.getElementById('acctLabel').textContent = 'New';
+    document.getElementById('roleScope').textContent = 'Select a role to see what this account will be able to do.';
+    document.getElementById('sStatus').value = 'invited';
+    return;
+  }
+
+  var live = (LocalStore.get('bopeu_staff') || []).find(function (s) { return s.id === EDIT_ID; });
+  var s = live || DEMO_STAFF[EDIT_ID];
+
+  if (!s) {
+    document.getElementById('staffTitle').textContent = 'Staff member not found';
+    document.getElementById('staffSub').textContent = 'Reference ' + EDIT_ID;
+    return;
+  }
+
+  var fullName = (s.name || (s.first + ' ' + s.surname)).trim();
+  document.getElementById('staffTitle').textContent = fullName;
+  document.getElementById('staffSub').textContent = 'ID ' + s.id + ' · ' + (s.department || 'No department');
+
+  document.getElementById('sFirst').value = s.first || (s.name || '').split(' ')[0] || '';
+  document.getElementById('sSurname').value = s.surname || (s.name || '').split(' ').slice(1).join(' ') || '';
+  document.getElementById('sEmail').value = s.email || '';
+  document.getElementById('sPhone').value = s.phone || '';
+  document.getElementById('sTitle').value = s.title || '';
+  document.getElementById('sDept').value = s.department || '';
+  document.getElementById('sRole').value = s.role || '';
+  document.getElementById('sMgr').value = s.manager || '';
+  document.getElementById('sOffice').value = s.office || 'Gaborone HQ';
+  document.getElementById('sForceReset').checked = s.forceReset === true;
+  document.getElementById('sTimeout').value = s.timeout || '30';
+  document.getElementById('sIp').value = s.ip || '';
+  document.getElementById('sStatus').value = s.status || 'active';
+
+  onRoleChange();
+  updateAcctLabel();
+
+  // Show delete + activity for existing items
+  document.getElementById('dangerCard').style.display = 'block';
+  document.getElementById('activityCard').style.display = 'block';
+  renderActivity(s);
+});
+
+/* ============================================================
+   ROLE
+   ============================================================ */
+function onRoleChange() {
+  var role = document.getElementById('sRole').value;
+  var el = document.getElementById('roleScope');
+  el.textContent = ROLE_SCOPES[role] || 'Select a role to see what this account will be able to do.';
+}
+
+/* ============================================================
+   ACCOUNT STATUS
+   ============================================================ */
+function updateAcctLabel() {
+  var v = document.getElementById('sStatus').value;
+  var map = { active:'Active', invited:'Invited', suspended:'Suspended', inactive:'Inactive' };
+  var col = { active:'#2E7D32', invited:'#0D47A1', suspended:'#B71C1C', inactive:'#718096' };
+  var el = document.getElementById('acctLabel');
+  el.textContent = map[v] || v;
+  el.style.color = col[v] || '#1A202C';
+}
+
+/* ============================================================
+   INITIALS PREVIEW
+   ============================================================ */
+function previewInitials() {
+  var first = document.getElementById('sFirst').value.trim();
+  var last  = document.getElementById('sSurname').value.trim();
+  var el = document.getElementById('staffTitle');
+  if (first || last) el.textContent = (first + ' ' + last).trim();
+}
+
+/* ============================================================
+   SAVE
+   ============================================================ */
+function saveStaff() {
+  var first   = document.getElementById('sFirst').value.trim();
+  var surname = document.getElementById('sSurname').value.trim();
+  var email   = document.getElementById('sEmail').value.trim();
+  var role    = document.getElementById('sRole').value;
+  var status  = document.getElementById('sStatus').value;
+
+  if (!first || !surname) { alert('First name and surname are required.'); return; }
+  if (!email) { alert('Work email is required.'); return; }
+  if (!/^[^@]+@[^@]+\.[^@]+$/.test(email)) { alert('Please enter a valid email address.'); return; }
+  if (!role) { alert('Please assign a role.'); return; }
+  if ((status === 'suspended' || status === 'inactive') && !document.getElementById('sDeactReason').value.trim()) {
+    alert('Please provide a reason when deactivating or suspending an account.');
+    return;
+  }
+
+  var record = {
+    id: EDIT_ID || ('S-' + Date.now()),
+    first: first,
+    surname: surname,
+    name: first + ' ' + surname,
+    email: email,
+    phone: document.getElementById('sPhone').value.trim(),
+    title: document.getElementById('sTitle').value.trim(),
+    department: document.getElementById('sDept').value,
+    role: role,
+    manager: document.getElementById('sMgr').value.trim(),
+    office: document.getElementById('sOffice').value,
+    forceReset: document.getElementById('sForceReset').checked,
+    timeout: document.getElementById('sTimeout').value,
+    ip: document.getElementById('sIp').value.trim(),
+    status: status,
+    deactReason: document.getElementById('sDeactReason').value.trim(),
+    updatedAt: new Date().toISOString()
+  };
+  if (!EDIT_ID) {
+    record.createdAt = record.updatedAt;
+    record.invitedAt = record.updatedAt;
+  }
+
+  var list = (LocalStore.get('bopeu_staff') || []).filter(function (s) { return s.id !== record.id; });
+  list.unshift(record);
+  LocalStore.set('bopeu_staff', list);
+
+  // Audit trail
+  var audit = LocalStore.get('bopeu_audit_extra') || [];
+  audit.unshift({
+    at: new Date().toISOString(),
+    user: 'staff@bopeu.org.bw',
+    action: (EDIT_ID ? 'Updated' : 'Created') + ' staff account ' + record.email + ' (' + record.role + ', ' + record.status + ')'
+  });
+  LocalStore.set('bopeu_audit_extra', audit.slice(0, 500));
+
+  if (!EDIT_ID) {
+    alert('Staff account created. An invitation has been sent to ' + email + '.');
+  } else {
+    alert('Staff details saved.');
+  }
+  location.href = 'admin-staff.html';
+}
+
+/* ============================================================
+   DEACTIVATE
+   ============================================================ */
+function deactivateStaff() {
+  if (!EDIT_ID) return;
+  if (!confirm('Deactivate this account? All active sessions will be revoked.')) return;
+
+  var list = LocalStore.get('bopeu_staff') || [];
+  var s = list.find(function (x) { return x.id === EDIT_ID; });
+  if (s) {
+    s.status = 'inactive';
+    s.deactReason = s.deactReason || 'Deactivated via admin portal';
+    s.updatedAt = new Date().toISOString();
+    LocalStore.set('bopeu_staff', list);
+  }
+
+  var audit = LocalStore.get('bopeu_audit_extra') || [];
+  audit.unshift({
+    at: new Date().toISOString(),
+    user: 'staff@bopeu.org.bw',
+    action: 'Deactivated staff account ' + EDIT_ID
+  });
+  LocalStore.set('bopeu_audit_extra', audit.slice(0, 500));
+
+  alert('Account deactivated.');
+  location.href = 'admin-staff.html';
+}
+
+/* ============================================================
+   ACTIVITY FEED
+   ============================================================ */
+function renderActivity(staff) {
+  var box = document.getElementById('activityList');
+  var seed = [
+    { at: staff.updatedAt || staff.createdAt || new Date().toISOString(),
+      action: 'Account ' + (staff.updatedAt ? 'updated' : 'created') + ' by admin portal' }
+  ];
+
+  var audit = LocalStore.get('bopeu_audit_extra') || [];
+  var related = audit.filter(function (a) {
+    return a.action && a.action.toLowerCase().indexOf((staff.email || '').toLowerCase()) !== -1;
+  });
+
+  var combined = related.concat(seed);
+  box.innerHTML = combined.slice(0, 10).map(function (a) {
+    return '<div class="checklist-item"><span class="chk-num">·</span>' +
+      '<span>' + new Date(a.at).toLocaleString() + ' — ' + a.action + '</span></div>';
+  }).join('');
+}
+</script>
+</body>
+</html>

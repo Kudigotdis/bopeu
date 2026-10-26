@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Media Library · BOPEU Admin</title><link rel="stylesheet" href="design-system.css">
+<style>
+body.bop{background:#F2F5F9}
+.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+.admin-mark{width:32px;height:32px;border-radius:8px;background:#D32F2F;display:grid;place-items:center;font-weight:800;color:#fff}
+.admin-nav{display:flex;gap:16px;font-size:13px}
+.admin-nav a{color:#fff;text-decoration:none;font-weight:600;opacity:.85}
+.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}
+.admin-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}
+.admin-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}
+.admin-side a.active{background:#FFEBEE;color:#D32F2F}
+.admin-main{padding:24px;max-width:1100px}
+.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;}
+.media-tile{background:#fff;border:1px solid #E2E8F0;border-radius:10px;overflow:hidden;}
+.media-tile img{width:100%;height:100px;object-fit:cover;display:block;background:#F7F9FC}
+.media-tile div{padding:8px;font-size:12px;color:#718096;word-break:break-all}
+@media(max-width:820px){.admin-layout{grid-template-columns:1fr}.admin-side{display:none}}
+</style></head>
+<body class="bop">
+<header class="admin-header">
+  <div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Staff Portal</div></div></div>
+  <nav class="admin-nav"><a href="admin-promotions.html">Marketing</a><a href="admin-login.html">Sign out</a></nav>
+</header>
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-dashboard.html">📊 Dashboard</a>
+    <a href="admin-promotions.html">📣 Promotions</a>
+    <a href="admin-noticeboards.html">📌 Notice Boards</a>
+    <a href="admin-media-library.html" class="active">🖼 Media</a>
+  </aside>
+  <main class="admin-main">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <div><h1 style="font-size:22px;font-weight:800;margin:0;">Media Library</h1><p style="color:#718096;font-size:14px;margin:4px 0 0;">Images used in promotions and notices.</p></div>
+      <input type="file" id="mediaUp" style="display:none;" accept="image/*" onchange="uploadMedia(event)"><button class="btn btn-primary" onclick="document.getElementById('mediaUp').click()">+ Upload image</button>
+    </div>
+    <div class="media-grid" id="mediaGrid"></div>
+  </main>
+</div>
+<script src="js/data.js"></script><script src="js/app.js"></script>
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+<script>
+function renderMedia(){
+  var stored = LocalStore.get('bopeu_media')||[];
+  var seed = [
+    {name:'bopeu_logo.webp', url:'Assets/logo/bopeu_logo.webp'},
+    {name:'bona_life_logo.webp', url:'Assets/logo/forms/bona_life_logo.webp'},
+    {name:'blic_logo.webp', url:'Assets/logo/forms/blic_logo.webp'}
+  ];
+  var all = stored.concat(seed);
+  document.getElementById('mediaGrid').innerHTML = all.map(function(m){
+    return '<div class="media-tile"><img src="'+m.url+'" alt="" onerror="this.style.display=\'none\'"><div>'+m.name+'</div></div>';
+  }).join('');
+}
+function uploadMedia(e){
+  var f = e.target.files[0]; if (!f) return;
+  var r = new FileReader();
+  r.onload = function(ev){
+    var list = LocalStore.get('bopeu_media')||[];
+    list.unshift({name:f.name,url:ev.target.result});
+    LocalStore.set('bopeu_media',list);
+    renderMedia(); alert('Uploaded '+f.name);
+  };
+  r.readAsDataURL(f); e.target.value='';
+}
+document.addEventListener('DOMContentLoaded', renderMedia);
+</script>
+</body></html>

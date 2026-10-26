@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Data Sharing Agreement · BOPEU Partner</title>
+<link rel="stylesheet" href="design-system.css">
+</head>
+<body class="bop">
+<header style="background:#0F7A4D;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20;">
+  <div style="display:flex;align-items:center;gap:10px;"><div style="width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-weight:800;">B</div><div><div style="font-weight:800;font-size:14px;">Partner Portal</div><div style="font-size:10px;opacity:.8;">Data Sharing Agreement</div></div></div>
+  <a href="partner-dashboard.html" style="color:#fff;text-decoration:none;font-weight:600;opacity:.85;font-size:13px;">← Dashboard</a>
+</header>
+<main class="page stack">
+  <div class="card">
+    <div class="card-head"><h2>Data Sharing Agreement</h2><div class="card-sub">Required by Botswana DPA 2024. Must be signed before accessing any member data.</div></div>
+    <div class="card-body" style="padding:20px;">
+
+      <div class="callout" style="margin-bottom:16px;"><span class="callout-label">Current status</span><p><strong>Signed</strong> · Effective 2026-08-15 · Expires 2027-08-14 · Renewal required</p></div>
+
+      <h3 style="font-size:14px;font-weight:800;margin:20px 0 10px;">What this agreement covers</h3>
+      <div style="background:#F7F9FC;padding:16px;border-radius:8px;font-size:13px;line-height:1.7;color:#4A5568;">
+        1. <strong>Aggregated-only data rule</strong> — Partners receive only aggregated, anonymised statistics. No individual member data unless the member has given explicit consent for a specific transaction.<br><br>
+        2. <strong>Consent-gated transactions</strong> — Individual data (e.g. phone for CUG, ID for eligibility) is accessible only after the member initiates the request in the BOPEU app.<br><br>
+        3. <strong>Access logging</strong> — Every data access is logged with your user ID, timestamp, and the specific record accessed. BOPEU DPO reviews monthly.<br><br>
+        4. <strong>Breach notification</strong> — You must notify BOPEU within 24 hours of any breach involving BOPEU member data.<br><br>
+        5. <strong>Data retention</strong> — Your access to member data expires 90 days after the transaction closes. Offline copies are prohibited.<br><br>
+        6. <strong>Botswana jurisdiction</strong> — Any disputes resolved under Botswana law.
+      </div>
+
+      <h3 style="font-size:14px;font-weight:800;margin:20px 0 10px;">Audit summary (last 30 days)</h3>
+      <div class="stat"><div class="stat-label">Data accesses logged</div><div class="stat-value">412</div></div>
+      <div class="stat" style="margin-top:10px;"><div class="stat-label">Consent-gated transactions</div><div class="stat-value">187</div></div>
+      <div class="stat" style="margin-top:10px;"><div class="stat-label">Access denials (no consent)</div><div class="stat-value" style="color:#2E7D32;">23 (correctly blocked)</div></div>
+
+      <div class="btn-row mt-md">
+        <button class="btn btn-secondary" onclick="alert('Download signed agreement (demo).')">Download signed copy</button>
+        <button class="btn btn-primary" onclick="alert('Renewal workflow (demo).')">Initiate renewal</button>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

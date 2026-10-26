@@ -6,249 +6,380 @@
 <title>BLIC — Nomination of Beneficiaries</title>
 <style>
   :root{
-    --ink:#1A202C; --muted:#718096; --line:#E2E8F0;
+    --ink:#868e96; --dark:#2D3748; --muted:#868e96;
+    --line:#E2E8F0;
     --brand:#D32F2F; --brand2:#B71C1C; --danger:#B71C1C;
     --gold:#C9A227; --soft:#F4F5F7;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html{height:100%}
+  *::-webkit-scrollbar{display:none;width:0;height:0}
+  *{scrollbar-width:none;-ms-overflow-style:none}
+  html{height:100%;overflow:hidden}
   body{
-    margin:0;height:100dvh;
+    margin:0;height:100dvh;overflow:hidden;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    background:#E9ECEF;display:flex;align-items:center;justify-content:center;color:var(--ink);
+    background:#E9ECEF;display:flex;align-items:center;justify-content:center;
+    color:var(--ink);font-size:16px;
   }
-  .phone{width:100%;max-width:400px;height:100dvh;max-height:900px;background:#F4F5F7;display:flex;flex-direction:column;overflow:hidden;position:relative}
+  .phone{
+    width:100%;max-width:400px;height:100dvh;max-height:900px;
+    background:#F4F5F7;display:flex;flex-direction:column;overflow:hidden;position:relative;
+  }
   @media (min-width:430px){.phone{border-radius:30px;box-shadow:0 34px 70px rgba(0,0,0,.55);height:860px}}
 
   /* header */
-  .topbar{flex:0 0 auto;background:linear-gradient(135deg,#D32F2F 0%,#B71C1C 100%);color:#fff;padding:14px 18px 12px}
-  .brand{font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.78;font-weight:700}
-  .topbar h1{margin:3px 0 0;font-size:15px;font-weight:800;letter-spacing:-.01em;line-height:1.25}
+  .topbar{
+    flex:0 0 auto;background:#fff;border-bottom:3px solid var(--brand);
+    color:var(--ink);padding:12px 18px;display:flex;align-items:center;gap:12px;
+  }
+  .tb-home{display:flex;align-items:center;flex:0 0 auto}
+  .tb-logo{width:46px;height:46px;object-fit:contain}
+  .tb-text{
+    flex:1 1 auto;min-width:0;display:flex;flex-direction:column;
+    align-items:flex-end;text-align:right;gap:2px;
+  }
+  .tb-text .brand{
+    margin:0;font-size:15px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted);font-weight:800;line-height:1.2;
+  }
+  .tb-text h1{
+    margin:0;font-size:16px;font-weight:800;color:var(--ink);
+    letter-spacing:-.01em;line-height:1.25;
+  }
 
   /* sticky status bar */
   .statusbar{
     flex:0 0 auto;background:#fff;border-bottom:1px solid var(--line);
-    padding:10px 18px 11px;box-shadow:0 3px 12px rgba(0,0,0,.08);
+    padding:11px 18px;box-shadow:0 3px 12px rgba(0,0,0,.08);
     position:relative;z-index:6;
   }
   .sb-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px}
-  .sb-lbl{font-size:9px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
-  .sb-pct{font-size:13px;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums}
+  .sb-lbl{
+    font-size:14px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+    color:#1a202c;
+  }
+  .sb-pct{font-size:16px;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums}
   .pb-track{height:6px;border-radius:6px;background:#EBF0F3;overflow:hidden}
   .pb-fill{height:100%;width:0%;border-radius:6px;background:linear-gradient(90deg,#D32F2F,#B71C1C);transition:width .3s ease}
   .sb-alloc{
     display:flex;align-items:center;justify-content:space-between;gap:8px;
     margin-top:9px;padding-top:9px;border-top:1px dashed var(--line);
   }
-  .sb-alloc .sa-l{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .sb-alloc .sa-l{
+    font-size:14px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+    color:#1a202c;
+  }
   .sb-alloc .sa-r{
-    font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;
+    font-size:16px;font-weight:800;font-variant-numeric:tabular-nums;
     color:var(--brand);transition:color .2s ease;
   }
   .sb-alloc .sa-r.over{color:var(--danger)}
   .sb-alloc .sa-r.under{color:var(--gold)}
 
   /* scroll */
-  .scroll{flex:1 1 auto;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:10px 10px 26px}
+  .scroll{
+    flex:1 1 auto;overflow-y:auto;overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;padding:12px 12px 26px;
+  }
 
   /* accordion */
-  .acc{background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:9px;overflow:hidden;transition:box-shadow .2s ease,border-color .2s ease}
+  .acc{
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    margin-bottom:10px;overflow:hidden;transition:box-shadow .2s ease,border-color .2s ease;
+  }
   .acc.open{border-color:#FFCDD2;box-shadow:0 8px 20px rgba(211,47,47,.10)}
-  .acc-head{width:100%;border:0;background:transparent;font:inherit;text-align:left;cursor:pointer;padding:12px 13px;display:flex;align-items:center;justify-content:space-between;gap:10px;transition:background .18s ease}
+  .acc-head{
+    width:100%;border:0;background:transparent;font:inherit;font-size:16px;text-align:left;
+    cursor:pointer;padding:14px;display:flex;flex-direction:column;gap:3px;
+    transition:background .18s ease;
+  }
   .acc.open .acc-head{background:#FFEBEE}
-  .acc-left{display:flex;flex-direction:column;gap:2px;min-width:0}
-  .acc-title{font-size:13px;font-weight:800;color:var(--ink);letter-spacing:-.01em}
-  .acc-sub{font-size:10px;font-weight:500;color:var(--muted);line-height:1.25}
-  .acc-total{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);background:#FFEBEE;border:1px solid #EF9A9A;border-radius:20px;padding:3px 8px;white-space:nowrap}
+  .acc-headrow{
+    display:flex;align-items:baseline;justify-content:space-between;gap:10px;width:100%;
+  }
+  .acc-title{
+    font-size:16px;font-weight:800;color:#1a202c;letter-spacing:-.01em;line-height:1.3;
+  }
+  .acc-sub{
+    font-size:13px;font-weight:600;color:#868e96;line-height:1.35;
+  }
+  .acc-total{
+    font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--brand);background:#FFEBEE;border:1px solid #EF9A9A;border-radius:20px;
+    padding:3px 8px;white-space:nowrap;line-height:1.3;
+  }
   .acc-total.muted{color:var(--muted);background:#F7F9FB;border-color:var(--line)}
   .acc-total.warn{color:var(--gold);background:#F5F6F8;border-color:#D9E1E8}
-  .acc-body{display:none;padding:12px 13px 14px;border-top:1px solid var(--line)}
+  .acc-body{display:none;padding:6px 14px 14px;border-top:1px solid var(--line)}
   .acc.open .acc-body{display:block}
 
   /* subhead */
-  .subhead{font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:14px 0 8px;padding-bottom:5px;border-bottom:1px solid #EDEFF2}
+  .subhead{
+    font-size:15px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--dark);margin:14px 0 8px;padding-bottom:5px;border-bottom:1px solid #EDEFF2;
+  }
   .subhead:first-child{margin-top:0}
 
-  /* fields */
-  .field{display:flex;flex-direction:column;gap:3px;min-width:0}
-  .field > label{font-size:9px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding-left:2px}
-  .field input,.field select,.field textarea{
-    width:100%;font-family:inherit;font-size:12.5px;font-weight:600;color:var(--ink);
-    background:#F7F9FB;border:1px solid var(--line);border-radius:9px;padding:9px 10px;
-    transition:border-color .15s ease,background .15s ease;
+  /* full-width field inputs */
+  .field{
+    display:block;width:100%;margin-top:10px;
+    font-family:inherit;font-size:16px;font-weight:700;color:var(--ink);
+    background:#F7F9FB;border:1px solid var(--line);border-radius:10px;
+    padding:11px 12px;
   }
-  .field textarea{resize:none;min-height:52px;line-height:1.45}
-  .field input::placeholder,.field textarea::placeholder{color:#a8b4be;font-weight:500}
-  .field input:focus,.field select:focus,.field textarea:focus{outline:2px solid #EF9A9A;outline-offset:-1px;background:#fff}
-  .field input[type=date]{font-weight:700}
-  .field input[type=number]{font-variant-numeric:tabular-nums}
+  .field::placeholder{font-weight:600;color:#adb5bd}
+  .field:focus{outline:2px solid #EF9A9A;outline-offset:-1px;background:#fff}
+  select.field{
+    -webkit-appearance:none;appearance:none;background-image:none;cursor:pointer;
+  }
+  textarea.field{resize:none;min-height:54px;line-height:1.4}
 
-  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
-  .grid-2 .field{margin:0}
-  .mb{margin-bottom:8px}
-  .mb:last-child{margin-bottom:0}
-
-  /* sum row */
-  .sum-row{display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px dashed var(--line)}
+  /* sum row (P-prefix amount rows) */
+  .sum-row{
+    display:flex;align-items:center;gap:9px;padding:10px 0;
+    border-bottom:1px dashed var(--line);
+  }
   .sum-row:last-child{border-bottom:0;padding-bottom:0}
   .sum-row:first-child{padding-top:0}
-  .sum-row .sr-l{flex:1 1 auto;min-width:0;font-size:11px;font-weight:700;color:var(--ink);line-height:1.3}
+  .sum-row .sr-l{
+    flex:1 1 auto;min-width:0;font-size:15px;font-weight:700;
+    color:var(--dark);line-height:1.35;
+  }
   .sum-row .sr-input{
     flex:0 0 132px;display:flex;align-items:center;
-    background:#F7F9FB;border:1px solid var(--line);border-radius:9px;overflow:hidden;
+    background:#F7F9FB;border:1px solid var(--line);border-radius:10px;overflow:hidden;
   }
   .sum-row .sr-input span{
-    font-size:11px;font-weight:800;color:var(--muted);padding:0 8px;
+    font-size:15px;font-weight:800;color:var(--muted);padding:0 8px;
     background:#EDF1F4;align-self:stretch;display:flex;align-items:center;
   }
   .sum-row .sr-input input{
     flex:1 1 auto;min-width:0;border:0;background:transparent;
-    font-family:inherit;font-size:12.5px;font-weight:800;color:var(--ink);
-    padding:9px 8px;font-variant-numeric:tabular-nums;
+    font-family:inherit;font-size:16px;font-weight:800;color:var(--ink);
+    padding:11px 8px;font-variant-numeric:tabular-nums;
   }
   .sum-row .sr-input input:focus{outline:0;background:#fff}
+
+  /* gender inline row */
+  .gender-row{display:flex;align-items:center;gap:6px;margin-top:10px}
+  .gender-lbl{
+    font-size:14px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--muted);margin-right:2px;
+  }
+  .g-opt{
+    flex:1 1 0;display:flex;align-items:center;justify-content:center;gap:5px;
+    padding:10px 6px;border-radius:10px;border:1px solid var(--line);background:#F7F9FB;
+    font-size:15px;font-weight:800;letter-spacing:.05em;color:var(--muted);
+    cursor:pointer;user-select:none;transition:all .15s ease;
+  }
+  .g-opt input{width:14px;height:14px;margin:0;accent-color:var(--brand);cursor:pointer}
+  .g-opt:has(input:checked){background:#FFEBEE;border-color:#EF9A9A;color:var(--brand)}
 
   /* beneficiary card */
   .benef{
     background:#F8FAFB;border:1px solid var(--line);border-radius:12px;
-    padding:12px;margin-bottom:10px;position:relative;
+    padding:14px;margin-bottom:12px;
   }
   .benef:last-of-type{margin-bottom:0}
-  .benef-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
-  .benef-tag{font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .benef-head{
+    display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;
+  }
+  .benef-tag{
+    font-size:14px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted);
+  }
   .x{
     width:26px;height:26px;border-radius:50%;border:1px solid #f2d6ce;background:#fff5f1;
-    color:var(--danger);font-size:15px;line-height:1;font-weight:700;
+    color:var(--danger);font-size:16px;line-height:1;font-weight:700;
     display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;
     transition:background .15s ease,transform .1s ease;
   }
   .x:active{background:#ffe4da;transform:scale(.92)}
 
-  .gender-opts{display:flex;gap:6px}
-  .g-opt{
-    flex:1 1 0;display:flex;align-items:center;justify-content:center;gap:5px;
-    padding:9px 6px;border-radius:9px;border:1px solid var(--line);background:#F7F9FB;
-    font-size:11px;font-weight:800;letter-spacing:.05em;color:var(--muted);
-    cursor:pointer;user-select:none;transition:all .15s ease;
-  }
-  .g-opt input{width:13px;height:13px;margin:0;accent-color:var(--brand);cursor:pointer}
-  .g-opt:has(input:checked){background:#FFEBEE;border-color:#EF9A9A;color:var(--brand)}
-
   .alloc-field{
-    display:flex;align-items:center;
-    background:#F7F9FB;border:1px solid var(--line);border-radius:9px;overflow:hidden;
+    display:flex;align-items:center;margin-top:10px;
+    background:#F7F9FB;border:1px solid var(--line);border-radius:10px;overflow:hidden;
   }
   .alloc-field input{
     flex:1 1 auto;min-width:0;border:0;background:transparent;
-    font-family:inherit;font-size:13px;font-weight:800;color:var(--ink);
-    padding:9px 10px;font-variant-numeric:tabular-nums;
+    font-family:inherit;font-size:16px;font-weight:800;color:var(--ink);
+    padding:11px 12px;font-variant-numeric:tabular-nums;
   }
   .alloc-field input:focus{outline:0;background:#fff}
   .alloc-field span{
-    font-size:12px;font-weight:800;color:var(--muted);padding:0 10px;
+    font-size:15px;font-weight:800;color:var(--muted);padding:0 10px;
     background:#EDF1F4;align-self:stretch;display:flex;align-items:center;
   }
 
   /* add button */
   .addbtn{
-    width:100%;margin-top:11px;padding:11px;border-radius:11px;
+    width:100%;margin-top:12px;padding:12px;border-radius:11px;
     border:1px dashed #EF9A9A;background:#FFEBEE;color:var(--brand);
-    font-family:inherit;font-size:11.5px;font-weight:800;letter-spacing:.03em;
+    font-family:inherit;font-size:16px;font-weight:800;letter-spacing:.03em;
     cursor:pointer;transition:background .15s ease,transform .1s ease,opacity .15s ease;
   }
   .addbtn:active{background:#FFCDD2;transform:scale(.985)}
   .addbtn:disabled{opacity:.5;cursor:not-allowed;background:#F4F5F7;border-color:#D9E1E8;color:#A0AEB9}
   .addbtn:disabled:active{transform:none;background:#F4F5F7}
 
-  .empty{margin:14px 0 2px;text-align:center;font-size:11px;color:#A0AEB9;font-weight:600}
+  .empty{margin:14px 0 2px;text-align:center;font-size:15px;color:#adb5bd;font-weight:600}
 
   /* toggle */
-  .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;cursor:pointer;user-select:none;border-bottom:1px dashed var(--line)}
-  .toggle-row:last-child{border-bottom:0}
+  .toggle-row{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:12px;background:#F7F9FB;border:1px solid var(--line);border-radius:10px;
+    cursor:pointer;user-select:none;
+  }
   .toggle-row .tr-text{display:flex;flex-direction:column;gap:2px;min-width:0}
-  .toggle-row .tr-text strong{font-size:12px;font-weight:800;color:var(--ink);line-height:1.35}
-  .toggle-row .tr-text span{font-size:10px;color:var(--muted);line-height:1.3}
+  .toggle-row .tr-text strong{font-size:15px;font-weight:800;color:var(--dark);line-height:1.35}
+  .toggle-row .tr-text span{font-size:13px;color:var(--muted);line-height:1.3}
   .switch{position:relative;flex:0 0 auto;width:42px;height:24px;cursor:pointer}
   .switch input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;margin:0;z-index:2}
   .switch-track{position:absolute;inset:0;border-radius:24px;background:#E2E8F0;transition:background .2s ease}
-  .switch-knob{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.22);transition:transform .2s ease}
+  .switch-knob{
+    position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.22);transition:transform .2s ease;
+  }
   .switch input:checked + .switch-track{background:var(--brand)}
   .switch input:checked + .switch-track + .switch-knob{transform:translateX(18px)}
 
   /* signature */
-  .sig-wrap{border:1px solid var(--line);border-radius:10px;background:#fff;overflow:hidden;position:relative}
-  .sig-wrap .sig-hint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:600;color:#B8C4CE;pointer-events:none;transition:opacity .2s ease}
+  .sig-wrap{border:1px solid var(--line);border-radius:10px;background:#fff;overflow:hidden;position:relative;margin-top:10px}
+  .sig-wrap .sig-hint{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:15px;font-weight:600;color:#B8C4CE;pointer-events:none;transition:opacity .2s ease;
+  }
   .sig-wrap.signed .sig-hint{opacity:0}
   canvas.sigpad{display:block;width:100%;height:120px;touch-action:none;cursor:crosshair}
   .sig-actions{display:flex;justify-content:flex-end;margin-top:6px}
-  .sig-clear{font-family:inherit;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--danger);background:#fff5f1;border:1px solid #f2d6ce;border-radius:7px;padding:6px 11px;cursor:pointer;transition:background .15s ease}
+  .sig-clear{
+    font-family:inherit;font-size:13px;font-weight:800;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--danger);background:#fff5f1;
+    border:1px solid #f2d6ce;border-radius:7px;padding:6px 11px;cursor:pointer;
+    transition:background .15s ease;
+  }
   .sig-clear:active{background:#ffe4da}
 
   /* official */
-  .official{display:flex;align-items:center;gap:8px;padding:9px 11px;background:#F5F6F8;border:1px dashed #D9E1E8;border-radius:10px;margin-bottom:12px}
-  .official svg{width:15px;height:15px;fill:none;stroke:var(--gold);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
-  .official span{font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--gold);line-height:1.4}
+  .official{
+    display:flex;align-items:center;gap:8px;padding:9px 11px;background:#F5F6F8;
+    border:1px dashed #D9E1E8;border-radius:10px;margin-bottom:12px;
+  }
+  .official svg{
+    width:15px;height:15px;fill:none;stroke:var(--gold);stroke-width:1.8;
+    stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;
+  }
+  .official span{
+    font-size:13px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--gold);line-height:1.4;
+  }
 
   /* legal text */
-  .legal{font-size:10.5px;line-height:1.65;color:var(--muted);margin:0 0 10px}
+  .legal{font-size:15px;line-height:1.65;color:var(--muted);margin:0 0 10px}
   .legal:last-child{margin-bottom:0}
-  .legal strong{color:var(--ink);font-weight:800}
+  .legal strong{color:var(--dark);font-weight:800}
 
-  .notes{margin:0;padding-left:16px;font-size:10.5px;line-height:1.65;color:var(--muted)}
+  .notes{margin:0;padding-left:16px;font-size:15px;line-height:1.65;color:var(--muted)}
   .notes li{margin-bottom:6px}
   .notes li:last-child{margin-bottom:0}
   .notes li::marker{color:#EF9A9A}
-  .notes strong{color:var(--ink);font-weight:800}
-
-  .notes.nostyle{padding-left:0;list-style:none}
-  .notes.nostyle li{margin-bottom:5px}
+  .notes strong{color:var(--dark);font-weight:800}
 
   /* pin pill */
   .pin{
-    display:inline-block;font-size:9px;font-weight:800;letter-spacing:.08em;
+    display:inline-block;font-size:13px;font-weight:800;letter-spacing:.08em;
     text-transform:uppercase;color:var(--brand);background:#FFEBEE;
-    border:1px solid #EF9A9A;border-radius:20px;padding:3px 8px;margin-bottom:8px;
+    border:1px solid #EF9A9A;border-radius:20px;padding:3px 8px;margin-bottom:10px;
   }
 
   /* contact card */
   .contact-card{
     background:#F8FAFB;border:1px solid var(--line);border-radius:11px;
-    padding:11px;margin-bottom:9px;
+    padding:12px;margin-bottom:9px;
   }
   .contact-card:last-child{margin-bottom:0}
-  .contact-card h4{margin:0 0 6px;font-size:11.5px;font-weight:800;color:var(--ink);letter-spacing:-.01em}
-  .contact-card p{margin:0 0 3px;font-size:10.5px;line-height:1.5;color:var(--muted)}
+  .contact-card h4{margin:0 0 6px;font-size:15px;font-weight:800;color:var(--dark);letter-spacing:-.01em}
+  .contact-card p{margin:0 0 3px;font-size:15px;line-height:1.5;color:var(--muted)}
   .contact-card p:last-child{margin-bottom:0}
-  .contact-card p strong{color:var(--ink);font-weight:700}
+  .contact-card p strong{color:var(--dark);font-weight:700}
 
-  /* disclaimer */
-  .disclaimer{margin:14px 4px 0;font-size:9px;line-height:1.55;text-align:center;color:#A0AEB9}
-  .disclaimer strong{color:#8492A0;font-weight:700;letter-spacing:.04em}
-  /* ===== BOPEU app styling bridge ===== */
-  .topbar{
-    flex:0 0 auto;
-    background:#fff;
-    border-bottom:3px solid var(--brand);
-    color:var(--ink);
-    padding:12px 18px;
-    display:flex;
-    align-items:center;
-    gap:12px;
+  /* disclaimer — darker */
+  .disclaimer{
+    margin:16px 4px 0;font-size:15px;line-height:1.55;
+    text-align:center;color:var(--dark);font-weight:700;
   }
-  .tb-home{display:flex;align-items:center}
-  .tb-logo{width:46px;height:46px;object-fit:contain}
-  .tb-text{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px}
-  .tb-text .brand{margin:0;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:800;opacity:1;line-height:1.2}
-  .tb-text h1{margin:0;font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.01em;line-height:1.25}
+  .disclaimer strong{color:#1A202C;font-weight:800;letter-spacing:.04em}
 
-  .b-nav{flex:0 0 auto;display:flex;align-items:stretch;background:var(--brand);height:60px;z-index:20}
-  .b-nav a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:#fff;font-size:8.5px;font-weight:700;letter-spacing:.03em}
+  /* bottom nav */
+  .b-nav{
+    flex:0 0 auto;display:flex;align-items:stretch;
+    background:var(--brand);height:60px;z-index:20;
+  }
+  .b-nav a{
+    flex:1;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:3px;
+    text-decoration:none;color:#fff;font-size:15px;font-weight:700;
+    letter-spacing:.02em;
+  }
   .b-nav a img{width:19px;height:19px;object-fit:contain;opacity:.62;filter:brightness(0) invert(1)}
-  .b-nav a span{opacity:.85}
 
-  .form-logos{margin:18px 6px 2px;padding-top:14px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
+  /* form logos — white background */
+  .form-logos{
+    margin:16px 0 4px;padding:14px;background:#fff;
+    border:1px solid var(--line);border-radius:14px;
+    display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;
+  }
   .form-logos img{height:44px;width:auto;object-fit:contain;max-width:46%}
 
+  /* DOB 3-column picker */
+  .dob{display:flex;gap:8px;margin-top:10px}
+  .dob-btn{
+    flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;
+    padding:8px 4px;font-family:inherit;border:1px solid var(--line);border-radius:10px;
+    background:#F7F9FB;cursor:pointer;transition:background .15s ease,border-color .15s ease;
+  }
+  .dob-btn:active{background:#FFEBEE;border-color:#EF9A9A}
+  .dob-btn.set{background:#FFEBEE;border-color:#EF9A9A}
+  .dob-cap{
+    font-size:14px;font-weight:700;letter-spacing:.04em;color:var(--muted);line-height:1.1;
+  }
+  .dob-val{
+    font-size:16px;font-weight:800;color:var(--ink);line-height:1.2;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
+  }
+  .dob-btn.set .dob-val{color:var(--brand)}
+
+  /* centered floating picker */
+  .dp-overlay{
+    position:absolute;inset:0;z-index:90;background:rgba(15,20,30,.45);
+    display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  .dp-overlay[hidden]{display:none}
+  .dp-card{
+    width:100%;max-width:300px;max-height:72%;background:#fff;border-radius:16px;
+    overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.38);
+  }
+  .dp-head{
+    flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:12px 14px;border-bottom:1px solid var(--line);
+    font-size:16px;font-weight:800;color:var(--ink);background:#FFEBEE;
+  }
+  .dp-close{
+    flex:0 0 auto;width:28px;height:28px;border-radius:50%;border:1px solid #f2d6ce;
+    background:#fff;color:var(--brand2);font-size:16px;line-height:1;font-weight:700;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;
+  }
+  .dp-list{
+    flex:1 1 auto;position:relative;overflow-y:auto;overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;padding:8px;
+  }
+  .dp-opt{
+    display:block;width:100%;text-align:left;padding:12px;border:0;border-radius:9px;
+    background:transparent;font-family:inherit;font-size:16px;font-weight:600;
+    color:var(--ink);cursor:pointer;
+  }
+  .dp-opt:active{background:#F4F5F7}
+  .dp-opt.sel{background:#FFEBEE;color:var(--brand);font-weight:800}
 </style>
 </head>
 <body>
@@ -256,7 +387,9 @@
 <div class="phone">
 
   <div class="topbar">
-    <a class="tb-home" href="../index.html?tab=2" title="Back to BOPEU app"><img class="tb-logo" src="../Assets/logo/bopeu_logo.webp" alt="BOPEU"></a>
+    <a class="tb-home" href="../index.html?tab=2" title="Back to BOPEU app">
+      <img class="tb-logo" src="../Assets/logo/bopeu_logo.webp" alt="BOPEU">
+    </a>
     <span class="tb-text">
       <span class="brand">BLIC &middot; Babereki Life Insurance Company (Pty) Ltd</span>
       <h1>Group Life Assurance<br>Nomination of Beneficiaries</h1>
@@ -277,98 +410,78 @@
 
   <div class="scroll" id="scroll">
 
-    <!-- ============ MAIN MEMBER DETAILS ============ -->
-    <section class="acc open">
+    <!-- MAIN MEMBER DETAILS -->
+    <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Main Member Details</span>
-          <span class="acc-sub">Title, name, DOB, ID, contact &amp; address</span>
+          <span class="acc-total muted" id="badge-member">0/13</span>
         </span>
-        <span class="acc-total muted" id="badge-member">0/10</span>
+        <span class="acc-sub">Title, name, DOB, ID, contact &amp; address</span>
       </button>
       <div class="acc-body">
-        <div class="grid-2">
-          <div class="field">
-            <label>1. Title</label>
-            <select data-track>
-              <option value="">—</option>
-              <option>Mr</option><option>Mrs</option><option>Ms</option>
-              <option>Miss</option><option>Dr</option><option>Prof</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>2. Forename(s)</label>
-            <input type="text" placeholder="Forename(s)" autocomplete="off" data-track>
-          </div>
+
+        <select class="field" data-track aria-label="Title">
+          <option value="" disabled selected>Title</option>
+          <option>Mr</option><option>Mrs</option><option>Ms</option>
+          <option>Miss</option><option>Dr</option><option>Prof</option>
+        </select>
+
+        <input class="field" type="text" placeholder="Forename(s)" autocomplete="off" data-track aria-label="Forename(s)">
+        <input class="field" type="text" placeholder="Surname" autocomplete="off" data-track aria-label="Surname">
+
+        <div class="dob" data-dob-target="memberDob">
+          <button class="dob-btn" type="button" data-dob="y"><span class="dob-cap">Year</span><span class="dob-val">&mdash;</span></button>
+          <button class="dob-btn" type="button" data-dob="m"><span class="dob-cap">Month</span><span class="dob-val">&mdash;</span></button>
+          <button class="dob-btn" type="button" data-dob="d"><span class="dob-cap">Day</span><span class="dob-val">&mdash;</span></button>
         </div>
-        <div class="field mb">
-          <label>3. Surname</label>
-          <input type="text" placeholder="Surname" autocomplete="off" data-track>
+
+        <div class="gender-row">
+          <span class="gender-lbl">Gender</span>
+          <label class="g-opt"><input type="radio" name="memGender" value="M" data-track><span>M</span></label>
+          <label class="g-opt"><input type="radio" name="memGender" value="F" data-track><span>F</span></label>
         </div>
-        <div class="grid-2">
-          <div class="field">
-            <label>4. Date of Birth</label>
-            <input type="date" data-track>
-          </div>
-          <div class="field">
-            <label>5. Gender</label>
-            <div class="gender-opts" style="margin-top:1px">
-              <label class="g-opt"><input type="radio" name="memGender" value="M" data-track><span>M</span></label>
-              <label class="g-opt"><input type="radio" name="memGender" value="F" data-track><span>F</span></label>
-            </div>
-          </div>
-        </div>
-        <div class="grid-2">
-          <div class="field">
-            <label>6. Omang / Passport No.</label>
-            <input type="text" inputmode="numeric" placeholder="ID / Passport" autocomplete="off" data-track>
-          </div>
-          <div class="field">
-            <label>7. Cell Number</label>
-            <input type="tel" inputmode="tel" placeholder="+267 ..." autocomplete="off" data-track>
-          </div>
-        </div>
-        <div class="field mb">
-          <label>8. Postal Address</label>
-          <textarea placeholder="P.O. Box / Private Bag ..." autocomplete="off" data-track></textarea>
-        </div>
-        <div class="field mb">
-          <label>9. Physical Address</label>
-          <textarea placeholder="Plot / Ward, Town / Village, Country" autocomplete="off" data-track></textarea>
-        </div>
-        <div class="field">
-          <label>10. Email Address</label>
-          <input type="email" inputmode="email" placeholder="name@example.com" autocomplete="off" data-track>
-        </div>
+
+        <input class="field" type="text" inputmode="numeric" placeholder="Omang / Passport No." autocomplete="off" data-track aria-label="Omang or Passport">
+        <input class="field" type="tel" inputmode="tel" placeholder="Cell Number" autocomplete="off" data-track aria-label="Cell Number">
+        <textarea class="field" placeholder="Postal Address (P.O. Box / Private Bag)" autocomplete="off" data-track aria-label="Postal Address"></textarea>
+
+        <div class="subhead">Physical Address</div>
+        <input class="field" type="text" placeholder="Plot Number" autocomplete="off" data-track aria-label="Plot Number">
+        <input class="field" type="text" placeholder="Street" autocomplete="off" data-track aria-label="Street">
+        <input class="field" type="text" placeholder="Area / Neighbourhood" autocomplete="off" data-track aria-label="Area">
+        <input class="field" type="text" placeholder="Town / City" autocomplete="off" data-track aria-label="Town or City">
+
+        <input class="field" type="email" inputmode="email" placeholder="Email Address" autocomplete="off" data-track aria-label="Email">
       </div>
     </section>
 
-    <!-- ============ POLICY DETAILS ============ -->
+    <!-- POLICY DETAILS -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Policy Details</span>
-          <span class="acc-sub">Premium &amp; sum-assured amounts</span>
+          <span class="acc-total muted" id="badge-policy">0/3</span>
         </span>
-        <span class="acc-total muted" id="badge-policy">0/3</span>
+        <span class="acc-sub">Premium &amp; sum-assured amounts</span>
       </button>
       <div class="acc-body">
         <div class="sum-row">
-          <span class="sr-l">1. Monthly Premium</span>
+          <span class="sr-l">Monthly Premium</span>
           <span class="sr-input">
             <span>P</span>
             <input type="number" min="0" step="0.01" placeholder="0.00" data-salary data-track>
           </span>
         </div>
         <div class="sum-row">
-          <span class="sr-l">2. Death Sum-Assured</span>
+          <span class="sr-l">Death Sum-Assured</span>
           <span class="sr-input">
             <span>P</span>
             <input type="number" min="0" step="0.01" placeholder="200,000.00" data-track>
           </span>
         </div>
         <div class="sum-row">
-          <span class="sr-l">3. Total &amp; Permanent Disability Sum-Assured</span>
+          <span class="sr-l">Total &amp; Permanent Disability Sum-Assured</span>
           <span class="sr-input">
             <span>P</span>
             <input type="number" min="0" step="0.01" placeholder="70,000.00" data-track>
@@ -382,14 +495,14 @@
       </div>
     </section>
 
-    <!-- ============ NOMINATED BENEFICIARIES ============ -->
-    <section class="acc open">
+    <!-- NOMINATED BENEFICIARIES -->
+    <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Nominated Beneficiaries</span>
-          <span class="acc-sub" id="sub-benef">Add each beneficiary &middot; 0 added</span>
+          <span class="acc-total muted" id="badge-benef">0/12</span>
         </span>
-        <span class="acc-total muted" id="badge-benef">0/9</span>
+        <span class="acc-sub" id="sub-benef">Add each beneficiary &middot; 0 added</span>
       </button>
       <div class="acc-body">
         <span class="pin">Allocation must total 100%</span>
@@ -399,14 +512,14 @@
       </div>
     </section>
 
-    <!-- ============ GUARDIAN FOR MINOR ============ -->
+    <!-- GUARDIAN FOR MINOR -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Guardian for Minor</span>
-          <span class="acc-sub">Only if a beneficiary is under 18</span>
+          <span class="acc-total muted" id="badge-guardian">Off</span>
         </span>
-        <span class="acc-total muted" id="badge-guardian">Off</span>
+        <span class="acc-sub">Only if a beneficiary is under 18</span>
       </button>
       <div class="acc-body">
 
@@ -423,52 +536,36 @@
         </label>
 
         <div id="guardianFields" style="display:none;padding-top:12px">
-          <div class="grid-2">
-            <div class="field">
-              <label>Forename</label>
-              <input type="text" placeholder="Forename" autocomplete="off" data-track>
-            </div>
-            <div class="field">
-              <label>Surname</label>
-              <input type="text" placeholder="Surname" autocomplete="off" data-track>
-            </div>
+          <input class="field" type="text" placeholder="Forename" autocomplete="off" data-track aria-label="Guardian Forename">
+          <input class="field" type="text" placeholder="Surname" autocomplete="off" data-track aria-label="Guardian Surname">
+
+          <div class="dob" data-dob-target="guardianDob">
+            <button class="dob-btn" type="button" data-dob="y"><span class="dob-cap">Year</span><span class="dob-val">&mdash;</span></button>
+            <button class="dob-btn" type="button" data-dob="m"><span class="dob-cap">Month</span><span class="dob-val">&mdash;</span></button>
+            <button class="dob-btn" type="button" data-dob="d"><span class="dob-cap">Day</span><span class="dob-val">&mdash;</span></button>
           </div>
-          <div class="grid-2">
-            <div class="field">
-              <label>Date of Birth</label>
-              <input type="date" data-track>
-            </div>
-            <div class="field">
-              <label>Gender</label>
-              <div class="gender-opts" style="margin-top:1px">
-                <label class="g-opt"><input type="radio" name="gGender" value="M" data-track><span>M</span></label>
-                <label class="g-opt"><input type="radio" name="gGender" value="F" data-track><span>F</span></label>
-              </div>
-            </div>
+
+          <div class="gender-row">
+            <span class="gender-lbl">Gender</span>
+            <label class="g-opt"><input type="radio" name="gGender" value="M" data-track><span>M</span></label>
+            <label class="g-opt"><input type="radio" name="gGender" value="F" data-track><span>F</span></label>
           </div>
-          <div class="grid-2">
-            <div class="field">
-              <label>Omang / Passport No.</label>
-              <input type="text" inputmode="numeric" placeholder="ID / Passport" autocomplete="off" data-track>
-            </div>
-            <div class="field">
-              <label>Cell Number</label>
-              <input type="tel" inputmode="tel" placeholder="+267 ..." autocomplete="off" data-track>
-            </div>
-          </div>
+
+          <input class="field" type="text" inputmode="numeric" placeholder="Omang / Passport No." autocomplete="off" data-track aria-label="Guardian Omang">
+          <input class="field" type="tel" inputmode="tel" placeholder="Cell Number" autocomplete="off" data-track aria-label="Guardian Cell">
         </div>
 
       </div>
     </section>
 
-    <!-- ============ CONSENT & SIGNATURE ============ -->
+    <!-- CONSENT & SIGNATURE -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Consent &amp; Signature</span>
-          <span class="acc-sub">Main member declaration</span>
+          <span class="acc-total muted" id="badge-consent">0/2</span>
         </span>
-        <span class="acc-total muted" id="badge-consent">0/2</span>
+        <span class="acc-sub">Main member declaration</span>
       </button>
       <div class="acc-body">
 
@@ -480,33 +577,31 @@
           was shared.
         </p>
 
-        <div class="field mb">
-          <label>Signature of Main Member</label>
-          <div class="sig-wrap" id="sigWrap">
-            <div class="sig-hint">Sign here with your finger</div>
-            <canvas class="sigpad" id="sigPad"></canvas>
-          </div>
-          <div class="sig-actions">
-            <button class="sig-clear" type="button" id="sigClear">Clear signature</button>
-          </div>
+        <div class="sig-wrap" id="sigWrap">
+          <div class="sig-hint">Sign here with your finger</div>
+          <canvas class="sigpad" id="sigPad"></canvas>
+        </div>
+        <div class="sig-actions">
+          <button class="sig-clear" type="button" id="sigClear">Clear signature</button>
         </div>
 
-        <div class="field">
-          <label>Date</label>
-          <input type="date" data-track>
+        <div class="dob" data-dob-target="consentDate">
+          <button class="dob-btn" type="button" data-dob="y"><span class="dob-cap">Year</span><span class="dob-val">&mdash;</span></button>
+          <button class="dob-btn" type="button" data-dob="m"><span class="dob-cap">Month</span><span class="dob-val">&mdash;</span></button>
+          <button class="dob-btn" type="button" data-dob="d"><span class="dob-cap">Day</span><span class="dob-val">&mdash;</span></button>
         </div>
 
       </div>
     </section>
 
-    <!-- ============ FOR OFFICIAL USE ============ -->
+    <!-- FOR OFFICIAL USE -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">For Official Use</span>
-          <span class="acc-sub">Received by &amp; processed by</span>
+          <span class="acc-total muted" id="badge-official">0/2</span>
         </span>
-        <span class="acc-total muted" id="badge-official">0/2</span>
+        <span class="acc-sub">Received by &amp; processed by</span>
       </button>
       <div class="acc-body">
 
@@ -518,27 +613,20 @@
           <span>To be completed by BLIC staff only</span>
         </div>
 
-        <div class="field mb">
-          <label>Received By</label>
-          <input type="text" placeholder="Officer name" autocomplete="off" data-track>
-        </div>
-
-        <div class="field">
-          <label>Processed By</label>
-          <input type="text" placeholder="Officer name" autocomplete="off" data-track>
-        </div>
+        <input class="field" type="text" placeholder="Received By (officer name)" autocomplete="off" data-track aria-label="Received By">
+        <input class="field" type="text" placeholder="Processed By (officer name)" autocomplete="off" data-track aria-label="Processed By">
 
       </div>
     </section>
 
-    <!-- ============ GENERAL CONDITIONS ============ -->
+    <!-- GENERAL CONDITIONS -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">General Conditions</span>
-          <span class="acc-sub">Terms, disclosure &amp; policy modification</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">Terms, disclosure &amp; policy modification</span>
       </button>
       <div class="acc-body">
         <p class="legal">
@@ -554,14 +642,14 @@
       </div>
     </section>
 
-    <!-- ============ PROTECTION OF PERSONAL INFORMATION ============ -->
+    <!-- PROTECTION OF PERSONAL INFORMATION -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Protection of Personal Information</span>
-          <span class="acc-sub">Consent to retain &amp; share data</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">Consent to retain &amp; share data</span>
       </button>
       <div class="acc-body">
         <p class="legal">
@@ -572,14 +660,14 @@
       </div>
     </section>
 
-    <!-- ============ AGE AT ENTRY ============ -->
+    <!-- AGE AT ENTRY -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Age at Entry</span>
-          <span class="acc-sub">Maximum age for the member</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">Maximum age for the member</span>
       </button>
       <div class="acc-body">
         <p class="legal">
@@ -588,14 +676,14 @@
       </div>
     </section>
 
-    <!-- ============ CESSATION ============ -->
+    <!-- CESSATION -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Cessation</span>
-          <span class="acc-sub">When cover comes to an end</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">When cover comes to an end</span>
       </button>
       <div class="acc-body">
         <p class="legal">
@@ -610,14 +698,14 @@
       </div>
     </section>
 
-    <!-- ============ WAITING PERIOD ============ -->
+    <!-- WAITING PERIOD -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Waiting Period</span>
-          <span class="acc-sub">6 months from starting or reinstatement</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">6 months from starting or reinstatement</span>
       </button>
       <div class="acc-body">
         <p class="legal">
@@ -629,14 +717,14 @@
       </div>
     </section>
 
-    <!-- ============ CLAIMS ============ -->
+    <!-- CLAIMS -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Claims</span>
-          <span class="acc-sub">Notification &amp; required documents</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">Notification &amp; required documents</span>
       </button>
       <div class="acc-body">
         <p class="legal">
@@ -666,14 +754,14 @@
       </div>
     </section>
 
-    <!-- ============ DEATH & DISABILITY DEFINITION ============ -->
+    <!-- DEATH & DISABILITY DEFINITION -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Death Benefit, Total &amp; Permanent Disability</span>
-          <span class="acc-sub">Definition of disability</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">Definition of disability</span>
       </button>
       <div class="acc-body">
         <p class="legal">
@@ -685,14 +773,14 @@
       </div>
     </section>
 
-    <!-- ============ SPECIAL CONDITIONS & EXCLUSIONS ============ -->
+    <!-- SPECIAL CONDITIONS & EXCLUSIONS -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Special Conditions &amp; Exclusions</span>
-          <span class="acc-sub">Reduction of benefit &amp; non-payment events</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">Reduction of benefit &amp; non-payment events</span>
       </button>
       <div class="acc-body">
         <p class="legal">
@@ -716,14 +804,14 @@
       </div>
     </section>
 
-    <!-- ============ PRE-EXISTING CONDITION ============ -->
+    <!-- PRE-EXISTING CONDITION -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Pre-existing Condition</span>
-          <span class="acc-sub">First 12 months after entry</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">First 12 months after entry</span>
       </button>
       <div class="acc-body">
         <p class="legal">
@@ -736,14 +824,14 @@
       </div>
     </section>
 
-    <!-- ============ REVISION OF TERMS ============ -->
+    <!-- REVISION OF TERMS -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Revision of Terms &amp; Conditions</span>
-          <span class="acc-sub">Annual renewal &amp; amendments</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">Annual renewal &amp; amendments</span>
       </button>
       <div class="acc-body">
         <p class="legal">
@@ -754,14 +842,14 @@
       </div>
     </section>
 
-    <!-- ============ DISCLAIMER ============ -->
+    <!-- DISCLAIMER -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Disclaimer</span>
-          <span class="acc-sub">Master policy takes precedence</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">Master policy takes precedence</span>
       </button>
       <div class="acc-body">
         <p class="legal">
@@ -771,14 +859,14 @@
       </div>
     </section>
 
-    <!-- ============ QUERIES / COMPLAINTS ============ -->
+    <!-- QUERIES / COMPLAINTS -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Queries / Complaints</span>
-          <span class="acc-sub">Contact details for policy queries</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">Contact details for policy queries</span>
       </button>
       <div class="acc-body">
         <p class="legal" style="margin-bottom:12px">
@@ -814,31 +902,166 @@
   </div>
 
   <div class="b-nav">
-    <a href="../index.html?tab=0"><img src="../Assets/icons/timeline_icon.webp" alt="Timeline"><span>Timeline</span></a>
-    <a href="../index.html?tab=1"><img src="../Assets/icons/notices_icon.webp" alt="Updates"><span>Updates</span></a>
-    <a href="../index.html?tab=2"><img src="../Assets/icons/benefits_icon.webp" alt="Benefits"><span>Benefits</span></a>
-    <a href="../index.html?tab=3"><img src="../Assets/icons/claims_icon.webp" alt="Card"><span>Card</span></a>
-    <a href="../index.html?tab=4"><img src="../Assets/icons/menu_icon.webp" alt="Help"><span>Help</span></a>
+    <a href="../index.html?tab=0"><img src="../Assets/icons/timeline_icon.webp" alt="Timeline"></a>
+    <a href="../index.html?tab=1"><img src="../Assets/icons/notices_icon.webp" alt="Updates"></a>
+    <a href="../index.html?tab=2"><img src="../Assets/icons/benefits_icon.webp" alt="Benefits"></a>
+    <a href="../index.html?tab=3"><img src="../Assets/icons/claims_icon.webp" alt="Card"></a>
+    <a href="../index.html?tab=4"><img src="../Assets/icons/menu_icon.webp" alt="Help"></a>
   </div>
 
+  <!-- centred floating picker -->
+  <div class="dp-overlay" id="dpOverlay" hidden>
+    <div class="dp-card" role="dialog" aria-modal="true" aria-labelledby="dpTitle">
+      <div class="dp-head">
+        <span id="dpTitle">Select</span>
+        <button class="dp-close" type="button" id="dpClose" aria-label="Close">&times;</button>
+      </div>
+      <div class="dp-list" id="dpList"></div>
+    </div>
   </div>
+
+</div>
 
 <script>
 (function () {
   "use strict";
 
-  /* ==================== BENEFICIARIES ==================== */
+  /* ==================== STATE ==================== */
   var beneficiaries = [];
   var uid = 0;
 
-  var listBenef  = document.getElementById("list-benef");
-  var emptyBenef = document.getElementById("empty-benef");
-  var addBenefBtn = document.getElementById("addBenef");
+  var dateStates = {
+    memberDob:   { y: null, m: null, d: null },
+    guardianDob: { y: null, m: null, d: null },
+    consentDate: { y: null, m: null, d: null }
+  };
 
+  var MONTHS = ["January","February","March","April","May","June",
+                "July","August","September","October","November","December"];
+  var MONTHS_SHORT = ["Jan","Feb","Mar","Apr","May","Jun",
+                      "Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  var listBenef   = document.getElementById("list-benef");
+  var emptyBenef  = document.getElementById("empty-benef");
+
+  /* ==================== HELPERS ==================== */
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/"/g, "&quot;")
+      .replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function daysInMonth(y, m) {
+    return new Date(y || 2000, m, 0).getDate();
+  }
+
+  /* ==================== DOB RENDER ==================== */
+  function renderDob(container, dob) {
+    var btns = container.querySelectorAll(".dob-btn");
+    var vals = [
+      dob.y ? String(dob.y) : "\u2014",
+      dob.m ? MONTHS_SHORT[dob.m - 1] : "\u2014",
+      dob.d ? String(dob.d) : "\u2014"
+    ];
+    Array.prototype.forEach.call(btns, function (b, i) {
+      var v = b.querySelector(".dob-val");
+      if (v) v.textContent = vals[i];
+      var isSet = (i === 0 && !!dob.y) || (i === 1 && !!dob.m) || (i === 2 && !!dob.d);
+      b.classList.toggle("set", isSet);
+    });
+  }
+
+  /* initial render */
+  document.querySelectorAll(".dob[data-dob-target]").forEach(function (el) {
+    var target = el.getAttribute("data-dob-target");
+    var dob = dateStates[target];
+    if (dob) renderDob(el, dob);
+  });
+
+  /* ==================== PICKER ==================== */
+  var overlay = document.getElementById("dpOverlay");
+  var dpTitle = document.getElementById("dpTitle");
+  var dpList  = document.getElementById("dpList");
+  var picker  = { dob: null, refresh: null, kind: null };
+
+  function closePicker() {
+    overlay.hidden = true;
+    picker.dob = null;
+    picker.refresh = null;
+    picker.kind = null;
+  }
+  function openPicker(dob, refreshFn, kind) {
+    picker.dob = dob;
+    picker.refresh = refreshFn;
+    picker.kind = kind;
+
+    var html = "";
+    var nowY = new Date().getFullYear();
+
+    if (kind === "y") {
+      dpTitle.textContent = "Select Year";
+      for (var y = nowY; y >= nowY - 100; y--) {
+        html += '<button type="button" class="dp-opt' + (dob.y === y ? " sel" : "") +
+                '" data-v="' + y + '">' + y + "</button>";
+      }
+    } else if (kind === "m") {
+      dpTitle.textContent = "Select Month";
+      for (var m = 1; m <= 12; m++) {
+        html += '<button type="button" class="dp-opt' + (dob.m === m ? " sel" : "") +
+                '" data-v="' + m + '">' + MONTHS[m - 1] + "</button>";
+      }
+    } else {
+      dpTitle.textContent = "Select Day";
+      var max = dob.m ? daysInMonth(dob.y || 2000, dob.m) : 31;
+      for (var d = 1; d <= max; d++) {
+        html += '<button type="button" class="dp-opt' + (dob.d === d ? " sel" : "") +
+                '" data-v="' + d + '">' + d + "</button>";
+      }
+    }
+
+    dpList.innerHTML = html;
+    overlay.hidden = false;
+
+    var sel = dpList.querySelector(".dp-opt.sel");
+    if (sel) {
+      dpList.scrollTop = Math.max(0, sel.offsetTop - dpList.clientHeight / 2 + sel.offsetHeight / 2);
+    } else {
+      dpList.scrollTop = 0;
+    }
+  }
+
+  dpList.addEventListener("click", function (e) {
+    var btn = e.target.closest(".dp-opt");
+    if (!btn) return;
+    var dob = picker.dob;
+    if (!dob) { closePicker(); return; }
+    var v = Number(btn.getAttribute("data-v"));
+    if (picker.kind === "y") dob.y = v;
+    else if (picker.kind === "m") dob.m = v;
+    else dob.d = v;
+
+    if (dob.d && dob.m) {
+      var maxDay = daysInMonth(dob.y || 2000, dob.m);
+      if (dob.d > maxDay) dob.d = maxDay;
+    }
+
+    if (picker.refresh) picker.refresh();
+    closePicker();
+    updateProgress();
+  });
+
+  document.getElementById("dpClose").addEventListener("click", closePicker);
+  overlay.addEventListener("click", function (e) {
+    if (e.target === overlay) closePicker();
+  });
+
+  /* ==================== BENEFICIARY BUILD ==================== */
   function buildBenefEl(item, index) {
     var el = document.createElement("div");
     el.className = "benef";
     el.setAttribute("data-id", item.id);
+
+    var dobKey = "benefDob_" + item.id;
+    dateStates[dobKey] = item.dob;
 
     el.innerHTML =
       '<div class="benef-head">' +
@@ -846,68 +1069,39 @@
         '<button class="x" type="button" aria-label="Remove beneficiary">&times;</button>' +
       '</div>' +
 
-      '<div class="grid-2">' +
-        '<div class="field">' +
-          '<label>Name</label>' +
-          '<input type="text" placeholder="Given name" data-f="name" value="' + esc(item.name) + '" autocomplete="off">' +
-        '</div>' +
-        '<div class="field">' +
-          '<label>Surname</label>' +
-          '<input type="text" placeholder="Surname" data-f="surname" value="' + esc(item.surname) + '" autocomplete="off">' +
-        '</div>' +
+      '<input class="field" type="text" placeholder="Name" data-f="name" data-track value="' + esc(item.name) + '" autocomplete="off" aria-label="Name">' +
+      '<input class="field" type="text" placeholder="Surname" data-f="surname" data-track value="' + esc(item.surname) + '" autocomplete="off" aria-label="Surname">' +
+      '<input class="field" type="text" inputmode="numeric" placeholder="Omang / ID" data-f="omang" data-track value="' + esc(item.omang) + '" aria-label="Omang">' +
+
+      '<div class="gender-row">' +
+        '<span class="gender-lbl">Gender</span>' +
+        '<label class="g-opt"><input type="radio" name="b' + item.id + 'g" value="M" data-gender data-track' + (item.gender === "M" ? " checked" : "") + '><span>M</span></label>' +
+        '<label class="g-opt"><input type="radio" name="b' + item.id + 'g" value="F" data-gender data-track' + (item.gender === "F" ? " checked" : "") + '><span>F</span></label>' +
       '</div>' +
 
-      '<div class="grid-2">' +
-        '<div class="field">' +
-          '<label>Omang / ID</label>' +
-          '<input type="text" inputmode="numeric" placeholder="ID number" data-f="omang" value="' + esc(item.omang) + '">' +
-        '</div>' +
-        '<div class="field">' +
-          '<label>Gender</label>' +
-          '<div class="gender-opts" style="margin-top:1px">' +
-            '<label class="g-opt"><input type="radio" name="b' + item.id + 'g" value="M" data-gender' + (item.gender === "M" ? " checked" : "") + '><span>M</span></label>' +
-            '<label class="g-opt"><input type="radio" name="b' + item.id + 'g" value="F" data-gender' + (item.gender === "F" ? " checked" : "") + '><span>F</span></label>' +
-          '</div>' +
-        '</div>' +
+      '<div class="dob" data-dob-target="' + dobKey + '">' +
+        '<button class="dob-btn" type="button" data-dob="y"><span class="dob-cap">Year</span><span class="dob-val">&mdash;</span></button>' +
+        '<button class="dob-btn" type="button" data-dob="m"><span class="dob-cap">Month</span><span class="dob-val">&mdash;</span></button>' +
+        '<button class="dob-btn" type="button" data-dob="d"><span class="dob-cap">Day</span><span class="dob-val">&mdash;</span></button>' +
       '</div>' +
 
-      '<div class="grid-2">' +
-        '<div class="field">' +
-          '<label>Date of Birth</label>' +
-          '<input type="date" data-f="dob" value="' + esc(item.dob) + '">' +
-        '</div>' +
-        '<div class="field">' +
-          '<label>Relationship</label>' +
-          '<input type="text" placeholder="e.g. Spouse" data-f="relationship" value="' + esc(item.relationship) + '" autocomplete="off">' +
-        '</div>' +
+      '<input class="field" type="text" placeholder="Relationship (e.g. Spouse)" data-f="relationship" data-track value="' + esc(item.relationship) + '" autocomplete="off" aria-label="Relationship">' +
+
+      '<div class="alloc-field">' +
+        '<input type="number" min="0" max="100" step="1" placeholder="Benefit Allocation %" data-alloc data-track value="' + (item.alloc ? item.alloc : "") + '" aria-label="Allocation">' +
+        '<span>%</span>' +
       '</div>' +
 
-      '<div class="grid-2">' +
-        '<div class="field">' +
-          '<label>Benefit Allocation %</label>' +
-          '<div class="alloc-field">' +
-            '<input type="number" min="0" max="100" step="1" placeholder="0" data-alloc value="' + (item.alloc ? item.alloc : "") + '">' +
-            '<span>%</span>' +
-          '</div>' +
-        '</div>' +
-        '<div class="field">' +
-          '<label>Phone Number</label>' +
-          '<input type="tel" inputmode="tel" placeholder="+267 ..." data-f="phone" value="' + esc(item.phone) + '">' +
-        '</div>' +
-      '</div>' +
+      '<input class="field" type="tel" inputmode="tel" placeholder="Phone Number" data-f="phone" data-track value="' + esc(item.phone) + '" aria-label="Phone">' +
 
-      '<div class="field">' +
-        '<label>Physical Address</label>' +
-        '<input type="text" placeholder="Plot / Ward, Town / Village" data-f="address" value="' + esc(item.address) + '" autocomplete="off">' +
-      '</div>';
+      '<div class="subhead" style="margin-top:14px">Physical Address</div>' +
+      '<input class="field" type="text" placeholder="Plot Number" data-f="plot" data-track value="' + esc(item.plot) + '" autocomplete="off" aria-label="Plot Number">' +
+      '<input class="field" type="text" placeholder="Street" data-f="street" data-track value="' + esc(item.street) + '" autocomplete="off" aria-label="Street">' +
+      '<input class="field" type="text" placeholder="Area / Neighbourhood" data-f="area" data-track value="' + esc(item.area) + '" autocomplete="off" aria-label="Area">' +
+      '<input class="field" type="text" placeholder="Town / City" data-f="town" data-track value="' + esc(item.town) + '" autocomplete="off" aria-label="Town or City">';
 
+    renderDob(el.querySelector(".dob"), item.dob);
     return el;
-  }
-
-  function esc(s) {
-    return String(s == null ? "" : s)
-      .replace(/&/g, "&amp;").replace(/"/g, "&quot;")
-      .replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
   function renumberBenef() {
@@ -933,18 +1127,22 @@
   function updateBenefBadge() {
     var filled = 0, total = 0;
     beneficiaries.forEach(function (b) {
-      /* 7 tracked per beneficiary */
-      total += 7;
+      total += 12;
       if (b.name) filled++;
       if (b.surname) filled++;
       if (b.omang) filled++;
       if (b.gender) filled++;
-      if (b.dob) filled++;
+      if (b.dob && b.dob.y && b.dob.m && b.dob.d) filled++;
       if (b.relationship) filled++;
       if (b.alloc) filled++;
+      if (b.phone) filled++;
+      if (b.plot) filled++;
+      if (b.street) filled++;
+      if (b.area) filled++;
+      if (b.town) filled++;
     });
     var badge = document.getElementById("badge-benef");
-    if (badge) badge.textContent = filled + "/" + (total || 7);
+    if (badge) badge.textContent = filled + "/" + (total || 12);
 
     var sub = document.getElementById("sub-benef");
     if (sub) {
@@ -957,7 +1155,9 @@
   function addBeneficiary() {
     var item = {
       id: ++uid, name: "", surname: "", omang: "", gender: "",
-      dob: "", relationship: "", alloc: "", phone: "", address: ""
+      dob: { y: null, m: null, d: null },
+      relationship: "", alloc: "", phone: "",
+      plot: "", street: "", area: "", town: ""
     };
     beneficiaries.push(item);
 
@@ -976,6 +1176,7 @@
   function removeBeneficiary(row) {
     var id = Number(row.getAttribute("data-id"));
     beneficiaries = beneficiaries.filter(function (b) { return b.id !== id; });
+    delete dateStates["benefDob_" + id];
     row.remove();
     renumberBenef();
     if (!beneficiaries.length) emptyBenef.style.display = "block";
@@ -984,97 +1185,93 @@
     updateProgress();
   }
 
-  addBenefBtn.addEventListener("click", addBeneficiary);
+  document.getElementById("addBenef").addEventListener("click", addBeneficiary);
 
-  /* ==================== PROGRESS TRACKING ==================== */
-  var tracked = function () {
-    return document.querySelectorAll("[data-track]");
-  };
-
+  /* ==================== SECTION COUNTING ==================== */
   function countSection(sectionEl) {
     if (!sectionEl) return { filled: 0, total: 0 };
-    var list = sectionEl.querySelectorAll("[data-track]");
-    var radioSeen = {};
     var filled = 0, total = 0;
-    Array.prototype.forEach.call(list, function (el) {
+    var radioSeen = {};
+
+    sectionEl.querySelectorAll("[data-track]").forEach(function (el) {
       if (el.type === "radio") {
         if (radioSeen[el.name]) return;
         radioSeen[el.name] = true;
         total++;
         if (document.querySelector('input[name="' + el.name + '"]:checked')) filled++;
+      } else if (el.type === "checkbox") {
+        total++;
+        if (el.checked) filled++;
       } else {
         total++;
-        if (el.type === "checkbox") {
-          if (el.checked) filled++;
-        } else if (el.value && String(el.value).trim() !== "") {
-          filled++;
-        }
+        if (el.value && String(el.value).trim() !== "") filled++;
       }
     });
+
+    sectionEl.querySelectorAll(".dob[data-dob-target]").forEach(function (el) {
+      var target = el.getAttribute("data-dob-target");
+      var dob = dateStates[target];
+      total++;
+      if (dob && dob.y && dob.m && dob.d) filled++;
+    });
+
     return { filled: filled, total: total };
   }
 
-  function setBadge(badgeId, stats, suffix) {
+  function setBadge(badgeId, stats, fallback) {
     var el = document.getElementById(badgeId);
     if (!el) return;
     if (stats.total === 0) {
-      el.textContent = suffix || "0/0";
+      el.textContent = fallback || "0/0";
     } else {
       el.textContent = stats.filled + "/" + stats.total;
     }
   }
 
+  /* ==================== PROGRESS ==================== */
   function updateProgress() {
-    var list = tracked();
-    var radioSeen = {};
     var filled = 0, total = 0;
+    var radioSeen = {};
 
-    Array.prototype.forEach.call(list, function (el) {
+    document.querySelectorAll("[data-track]").forEach(function (el) {
       if (el.type === "radio") {
         if (radioSeen[el.name]) return;
         radioSeen[el.name] = true;
         total++;
         if (document.querySelector('input[name="' + el.name + '"]:checked')) filled++;
+      } else if (el.type === "checkbox") {
+        total++;
+        if (el.checked) filled++;
       } else {
         total++;
-        if (el.type === "checkbox") {
-          if (el.checked) filled++;
-        } else if (el.value && String(el.value).trim() !== "") {
-          filled++;
-        }
+        if (el.value && String(el.value).trim() !== "") filled++;
       }
     });
 
-    /* beneficiaries counted separately (7 fields each) */
-    beneficiaries.forEach(function (b) {
-      total += 7;
-      if (b.name) filled++;
-      if (b.surname) filled++;
-      if (b.omang) filled++;
-      if (b.gender) filled++;
-      if (b.dob) filled++;
-      if (b.relationship) filled++;
-      if (b.alloc) filled++;
+    document.querySelectorAll(".dob[data-dob-target]").forEach(function (el) {
+      var target = el.getAttribute("data-dob-target");
+      var dob = dateStates[target];
+      total++;
+      if (dob && dob.y && dob.m && dob.d) filled++;
     });
 
     var pct = total ? Math.round((filled / total) * 100) : 0;
     document.getElementById("pbPct").textContent = pct + "%";
     document.getElementById("pbFill").style.width = pct + "%";
 
-    /* per-section badges */
-    var sections = document.querySelectorAll(".acc");
-    var badgeIds = [
-      "badge-member", "badge-policy", null, "badge-guardian",
-      "badge-consent", "badge-official", null, null, null,
-      null, null, null, null, null, null, null
-    ];
-    /* simpler approach: match by ID */
-    setBadge("badge-member",   countSection(document.querySelector("#badge-member").closest(".acc")));
-    setBadge("badge-policy",   countSection(document.querySelector("#badge-policy").closest(".acc")));
-    setBadge("badge-consent",  countSection(document.querySelector("#badge-consent").closest(".acc")));
-    setBadge("badge-official", countSection(document.querySelector("#badge-official").closest(".acc")));
+    /* section badges */
+    var memberSec = document.getElementById("badge-member").closest(".acc");
+    setBadge("badge-member", countSection(memberSec), "0/13");
 
-    /* beneficiary badge */
+    var policySec = document.getElementById("badge-policy").closest(".acc");
+    setBadge("badge-policy", countSection(policySec), "0/3");
+
+    var consentSec = document.getElementById("badge-consent").closest(".acc");
+    setBadge("badge-consent", countSection(consentSec), "0/2");
+
+    var officialSec = document.getElementById("badge-official").closest(".acc");
+    setBadge("badge-official", countSection(officialSec), "0/2");
+
     updateBenefBadge();
     updateAllocDisplay();
 
@@ -1082,7 +1279,8 @@
     var gBadge = document.getElementById("badge-guardian");
     if (gBadge) {
       if (document.getElementById("guardianToggle").checked) {
-        var gStats = countSection(document.getElementById("guardianFields").closest(".acc"));
+        var gSec = document.getElementById("guardianFields").closest(".acc");
+        var gStats = countSection(gSec);
         gBadge.textContent = gStats.filled + "/" + gStats.total;
         gBadge.classList.remove("muted");
       } else {
@@ -1092,23 +1290,38 @@
     }
   }
 
-  /* ==================== EVENT DELEGATION ==================== */
+  /* ==================== EVENTS ==================== */
   var scroll = document.getElementById("scroll");
 
   scroll.addEventListener("click", function (e) {
-    /* accordion toggle */
     var head = e.target.closest(".acc-head");
     if (head) { head.parentElement.classList.toggle("open"); return; }
 
-    /* remove beneficiary */
     var x = e.target.closest(".x");
     if (x) {
       var row = x.closest(".benef");
-      if (row) { removeBeneficiary(row); }
+      if (row) removeBeneficiary(row);
+      return;
+    }
+
+    var dobBtn = e.target.closest(".dob-btn");
+    if (dobBtn) {
+      var container = dobBtn.closest(".dob");
+      if (!container) return;
+      var target = container.getAttribute("data-dob-target");
+      var dob = dateStates[target];
+      if (!dob) return;
+      var kind = dobBtn.getAttribute("data-dob");
+      openPicker(dob, function () {
+        renderDob(container, dob);
+        updateBenefBadge();
+        updateAllocDisplay();
+      }, kind);
+      return;
     }
   });
 
-  /* inputs — beneficiary fields */
+  /* input handling */
   scroll.addEventListener("input", function (e) {
     var row = e.target.closest(".benef");
     if (row) {
@@ -1151,7 +1364,7 @@
     updateProgress();
   });
 
-  /* ==================== SIGNATURE PAD ==================== */
+  /* ==================== SIGNATURE ==================== */
   function setupSignaturePad() {
     var canvas = document.getElementById("sigPad");
     var wrap   = document.getElementById("sigWrap");
@@ -1223,11 +1436,8 @@
 
   /* ==================== BOOT ==================== */
   setupSignaturePad();
-
-  /* add two empty beneficiary rows on start to invite entry */
   addBeneficiary();
   addBeneficiary();
-
   updateProgress();
 })();
 </script>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Company Profile · BOPEU Partner</title><link rel="stylesheet" href="design-system.css">
+<style>
+body.bop{background:#F2F5F9}
+.p-header{background:#0F7A4D;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+.p-mark{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-weight:800;color:#fff}
+.p-nav{display:flex;gap:16px;font-size:13px}
+.p-nav a{color:#fff;text-decoration:none;font-weight:600;opacity:.85}
+.p-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}
+.p-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}
+.p-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}
+.p-side a.active{background:#E7F4EC;color:#0F7A4D}
+.p-main{padding:24px;max-width:900px}
+@media(max-width:820px){.p-layout{grid-template-columns:1fr}.p-side{display:none}}
+</style></head>
+<body class="bop">
+<header class="p-header">
+  <div style="display:flex;align-items:center;gap:10px;"><div class="p-mark">P</div><div><div style="font-weight:800;font-size:14px;">BOPEU Partner</div><div style="font-size:10px;opacity:.8;">Benefit Partner Portal</div></div></div>
+  <nav class="p-nav"><a href="partner-dashboard.html">Dashboard</a><a href="partner-login.html">Sign out</a></nav>
+</header>
+<div class="p-layout">
+  <aside class="p-side">
+    <a href="partner-dashboard.html">📊 Dashboard</a>
+    <a href="partner-profile.html" class="active">🏢 Profile</a>
+    <a href="partner-offers.html">🎁 Offers</a>
+    <a href="partner-documents.html">📄 Documents</a>
+    <a href="partner-users.html">👥 Users</a>
+  </aside>
+  <main class="p-main">
+    <h1 style="font-size:22px;font-weight:800;margin:0 0 20px;">Company Profile</h1>
+    <div class="card"><div class="card-body">
+      <div class="form-group"><label class="form-label">Company name</label><input type="text" id="ppName"></div>
+      <div class="form-group"><label class="form-label">Sector</label><select id="ppSector"><option>Health</option><option>Finance</option><option>Insurance</option><option>Travel</option><option>Hardware</option><option>Telecom</option></select></div>
+      <div class="form-group"><label class="form-label">Primary contact</label><input type="text" id="ppContact"></div>
+      <div class="form-group"><label class="form-label">Contact email</label><input type="email" id="ppEmail"></div>
+      <div class="form-group"><label class="form-label">Contact phone</label><input type="tel" id="ppPhone"></div>
+      <div class="form-group"><label class="form-label">Website</label><input type="url" id="ppWeb"></div>
+      <div class="form-group"><label class="form-label">About the company</label><textarea rows="3" id="ppAbout" style="width:100%;padding:10px;border:1px solid #E2E8F0;border-radius:10px;font-family:inherit;font-size:14px;"></textarea></div>
+      <button class="btn btn-primary" style="background:#0F7A4D;border-color:#0F7A4D;" onclick="saveProfile()">Save profile</button>
+    </div></div>
+  </main>
+</div>
+<script src="js/data.js"></script><script src="js/app.js"></script>
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var p = LocalStore.get('bopeu_partner_profile')||{name:'',sector:'Health',contact:'',email:'',phone:'',web:'',about:''};
+  ['name','contact','email','phone','web','about'].forEach(function(k){ var el=document.getElementById('pp'+k.charAt(0).toUpperCase()+k.slice(1)); if(el) el.value=p[k]||''; });
+  document.getElementById('ppSector').value=p.sector||'Health';
+});
+function saveProfile(){
+  var p = {name:document.getElementById('ppName').value,sector:document.getElementById('ppSector').value,contact:document.getElementById('ppContact').value,email:document.getElementById('ppEmail').value,phone:document.getElementById('ppPhone').value,web:document.getElementById('ppWeb').value,about:document.getElementById('ppAbout').value};
+  LocalStore.set('bopeu_partner_profile',p); alert('Profile saved.');
+}
+</script>
+</body></html>

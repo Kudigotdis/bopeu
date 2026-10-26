@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Documents · BOPEU Partner</title><link rel="stylesheet" href="design-system.css">
+<style>
+body.bop{background:#F2F5F9}
+.p-header{background:#0F7A4D;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+.p-mark{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-weight:800;color:#fff}
+.p-nav{display:flex;gap:16px;font-size:13px}
+.p-nav a{color:#fff;text-decoration:none;font-weight:600;opacity:.85}
+.p-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}
+.p-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}
+.p-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}
+.p-side a.active{background:#E7F4EC;color:#0F7A4D}
+.p-main{padding:24px;max-width:900px}
+@media(max-width:820px){.p-layout{grid-template-columns:1fr}.p-side{display:none}}
+</style></head>
+<body class="bop">
+<header class="p-header">
+  <div style="display:flex;align-items:center;gap:10px;"><div class="p-mark">P</div><div><div style="font-weight:800;font-size:14px;">BOPEU Partner</div><div style="font-size:10px;opacity:.8;">Benefit Partner Portal</div></div></div>
+  <nav class="p-nav"><a href="partner-dashboard.html">Dashboard</a><a href="partner-login.html">Sign out</a></nav>
+</header>
+<div class="p-layout">
+  <aside class="p-side">
+    <a href="partner-dashboard.html">📊 Dashboard</a>
+    <a href="partner-profile.html">🏢 Profile</a>
+    <a href="partner-documents.html" class="active">📄 Documents</a>
+  </aside>
+  <main class="p-main">
+    <h1 style="font-size:22px;font-weight:800;margin:0 0 4px;">Documents</h1>
+    <p style="color:#718096;font-size:14px;margin:0 0 20px;">Agreements, data-sharing documents and compliance uploads.</p>
+    <div class="card"><div class="card-header"><h2>Your documents</h2></div><div class="card-body">
+      <input type="file" id="pDocFile" style="display:none;" onchange="uploadPDoc(event)"><button class="btn btn-primary" style="background:#0F7A4D;border-color:#0F7A4D;" onclick="document.getElementById('pDocFile').click()">Upload document</button>
+      <div id="pDocList" class="mt-md"></div>
+    </div></div>
+  </main>
+</div>
+<script src="js/data.js"></script><script src="js/app.js"></script>
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', renderPDoc);
+function uploadPDoc(e){
+  var f = e.target.files[0]; if (!f) return;
+  var list = LocalStore.get('bopeu_partner_docs')||[];
+  list.unshift({id:'PD-'+Date.now(),name:f.name,size:f.size,at:new Date().toISOString()});
+  LocalStore.set('bopeu_partner_docs',list); renderPDoc();
+  alert('Uploaded: '+f.name); e.target.value='';
+}
+function renderPDoc(){
+  var list = LocalStore.get('bopeu_partner_docs')||[];
+  document.getElementById('pDocList').innerHTML = list.length ? list.map(function(d){
+    return '<div class="checklist-item"><span class="chk-num">📄</span><span><strong>'+d.name+'</strong><br><span class="text-small text-muted">'+Math.round(d.size/1024)+' KB · '+new Date(d.at).toLocaleDateString()+'</span></span><button class="btn btn-secondary btn-small" style="margin-left:auto;" onclick="deletePDoc(\''+d.id+'\')">Delete</button></div>';
+  }).join('') : '<div class="empty">No documents uploaded yet.</div>';
+}
+function deletePDoc(id){ if(!confirm('Delete?'))return; var list=(LocalStore.get('bopeu_partner_docs')||[]).filter(function(d){return d.id!==id;}); LocalStore.set('bopeu_partner_docs',list); renderPDoc(); }
+</script>
+</body></html>

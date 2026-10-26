@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Insurance Quotes · BOPEU Welfare</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+body.bop{background:#F2F5F9}
+.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+.admin-mark{width:32px;height:32px;border-radius:8px;background:#D32F2F;display:grid;place-items:center;font-weight:800;color:#fff}
+.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}
+.admin-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}
+.admin-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}
+.admin-side a.active{background:#FFEBEE;color:#D32F2F}
+.admin-main{padding:24px;max-width:1200px}
+.admin-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}
+.admin-table th{background:#F7F9FC;text-align:left;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#718096;padding:12px;border-bottom:1px solid #E2E8F0}
+.admin-table td{padding:12px;border-bottom:1px solid #E2E8F0;font-size:13px;color:#1A202C}
+@media(max-width:820px){.admin-layout{grid-template-columns:1fr}.admin-side{display:none}}
+</style>
+</head>
+<body class="bop">
+<header class="admin-header">
+  <div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Insurance Quotes</div></div></div>
+  <nav style="display:flex;gap:16px;font-size:13px;"><a href="admin-funeral-claims.html" style="color:#fff;text-decoration:none;font-weight:600;opacity:.85;">Welfare</a><a href="admin-login.html" style="color:#fff;text-decoration:none;font-weight:600;opacity:.85;">Sign out</a></nav>
+</header>
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-funeral-claims.html">⚰️ Funeral Claims</a>
+    <a href="admin-bursary-queue.html">🎓 Bursary Queue</a>
+    <a href="admin-loan-queue.html">💰 Loan Queue</a>
+    <a href="admin-insurance-quotes.html" class="active">🛡️ Insurance Quotes</a>
+  </aside>
+  <main class="admin-main">
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:4px;">Insurance Quote Requests</h1>
+    <p style="color:#718096;font-size:14px;margin-bottom:20px;">Motor, home contents, and short-term insurance referrals</p>
+
+    <div class="chip-row" style="margin-bottom:16px;">
+      <button class="chip active">All</button>
+      <button class="chip">Motor</button>
+      <button class="chip">Home contents</button>
+      <button class="chip">Business</button>
+    </div>
+
+    <table class="admin-table">
+      <thead><tr><th>Quote ID</th><th>Member</th><th>Type</th><th>Details</th><th>Status</th><th>Requested</th><th></th></tr></thead>
+      <tbody id="quoteList"></tbody>
+    </table>
+  </main>
+</div>
+<script>
+var QUOTES = [
+  { id:'QUO-2026-041', member:'Jackson Michaels', type:'Motor', details:'Demo compact sedan · DEMO-REG-JM-001', status:'awaiting-quote', requested:'2026-10-14' },
+  { id:'QUO-2026-042', member:'Patricia Kgaope', type:'Motor', details:'Demo family SUV · DEMO-REG-PK-006', status:'awaiting-quote', requested:'2026-10-16' },
+  { id:'QUO-2026-043', member:'Patricia Kgaope', type:'Home contents', details:'Plot DEMO-PLOT-106', status:'awaiting-quote', requested:'2026-10-16' },
+  { id:'QUO-2026-044', member:'Kabelo Modise', type:'Motor', details:'Demo hatchback · DEMO-REG-KM-003', status:'underwriting', requested:'2026-10-19' }
+];
+var statusCls = { 'awaiting-quote':'badge-blue', 'underwriting':'badge-blue', 'quoted':'badge-green', 'declined':'badge-red' };
+var html = '';
+QUOTES.forEach(q => {
+  html += '<tr>' +
+    '<td><strong>' + q.id + '</strong></td>' +
+    '<td>' + q.member + '</td>' +
+    '<td>' + q.type + '</td>' +
+    '<td>' + q.details + '</td>' +
+    '<td><span class="badge ' + statusCls[q.status] + '">' + q.status + '</span></td>' +
+    '<td>' + q.requested + '</td>' +
+    '<td><button class="btn btn-secondary btn-small" onclick="alert(\'Forward to insurer (demo).\')">Forward to insurer</button></td>' +
+    '</tr>';
+});
+document.getElementById('quoteList').innerHTML = html;
+</script>
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

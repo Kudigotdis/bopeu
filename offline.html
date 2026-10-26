@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>You're offline · BOPEU</title>
+<link rel="stylesheet" href="design-system.css">
+</head>
+<body class="bop">
+<main style="min-height:100vh;display:grid;place-items:center;padding:20px;background:#F7F9FC;text-align:center;">
+  <div style="max-width:420px;">
+    <div style="font-size:72px;margin-bottom:16px;">📡</div>
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:8px;">You're offline</h1>
+    <p style="font-size:14px;color:#718096;line-height:1.6;margin-bottom:24px;">No internet connection detected. Cached pages and your digital card are still available.</p>
+    <button onclick="location.reload()" class="btn btn-primary" style="display:inline-block;padding:12px 32px;">Try again</button>
+    <a href="digital-card-tab.html" class="btn btn-secondary" style="display:inline-block;padding:12px 32px;margin-top:8px;">View digital card</a>
+  </div>
+</main>
+<script>
+window.addEventListener('online', function() { location.reload(); });
+</script>
+</body>
+</html>

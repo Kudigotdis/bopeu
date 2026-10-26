@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Payment History · BOPEU</title>
+<link rel="stylesheet" href="design-system.css">
+</head>
+<body class="bop">
+<header style="background:#fff;border-bottom:1px solid #E2E8F0;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;">
+  <a href="profile.html" style="display:flex;gap:10px;align-items:center;text-decoration:none;color:inherit;">
+    <div style="width:32px;height:32px;border-radius:8px;background:#D32F2F;color:#fff;display:grid;place-items:center;font-weight:800;">B</div>
+    <div><div style="font-weight:800;font-size:14px;">BOPEU</div><div style="font-size:10px;color:#718096;">MEMBER SERVICES</div></div>
+  </a>
+  <a href="profile.html" style="font-size:13px;font-weight:700;color:#D32F2F;text-decoration:none;">← Profile</a>
+</header>
+<main class="page stack">
+
+  <div class="chip-row" id="filterRow">
+    <button class="chip active" onclick="filterTx('all', this)">All</button>
+    <button class="chip" onclick="filterTx('subscription', this)">Subscription</button>
+    <button class="chip" onclick="filterTx('group_life', this)">Group Life</button>
+    <button class="chip" onclick="filterTx('funeral', this)">Funeral Cover</button>
+    <button class="chip" onclick="filterTx('loan', this)">Loan Repayment</button>
+    <button class="chip" onclick="filterTx('refund', this)">Refunds</button>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <h2>Payment summary</h2>
+      <div class="card-sub">Your deductions for the current tax year.</div>
+    </div>
+    <div class="card-body">
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;">
+        <div style="background:#F7F9FC;padding:14px;border-radius:10px;">
+          <div style="font-size:11px;color:#718096;text-transform:uppercase;font-weight:800;">Total deducted (2026 YTD)</div>
+          <div style="font-size:22px;font-weight:800;color:#1A202C;margin-top:4px;">P 10,842.30</div>
+        </div>
+        <div style="background:#F7F9FC;padding:14px;border-radius:10px;">
+          <div style="font-size:11px;color:#718096;text-transform:uppercase;font-weight:800;">Last deduction</div>
+          <div style="font-size:22px;font-weight:800;color:#1A202C;margin-top:4px;">P 100.00</div>
+          <div style="font-size:11px;color:#718096;">15 Oct 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2>Transactions</h2></div>
+    <div class="card-body">
+      <div id="txList"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2>Yearly summaries</h2></div>
+    <div class="card-body" id="yearSummaries"></div>
+  </div>
+
+</main>
+<script>
+var TXS = [
+  { date:'2026-10-15', type:'subscription', label:'Membership subscription', amount:-100.00, status:'paid', ref:'PAY-2026-10-1001' },
+  { date:'2026-10-15', type:'group_life', label:'Group Life & Disability', amount:-70.00, status:'paid', ref:'PAY-2026-10-1002' },
+  { date:'2026-10-15', type:'funeral', label:'Funeral cover admin fee', amount:-39.50, status:'paid', ref:'PAY-2026-10-1003' },
+  { date:'2026-09-15', type:'subscription', label:'Membership subscription', amount:-100.00, status:'paid', ref:'PAY-2026-09-0901' },
+  { date:'2026-09-15', type:'group_life', label:'Group Life & Disability', amount:-70.00, status:'paid', ref:'PAY-2026-09-0902' },
+  { date:'2026-09-15', type:'funeral', label:'Funeral cover admin fee', amount:-39.50, status:'paid', ref:'PAY-2026-09-0903' },
+  { date:'2026-09-01', type:'loan', label:'SACCOS loan repayment', amount:-1150.00, status:'paid', ref:'LOAN-2026-09' },
+  { date:'2026-08-28', type:'refund', label:'Refund: over-deduction Sep', amount:+14.30, status:'paid', ref:'REF-2026-014' },
+  { date:'2026-08-15', type:'subscription', label:'Membership subscription', amount:-100.00, status:'paid', ref:'PAY-2026-08-0801' },
+  { date:'2026-08-15', type:'group_life', label:'Group Life & Disability', amount:-70.00, status:'paid', ref:'PAY-2026-08-0802' },
+  { date:'2026-08-15', type:'funeral', label:'Funeral cover admin fee', amount:-39.50, status:'paid', ref:'PAY-2026-08-0803' },
+  { date:'2026-08-01', type:'loan', label:'SACCOS loan repayment', amount:-1150.00, status:'paid', ref:'LOAN-2026-08' }
+];
+
+var CURRENT_FILTER = 'all';
+
+function renderTxs() {
+  var list = TXS.filter(t => CURRENT_FILTER === 'all' || t.type === CURRENT_FILTER);
+  if (!list.length) { document.getElementById('txList').innerHTML = '<div class="empty">No transactions of this type.</div>'; return; }
+  var html = '';
+  list.forEach(t => {
+    var isCredit = t.amount > 0;
+    var amountStr = (isCredit ? '+ ' : '- ') + 'P ' + Math.abs(t.amount).toFixed(2);
+    var color = isCredit ? '#2E7D32' : '#1A202C';
+    var labels = { subscription:'Subscription', group_life:'Group Life', funeral:'Funeral Cover', loan:'Loan Repayment', refund:'Refund' };
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #F0F3F7;font-size:14px;">' +
+      '<div><div style="font-weight:700;color:#1A202C;">' + t.label + '</div>' +
+      '<div style="font-size:12px;color:#718096;margin-top:2px;">' + new Date(t.date).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) + ' · ' + t.ref + '</div></div>' +
+      '<div style="text-align:right;"><div style="font-weight:800;color:' + color + ';font-size:15px;">' + amountStr + '</div>' +
+      '<div style="font-size:11px;color:#2E7D32;font-weight:700;text-transform:uppercase;margin-top:2px;">' + t.status + '</div></div>' +
+      '</div>';
+  });
+  document.getElementById('txList').innerHTML = html;
+}
+
+function filterTx(kind, btn) {
+  CURRENT_FILTER = kind;
+  document.querySelectorAll('#filterRow .chip').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTxs();
+}
+
+function renderYears() {
+  var html = '';
+  var years = [
+    { year:'2026', total:10842.30, months:10, status:'in-progress' },
+    { year:'2025', total:12940.20, months:12, status:'complete' },
+    { year:'2024', total:12100.00, months:12, status:'complete' }
+  ];
+  years.forEach(y => {
+    html += '<div class="row"><div class="row-icon">📅</div><div class="row-body"><div class="row-title">' + y.year + '</div><div class="row-desc">' + y.months + ' months · P ' + y.total.toFixed(2) + '</div></div><div style="font-size:12px;color:#718096;">' + y.status + '</div></div>';
+  });
+  document.getElementById('yearSummaries').innerHTML = html;
+}
+
+renderTxs();
+renderYears();
+</script>
+</body>
+</html>

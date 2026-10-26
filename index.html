@@ -3,551 +3,283 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOPEU - Botswana Public Employees Union | Digital Membership Platform</title>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-    <div class="app-container" id="appContainer">
+    <title>BOPEU App - Timeline Feed</title>
+    <link rel="stylesheet" href="design-system.css">
+    <style>
+        /* TIMELINE PAGE SPECIFIC STYLES */
+        body {
+            margin: 0;
+            padding: 0;
+            background: #F7F9FC;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #1A202C;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        }
+        
+        /* Header */
+        .app-header {
+            background: white;
+            border-bottom: 1px solid #E4E9F0;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .app-logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            border-radius: 0;
+        }
+        
+        /* Remove app-title styling */
+        
+        /* Content Area */
+        .content-area {
+            padding: 24px;
+        }
+        
+        /* Feed cards container - removed tl-intro */
+        .feed-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        /* Feed card styling - removed circular container */
+        .feed-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .feed-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(211,47,47,0.15);
+        }
+        
+        /* Image container - fixed for missing images */
+        .feed-image {
+            position: relative;
+            aspect-ratio: 16 / 9;
+            background: linear-gradient(135deg, #FFEBEE, #F7DCE1);
+            overflow: hidden;
+        }
+        
+        .feed-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .feed-image.no-feed-img::after {
+            content: "BOPEU";
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            color: rgba(211,47,47,0.35);
+        }
+        
+        /* Content styling */
+        .feed-content {
+            padding: 20px;
+        }
+        
+        /* Meta styling - grey text, no red pill background */
+        .feed-meta {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #718096;
+            margin-bottom: 12px;
+            letter-spacing: 0.02em;
+        }
+        
+        /* Title styling */
+        .feed-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #1A202C;
+            margin: 0 0 8px 0;
+            line-height: 1.3;
+            letter-spacing: -0.01em;
+        }
+        
+        /* Description styling */
+        .feed-description {
+            font-size: 1rem;
+            color: #718096;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #D32F2F;
+            border-top: 1px solid #B71C1C;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 1000;
+            box-shadow: 0 -4px 20px rgba(211,47,47,0.3);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+        }
+        
+        .nav-item.active {
+            background: transparent;
+        }
+        
+        .nav-item img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
 
-        <!-- Header -->
-        <div class="app-header">
-            <div class="header-left">
-                <img src="./Assets/logo/bopeu_logo.webp" alt="BOPEU Logo" class="app-logo" data-logo-key="bopeu">
-            </div>
-            <div class="status-badge">
-                <span class="status-dot" id="statusDot"></span>
-            </div>
-        </div>
-
-        <!-- Content Area -->
-        <div class="content-area">
-
-            <!-- TAB 0: TIMELINE (post feed) -->
-            <div class="tab-page active" id="tab-timeline">
-                <div id="timelineFeed"></div>
-            </div>
-
-            <!-- TAB 1: UPDATES & NOTICES -->
-            <div class="tab-page" id="tab-updates">
-                <div class="form-group">
-                    <div class="search-box">
-                        <div class="search-input-wrap">
-                            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
-                            <input type="text" placeholder="Search notices and updates..." id="updateSearch" oninput="handleSearch()" onkeyup="handleSearch()" aria-label="Search notices and updates">
-                        </div>
-                        <button class="btn btn-primary btn-small search-go" onclick="handleSearch()">Go</button>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Notice Board</h2>
-                        <span class="count-badge" id="noticeCount">0</span>
-                    </div>
-                    <div class="card-body">
-                        <div id="noticesList"></div>
-                        <div class="empty-state" id="noticeEmpty" hidden>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
-                            <span>No notices match your search.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h2>Recent Updates</h2>
-                        <span class="count-badge" id="articleCount">0</span>
-                    </div>
-                    <div class="card-body">
-                        <div id="articleList"></div>
-                        <div class="empty-state" id="articleEmpty" hidden>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
-                            <span>No recent updates match your search.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 2: BENEFITS -->
-            <div class="tab-page" id="tab-benefits">
-                <div class="card acc" id="acc-services">
-                    <div class="acc-head card-header" role="button" tabindex="0" onclick="toggleBenefitAccordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleBenefitAccordion(this);}">Our Services</div>
-                    <div class="acc-body">
-                        <div id="benefitsList"></div>
-                    </div>
-                </div>
-
-                <div class="card acc" id="acc-forms">
-                    <div class="acc-head card-header" role="button" tabindex="0" onclick="toggleBenefitAccordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleBenefitAccordion(this);}">Benefit Forms &amp; Calculators</div>
-                    <div class="acc-body">
-                        <div class="card-sub">Open the official BOPEU benefit forms and premium calculators. Each page has a header and a bottom nav back to this app.</div>
-                        <a class="form-launcher" href="calculators/BOPEU_BLIC_FAMILY - EXTENDED FAMILY.html">
-                            <span class="service-icon">🛡️</span>
-                            <span style="flex:1;min-width:0;">
-                                <div class="fl-title">Extended Family Application</div>
-                                <div class="fl-desc">BLIC &middot; BOPEU Group Funeral Scheme</div>
-                            </span>
-                        </a>
-                        <a class="form-launcher" href="calculators/BOPEU_BLIC-APPLICATION - GROUP LIFE ASSURANCE NOMINATION OF BENEFICIARIES.html">
-                            <span class="service-icon">👥</span>
-                            <span style="flex:1;min-width:0;">
-                                <div class="fl-title">Group Life Nomination of Beneficiaries</div>
-                                <div class="fl-desc">BLIC &middot; Group Life Assurance form</div>
-                            </span>
-                        </a>
-                        <a class="form-launcher" href="calculators/BOPEU_BLIC-KNOW YOUR CUSTOMER.html">
-                            <span class="service-icon">🪪</span>
-                            <span style="flex:1;min-width:0;">
-                                <div class="fl-title">Know Your Customer (KYC)</div>
-                                <div class="fl-desc">BLIC &middot; Group Funeral Scheme claim form</div>
-                            </span>
-                        </a>
-                        <a class="form-launcher" href="calculators/BOPEU_BABEREKI_AMMENDMENT FORM.html">
-                            <span class="service-icon">✍️</span>
-                            <span style="flex:1;min-width:0;">
-                                <div class="fl-title">Funeral Cover Amendment</div>
-                                <div class="fl-desc">Babereki Insurance Brokers &middot; Bona Life</div>
-                            </span>
-                        </a>
-                        <a class="form-launcher" href="calculators/BOPEU_BABEREKI_MEMBERSHIP  APPLICATION FORM.html">
-                            <span class="service-icon">📋</span>
-                            <span style="flex:1;min-width:0;">
-                                <div class="fl-title">Membership Application</div>
-                                <div class="fl-desc">Babereki Insurance Brokers &middot; Bona Life</div>
-                            </span>
-                        </a>
-                        <a class="form-launcher" href="calculators/BOPEU_FAMILY - EXTENDED FAMILY.html">
-                            <span class="service-icon">🏠</span>
-                            <span style="flex:1;min-width:0;">
-                                <div class="fl-title">Extended Family (Funeral Cover)</div>
-                                <div class="fl-desc">BOPEU Group Funeral Scheme &middot; BLIC</div>
-                            </span>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="card" id="acc-calc">
-                    <div class="card-head">
-                        <h2>Insurance Calculators</h2>
-                        <div class="card-sub">Live premium calculators rebuilt for the demo — rates pulled from the official BOPEU application forms (Bona Life &amp; BLIC).</div>
-                    </div>
-                    <div id="calcLaunchers"></div>
-                </div>
-
-                <div class="card" id="partnerBenefitCard">
-                    <div class="card-head">
-                        <h2>Partner Benefits Network</h2>
-                        <div class="card-sub">Verified offers carry a green badge. Others await the current partner schedule.</div>
-                    </div>
-                    <div id="partnerBenefitSection"></div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">Worker Education</div>
-                    <div class="card-sub">BOPEU at a Glance and a quick quiz on the union's history, membership and coverage.</div>
-                    <a class="btn btn-primary" href="education.html">Open Worker Education</a>
-                </div>
-            </div>
-
-            <!-- TAB 3: DIGITAL CARD -->
-            <div class="tab-page" id="tab-card">
-                <div id="memberCard"></div>
-                <div class="card">
-                    <div class="card-header">My Profile</div>
-                    <div id="profileSummary"></div>
-                    <button class="btn btn-secondary" onclick="openOnboarding()" style="margin-top:10px;">Start / Edit Onboarding</button>
-                </div>
-            </div>
-
-            <!-- TAB 4: MENU -->
-            <div class="tab-page" id="tab-help">
-                <div class="card acc" id="menu-forms">
-                    <div class="acc-head card-header" role="button" tabindex="0" onclick="toggleHelpAccordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleHelpAccordion(this);}">Application Forms</div>
-                    <div class="acc-body">
-                        <div class="card-sub">Smart 3-step forms with live calculators. Track each submission below.</div>
-                        <button type="button" class="form-launcher" onclick="openForm('membership')">
-                            <span class="service-icon">📝</span>
-                            <span style="flex:1;min-width:0;">
-                                <div class="fl-title">New Membership</div>
-                                <div class="fl-desc">Register as a BOPEU member (Form A, KYC &amp; GLA)</div>
-                            </span>
-                            </button>
-                        <button type="button" class="form-launcher" onclick="openForm('bursary')">
-                            <span class="service-icon">🎓</span>
-                            <span style="flex:1;min-width:0;">
-                                <div class="fl-title">Educational Bursary</div>
-                                <div class="fl-desc">0% interest, up to P 30,000, 24 months</div>
-                            </span>
-                            </button>
-                        <button type="button" class="form-launcher" onclick="openForm('building')">
-                            <span class="service-icon">🏠</span>
-                            <span style="flex:1;min-width:0;">
-                                <div class="fl-title">Building Materials</div>
-                                <div class="fl-desc">Archein scheme - P 200,000, 36 months, free delivery over P 100k</div>
-                            </span>
-                            </button>
-                        <button type="button" class="form-launcher" onclick="openForm('funeral')">
-                            <span class="service-icon">🛡️</span>
-                            <span style="flex:1;min-width:0;">
-                                <div class="fl-title">Funeral Cover</div>
-                                <div class="fl-desc">Metropolitan Life - 1%, core P 60,000</div>
-                            </span>
-                            </button>
-                        <button type="button" class="form-launcher" onclick="openForm('loan')">
-                            <span class="service-icon">💰</span>
-                            <span style="flex:1;min-width:0;">
-                                <div class="fl-title">BOPEU Direct Loan</div>
-                                <div class="fl-desc">Quick, Emergency &amp; Ordinary (Babereki SACCOS)</div>
-                            </span>
-                            </button>
-                        <button type="button" class="form-launcher" onclick="openForm('access')">
-                            <span class="service-icon">🏦</span>
-                            <span style="flex:1;min-width:0;">
-                                <div class="fl-title">Access Bank Partnership</div>
-                                <div class="fl-desc">Personal, Vehicle &amp; Mortgage loans</div>
-                            </span>
-                            </button>
-                        <button type="button" class="form-launcher" onclick="openForm('grievance')">
-                            <span class="service-icon">🗣️</span>
-                            <span style="flex:1;min-width:0;">
-                                <div class="fl-title">Contact / Grievance</div>
-                                <div class="fl-desc">Workplace disputes, legal support, service interest</div>
-                            </span>
-                            </button>
-                    </div>
-                </div>
-
-                <div class="card acc" id="menu-tracker">
-                    <div class="acc-head card-header" role="button" tabindex="0" onclick="toggleHelpAccordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleHelpAccordion(this);}">Application Tracker</div>
-                    <div class="acc-body">
-                        <div id="trackerList"></div>
-                    </div>
-                </div>
-
-                <div class="card" style="border-left:3px solid var(--primary-red);">
-                    <div class="card-header">Support &amp; Contacts</div>
-                    <div class="support-bar">
-                        <button class="btn btn-primary" onclick="callSupport()">📞 Call (267) 393 4222</button>
-                        <button class="btn btn-secondary" onclick="whatsappShare('I need assistance with BOPEU services.')">WhatsApp HQ</button>
-                    </div>
-                    <div class="support-bar">
-                        <button class="btn btn-secondary" onclick="emailSupport()">✉️ Email info@bopeu.org.bw</button>
-                        <button class="btn btn-secondary" onclick="openForm('grievance')">🗣️ Raise Grievance</button>
-                    </div>
-                    <div style="font-size:10px;color:var(--text-muted);line-height:1.5;margin-top:4px;">
-                        Babereki SACCOS: 267 392 2526 / 267 316 2335 &bull; communications@babereki.co.bw<br>
-                        Building Materials WhatsApp: 74906982 &bull; Access Bank: send "payslip" to +267 75 750 701 / +267 73 240 284
-                    </div>
-                </div>
-
-                <div class="card acc" id="menu-offices">
-                    <div class="acc-head card-header" role="button" tabindex="0" onclick="toggleHelpAccordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleHelpAccordion(this);}">Our Offices</div>
-                    <div class="acc-body">
-                        <div id="officesList"></div>
-                    </div>
-                </div>
-
-                <div class="card acc" id="menu-faq">
-                    <div class="acc-head card-header" role="button" tabindex="0" onclick="toggleHelpAccordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleHelpAccordion(this);}">Frequently Asked Questions</div>
-                    <div class="acc-body">
-                        <div id="faqList"></div>
-                    </div>
-                </div>
-
-                <div class="card acc" id="menu-claims">
-                    <div class="acc-head card-header" role="button" tabindex="0" onclick="toggleHelpAccordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleHelpAccordion(this);}">Funeral Claims (Metropolitan Life)</div>
-                    <div class="acc-body">
-                        <div id="claimInitiation"></div>
-                        <div id="claimChecklistSupport" style="margin-top:10px;"></div>
-                    </div>
-                </div>
-
-                <div class="card acc" id="menu-vault">
-                    <div class="acc-head card-header" role="button" tabindex="0" onclick="toggleHelpAccordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleHelpAccordion(this);}">Document Vault</div>
-                    <div class="acc-body">
-                        <div class="card-sub">Download official BOPEU application forms, or store scanned documents (camera / gallery / PDF) securely on this device for claims and applications.</div>
-                        <div id="pdfLibrary"></div>
-                        <div id="vaultList"></div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">Settings &amp; Information</div>
-                    <div class="checkbox-group" style="margin-bottom:10px;">
-                        <input type="checkbox" id="dataSaver" onchange="toggleDataSaver()">
-                        <label for="dataSaver">Data Saver Mode (hide images)</label>
-                    </div>
-                    <button class="btn btn-secondary" onclick="openModal('logo-modal')" style="margin-bottom:8px;">🎨 Change App Logo</button>
-                    <button class="btn btn-secondary" onclick="openModal('privacy-modal')" style="margin-bottom:8px;">Privacy Policy</button>
-                    <button class="btn btn-secondary" onclick="openModal('terms-modal')" style="margin-bottom:8px;">Terms of Service</button>
-                    <button class="btn btn-secondary" onclick="openModal('admin-modal')" style="margin-bottom:8px;">Admin Dashboard</button>
-                    <button class="btn btn-secondary" onclick="clearLocalData()">Clear Local Data</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Bottom Navigation -->
-        <div class="bottom-nav">
-            <div class="nav-item active" onclick="switchTab(0)">
-                <img src="Assets/icons/timeline_icon.webp" alt="Timeline">
-                <span class="nav-label">Timeline</span>
-            </div>
-            <div class="nav-item" onclick="switchTab(1)">
-                <img src="Assets/icons/notices_icon.webp" alt="Updates">
-                <span class="nav-label">Updates</span>
-            </div>
-            <div class="nav-item" onclick="switchTab(2)">
-                <img src="Assets/icons/benefits_icon.webp" alt="Benefits">
-                <span class="nav-label">Benefits</span>
-            </div>
-            <div class="nav-item" onclick="switchTab(3)">
-                <img src="Assets/icons/claims_icon.webp" alt="Card">
-                <span class="nav-label">Card</span>
-            </div>
-            <div class="nav-item" onclick="switchTab(4)">
-                <img src="Assets/icons/menu_icon.webp" alt="Menu">
-                <span class="nav-label">Menu</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODALS -->
-
+        /* Modals placeholder */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,32,0.55);
+            backdrop-filter: blur(3px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        
+        .modal.open {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 88vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.38);
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #F7F9FC;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Scripts container */
+        .scripts-container {
+            display: none;
+        }
+    </style>
+    
+    <!-- ALL MODALS FROM ORIGINAL INDEX.HTML -->
+    
     <!-- Login -->
     <div class="modal" id="login-modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal('login-modal')">✕</button>
-            <div class="login-hero">
-                <img src="Assets/logo/bopeu_logo.webp" alt="BOPEU Logo" class="app-logo" data-logo-key="bopeu">
-                <h2>BOPEU</h2>
-                <div class="tagline">Tshwaragano... your voice in labour issues matters</div>
-            </div>
-            <div class="form-group">
-                <label class="form-label">Omang / Employee Number</label>
-                <input type="text" id="loginIdentifier" placeholder="e.g. 090000111">
-            </div>
-            <div class="form-group">
-                <div class="filter-row">
-                    <input type="text" id="loginOtp" placeholder="Enter OTP (6 digits)" inputmode="numeric">
-                    <button class="btn btn-secondary btn-small" onclick="requestOtp()">Send OTP</button>
-                </div>
-                <div class="otp-hint" id="otpHint"></div>
-            </div>
-            <button class="btn btn-primary" onclick="doLogin()">Sign In</button>
-            <div class="login-links">
-                Not a member? <button onclick="skipLogin()">Continue as demo member</button><br>
-                <span style="font-size:10px;">Demo OTP: 123456 (or the OTP shown above)</span>
-            </div>
+            <div id="loginModalBody"></div>
         </div>
     </div>
-
-    <!-- Onboarding Wizard -->
-    <div class="modal" id="onboarding-modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('onboarding-modal')">✕</button>
-            <h2>BOPEU Member Registration</h2>
-            <div class="wizard-progress" id="wizardProgress"></div>
-            <div id="wizardBody"></div>
-            <div class="wizard-nav">
-                <button class="btn btn-secondary" id="wizBack" onclick="wizardBack()">Back</button>
-                <button class="btn btn-primary" id="wizNext" onclick="wizardNext()">Continue</button>
-            </div>
+</head>
+<body class="bop">
+    <div class="app-container">
+        <!-- Header -->
+        <div class="app-header">
+            <img src="./Assets/logo/bopeu_logo.webp" alt="BOPEU" class="app-logo">
         </div>
-    </div>
-
-    <!-- Logo Manager -->
-    <div class="modal" id="logo-modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('logo-modal')">✕</button>
-            <h2>Change App Logo</h2>
-            <div class="card" style="text-align:center;margin-bottom:10px;">
-                <div class="card-sub">Current logo</div>
-                <div class="upload-logo-preview-wrap" id="logoPreview"></div>
-            </div>
-            <div id="logoOptions"></div>
+        
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Timeline intro removed as requested -->
+            
+            <div id="timelineFeed"></div>
         </div>
+        
     </div>
-
-    <!-- Privacy -->
-    <div class="modal" id="privacy-modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('privacy-modal')">✕</button>
-            <h2>Privacy Policy</h2>
-            <p style="font-size:12px;line-height:1.6;color:var(--text-muted);margin-top:8px;">
-                <strong>BOPEU Privacy Policy</strong><br><br>
-                We are committed to protecting your personal data. This application collects and stores member information necessary for:
-                <ul style="margin:8px 0 8px 16px;">
-                    <li>Managing union membership</li>
-                    <li>Processing funeral and insurance claims</li>
-                    <li>Loan scheme administration (BOPEU Direct / Babereki / Access Bank)</li>
-                    <li>Communication with members</li>
-                </ul>
-                <br>
-                <strong>Data Security:</strong> All data is encrypted and stored locally on your device first. WhatsApp integration uses standard HTTPS protocols.
-                <br><br>
-                <strong>Your Rights:</strong> You can request data deletion, correction, or access at any time by contacting your BOPEU office.
-                <br><br>
-                Contact: info@bopeu.org.bw | Tel: 267 3214 200
-            </p>
-        </div>
     </div>
-
-    <!-- Terms -->
-    <div class="modal" id="terms-modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('terms-modal')">✕</button>
-            <h2>Terms of Service</h2>
-            <p style="font-size:12px;line-height:1.6;color:var(--text-muted);margin-top:8px;">
-                <strong>BOPEU Member App - Terms &amp; Conditions</strong><br><br>
-                By using this application, you agree to:
-                <ul style="margin:8px 0 8px 16px;">
-                    <li>Provide accurate and complete information</li>
-                    <li>Keep your login credentials secure</li>
-                    <li>Use the app only for authorized union business</li>
-                    <li>Comply with all applicable laws and union policies</li>
-                </ul>
-                <br>
-                <strong>Funeral Cover Terms (Metropolitan Life):</strong>
-                <ul style="margin:8px 0 8px 16px;">
-                    <li>Subscription of 1% of basic salary, capped P 39.90 - P 100.00</li>
-                    <li>Claims must be filed within 6 months of death</li>
-                    <li>All required documents must be submitted within 12 months</li>
-                </ul>
-                <br>
-                Contact: info@bopeu.org.bw | Tel: 267 3214 200
-            </p>
-        </div>
-    </div>
-
-    <!-- Admin Dashboard -->
-    <div class="modal" id="admin-modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('admin-modal')">✕</button>
-            <h2>Staff Dashboard</h2>
-            <div class="dashboard-grid" style="margin-bottom:12px;">
-                <div class="dashboard-card">
-                    <div class="dashboard-card-value" id="adminTotal">0</div>
-                    <div class="dashboard-card-label">Active Members</div>
-                </div>
-                <div class="dashboard-card">
-                    <div class="dashboard-card-value" id="adminPending">0</div>
-                    <div class="dashboard-card-label">Pending Verification</div>
-                </div>
-                <div class="dashboard-card">
-                    <div class="dashboard-card-value">4</div>
-                    <div class="dashboard-card-label">Employment Sectors</div>
-                </div>
-                <div class="dashboard-card">
-                    <div class="dashboard-card-value">5</div>
-                    <div class="dashboard-card-label">BOPEU Offices</div>
-                </div>
-            </div>
-
-            <div class="card-header">Member Search</div>
-            <div class="form-group">
-                <div class="filter-row">
-                    <input type="text" placeholder="Search by name, Omang or member no..." id="adminSearch" onkeyup="renderAdminMembers()">
-                </div>
-                <div class="filter-row">
-                    <select id="adminSector" onchange="renderAdminMembers()">
-                        <option value="">All Sectors</option>
-                        <option value="central_gov">Central Government</option>
-                        <option value="local_council">Local Authority</option>
-                        <option value="land_board">Land Board</option>
-                        <option value="parastatal">Parastatal / SOE</option>
-                    </select>
-                    <select id="adminStatus" onchange="renderAdminMembers()">
-                        <option value="">All Status</option>
-                        <option value="active">Active</option>
-                        <option value="pending_verification">Pending Verification</option>
-                    </select>
-                </div>
-            </div>
-            <div id="adminMembersList"></div>
-        </div>
-    </div>
-
-    <!-- Benefit / detail modal -->
-    <div class="modal" id="benefit-modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('benefit-modal')">✕</button>
-            <h2 id="benefitModalTitle">Benefit Details</h2>
-            <div id="benefitModalBody"></div>
-        </div>
-    </div>
-
-    <!-- Calculator modal -->
-    <div class="modal" id="calc-modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('calc-modal')">✕</button>
-            <h2 id="calcModalTitle">Calculators</h2>
-            <div id="calcBody"></div>
-        </div>
-    </div>
-
+    
     <!-- Timeline post modal -->
-    <div class="modal" id="post-modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('post-modal')">✕</button>
-            <h2 id="postModalTitle">Post</h2>
-            <div id="postModalBody"></div>
-        </div>
-    </div>
-
-    <!-- QR fullscreen modal -->
-    <div class="modal" id="qr-modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('qr-modal')">✕</button>
-            <h2>Member Card - QR</h2>
-            <div id="qrFullseed" class="qr-seed-label"></div>
-        </div>
-    </div>
-
-    <!-- Article modal -->
-    <div class="modal" id="article-modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('article-modal')">✕</button>
-            <h2 id="articleTitle"></h2>
-            <div class="card-sub" id="articleDate"></div>
-            <p id="articleBody" style="font-size:12px;line-height:1.6;color:var(--text-muted);"></p>
-        </div>
-    </div>
-
-    <!-- Claim progress modal -->
-    <div class="modal" id="claim-progress-modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('claim-progress-modal')">✕</button>
-            <h2>Funeral Claim Checklist</h2>
-            <div id="claimSteps"></div>
-            <div id="claimChecklist"></div>
-        </div>
-    </div>
-
-    <!-- Smart Form modal -->
-    <div class="modal" id="form-modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('form-modal')">✕</button>
-            <h2 id="formTitle">Application</h2>
-            <div id="formHeader"></div>
-            <div id="formBody"></div>
-            <div class="wizard-nav">
-                <button class="btn btn-secondary" id="formBack" onclick="formBack()">Back</button>
-                <button class="btn btn-primary" id="formNext" onclick="formNext()">Continue</button>
-            </div>
-        </div>
-    </div>
-
-    <script src="docs/data/botswana_locations.js"></script>
+    <div class="post-modal-overlay" id="postModal" aria-hidden="true"><div class="post-modal" role="dialog" aria-modal="true" aria-label="Timeline post"><div class="post-modal-media no-img" id="postModalMedia"><img id="postModalImage" alt="" loading="eager"></div><div class="post-modal-body" id="postModalBody"></div></div></div>
+    <script>
+    // Close timeline post modal on backdrop click or Escape
+    document.addEventListener('click', function (e) {
+        var overlay = document.getElementById('postModal');
+        if (overlay && e.target === overlay && overlay.classList.contains('active')) {
+            closeModal('postModal');
+        }
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            var overlay = document.getElementById('postModal');
+            if (overlay && overlay.classList.contains('active')) closeModal('postModal');
+        }
+    });
+    </script>
+    <!-- JavaScript Files -->
     <script src="js/data.js"></script>
     <script src="js/app.js"></script>
-    <script src="js/onboarding.js"></script>
-    <script src="js/benefits.js"></script>
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
     <script src="js/timeline.js"></script>
-    <script src="js/calculators.js"></script>
-    <script src="js/loans.js"></script>
-    <script src="js/claims.js"></script>
-    <script src="js/notices.js"></script>
-    <script src="js/education.js"></script>
-    <script src="js/admin.js"></script>
+    <script src="js/load-bottom-nav.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof loadBottomNav === 'function') {
+                loadBottomNav('index');
+            }
+        });
+    </script>
 </body>
 </html>

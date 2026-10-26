@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dependants · BOPEU Funeral Cover</title>
+<link rel="stylesheet" href="design-system.css">
+</head>
+<body class="bop">
+<header style="background:#fff;border-bottom:1px solid #E2E8F0;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;">
+  <a href="profile.html" style="display:flex;gap:10px;align-items:center;text-decoration:none;color:inherit;">
+    <div style="width:32px;height:32px;border-radius:8px;background:#D32F2F;color:#fff;display:grid;place-items:center;font-weight:800;">B</div>
+    <div><div style="font-weight:800;font-size:14px;">BOPEU</div><div style="font-size:10px;color:#718096;">MEMBER SERVICES</div></div>
+  </a>
+  <a href="profile.html" style="font-size:13px;font-weight:700;color:#D32F2F;text-decoration:none;">← Profile</a>
+</header>
+<main class="page stack">
+
+  <div class="callout">
+    <span class="callout-label">Funeral cover</span>
+    <p>Compulsory family cover includes <strong>spouse and children under 21</strong>. You may add optional extended family (parents, in-laws, adult children) at additional premium. All changes take effect from the 1st of the following month.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2>Current dependants</h2><button class="btn btn-primary btn-small" onclick="openAddModal()">+ Add dependant</button></div>
+    <div class="card-body">
+      <div id="depList"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><h2>Cover summary</h2></div>
+    <div class="card-body">
+      <div class="stat"><div class="stat-label">Total covered members</div><div class="stat-value" id="totalCount">1</div></div>
+      <div class="stat" style="margin-top:10px;"><div class="stat-label">Monthly premium</div><div class="stat-value" id="totalPremium">P 39.90</div></div>
+      <p style="font-size:12px;color:#718096;margin-top:12px;">Base premium is 1% of basic salary (capped P39.90 – P100.00). Extended family premiums are added on top.</p>
+    </div>
+  </div>
+
+</main>
+
+<!-- Add dependant modal -->
+<div id="addModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(15,23,32,.6);align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#fff;border-radius:16px;padding:24px;max-width:440px;width:100%;max-height:88vh;overflow-y:auto;">
+    <h2 style="font-size:18px;font-weight:800;margin-bottom:16px;">Add dependant</h2>
+    <div class="form-group"><label class="form-label">Full name *</label><input type="text" id="depName" placeholder="First Middle Surname"></div>
+    <div class="form-group"><label class="form-label">Omang / ID *</label><input type="text" id="depOmang" placeholder="ID number"></div>
+    <div class="form-group"><label class="form-label">Relationship *</label>
+      <select id="depRelation" onchange="updateCoverInfo()">
+        <option value="">Select…</option>
+        <option value="Spouse">Spouse (compulsory)</option>
+        <option value="Child">Child under 21 (compulsory)</option>
+        <option value="Parent">Parent (optional)</option>
+        <option value="Extended">Extended family (optional)</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">Date of birth *</label><input type="date" id="depDob" onchange="updateCoverInfo()"></div>
+    <div id="coverInfo" style="background:#F7F9FC;padding:12px;border-radius:8px;font-size:13px;color:#4A5568;margin-bottom:16px;">Coverage amount will appear here once you select relationship and DOB.</div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="closeAddModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveDependant()">Save dependant</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var DEPS = JSON.parse(localStorage.getItem('bopeu_dependants') || '[]');
+if (!DEPS.length) {
+  DEPS = [
+    { id:1, name:'Masego Michaels', omang:'DEMO-DEP-001', relation:'Spouse', dob:'1984-06-20', cover:'P 60,000', premium:0 },
+    { id:2, name:'Kagiso Michaels', omang:'DEMO-DEP-002', relation:'Child', dob:'2010-12-07', cover:'P 60,000', premium:0 }
+  ];
+  localStorage.setItem('bopeu_dependants', JSON.stringify(DEPS));
+}
+
+function renderDeps() {
+  var html = '';
+  if (!DEPS.length) { html = '<div class="empty">No dependants added yet.</div>'; }
+  else {
+    DEPS.forEach(d => {
+      html += '<div class="row" style="padding:12px;background:#F7F9FC;border-radius:10px;margin-bottom:8px;">' +
+        '<div class="row-icon">👤</div>' +
+        '<div class="row-body"><div class="row-title">' + d.name + '</div><div class="row-desc">' + d.relation + ' · DOB ' + d.dob + ' · Cover ' + d.cover + '</div></div>' +
+        '<button class="btn btn-secondary btn-small" onclick="removeDep(' + d.id + ')">Remove</button>' +
+        '</div>';
+    });
+  }
+  document.getElementById('depList').innerHTML = html;
+  document.getElementById('totalCount').textContent = (DEPS.length + 1);
+  var premium = 100 + DEPS.reduce((s, d) => s + (d.premium || 0), 0);
+  document.getElementById('totalPremium').textContent = 'P ' + premium.toFixed(2);
+}
+
+function openAddModal() { document.getElementById('addModal').style.display = 'flex'; }
+function closeAddModal() { document.getElementById('addModal').style.display = 'none'; }
+
+function updateCoverInfo() {
+  var rel = document.getElementById('depRelation').value;
+  var dob = document.getElementById('depDob').value;
+  var box = document.getElementById('coverInfo');
+  if (!rel || !dob) { box.textContent = 'Select relationship and DOB to see coverage.'; return; }
+  var age = new Date().getFullYear() - new Date(dob).getFullYear();
+  var cover = '', premium = 0;
+  if (rel === 'Spouse') { cover = 'P 60,000 (compulsory)'; premium = 0; }
+  else if (rel === 'Child') {
+    if (age > 21) { box.innerHTML = '⚠️ Children must be under 21. For adult children, use "Extended family" and pay additional premium.'; box.style.color = '#B71C1C'; return; }
+    if (age <= 6) { cover = 'P 15,000'; premium = 0; }
+    else if (age <= 15) { cover = 'P 30,000'; premium = 0; }
+    else { cover = 'P 60,000'; premium = 0; }
+  } else if (rel === 'Parent') { cover = 'P 60,000'; premium = 88; }
+  else { cover = 'P 30,000'; premium = 45; }
+  box.style.color = '#4A5568';
+  box.innerHTML = '<strong style="color:#1A202C;">' + cover + '</strong>' + (premium > 0 ? '<br>Additional premium: P ' + premium + '/month' : '<br>Included in compulsory cover');
+}
+
+function saveDependant() {
+  var name = document.getElementById('depName').value.trim();
+  var omang = document.getElementById('depOmang').value.trim();
+  var rel = document.getElementById('depRelation').value;
+  var dob = document.getElementById('depDob').value;
+  if (!name || !omang || !rel || !dob) { alert('Please complete all required fields.'); return; }
+  var age = new Date().getFullYear() - new Date(dob).getFullYear();
+  var cover = '';
+  var premium = 0;
+  if (rel === 'Spouse') cover = 'P 60,000';
+  else if (rel === 'Child') {
+    if (age > 21) { alert('Children must be under 21.'); return; }
+    cover = age <= 6 ? 'P 15,000' : age <= 15 ? 'P 30,000' : 'P 60,000';
+  } else if (rel === 'Parent') { cover = 'P 60,000'; premium = 88; }
+  else { cover = 'P 30,000'; premium = 45; }
+
+  var newDep = { id: Date.now(), name: name, omang: omang, relation: rel, dob: dob, cover: cover, premium: premium };
+  DEPS.push(newDep);
+  localStorage.setItem('bopeu_dependants', JSON.stringify(DEPS));
+  renderDeps();
+  closeAddModal();
+  ['depName','depOmang','depDob'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('depRelation').value = '';
+  alert('Dependant added. Effective from the 1st of next month.');
+}
+
+function removeDep(id) {
+  if (!confirm('Remove this dependant from your funeral cover?')) return;
+  DEPS = DEPS.filter(d => d.id !== id);
+  localStorage.setItem('bopeu_dependants', JSON.stringify(DEPS));
+  renderDeps();
+}
+
+renderDeps();
+</script>
+</body>
+</html>

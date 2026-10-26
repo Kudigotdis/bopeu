@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Settings · BOPEU Admin</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+body.bop { background:#F2F5F9; }
+.admin-header { background:#1A202C; color:#fff; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:20; }
+.admin-mark { width:32px; height:32px; border-radius:8px; background:#D32F2F; display:grid; place-items:center; font-weight:800; color:#fff; }
+.admin-nav { display:flex; gap:16px; font-size:13px; }
+.admin-nav a { color:#fff; text-decoration:none; font-weight:600; opacity:.85; }
+.admin-layout { display:grid; grid-template-columns:220px 1fr; min-height:calc(100vh - 56px); }
+.admin-side { background:#fff; border-right:1px solid #E2E8F0; padding:16px 12px; }
+.admin-side a { display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:8px; font-size:13px; font-weight:600; color:#4A5568; text-decoration:none; margin-bottom:2px; }
+.admin-side a.active { background:#FFEBEE; color:#D32F2F; }
+.admin-main { padding:24px; max-width:1000px; }
+.settings-section { background:#fff; border:1px solid #E2E8F0; border-radius:12px; margin-bottom:16px; }
+.settings-section .head { padding:16px; border-bottom:1px solid #E2E8F0; font-weight:800; font-size:15px; }
+.settings-section .body { padding:16px; }
+.setting-row { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid #F0F3F7; font-size:13px; }
+.setting-row:last-child { border-bottom:none; }
+.setting-row .lbl { font-weight:700; }
+.setting-row .desc { font-size:12px; color:#718096; margin-top:2px; }
+.toggle { position:relative; width:44px; height:24px; background:#CBD5E0; border-radius:24px; cursor:pointer; transition:background .2s; }
+.toggle.on { background:#2E7D32; }
+.toggle::after { content:""; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:#fff; transition:transform .2s; }
+.toggle.on::after { transform:translateX(20px); }
+.break-glass-log { background:#FFF6F6; border-left:3px solid #B71C1C; padding:12px; border-radius:6px; font-size:12px; margin-bottom:8px; }
+@media(max-width:820px){ .admin-layout { grid-template-columns:1fr; } .admin-side { display:none; } }
+</style>
+</head>
+<body class="bop">
+
+<header class="admin-header">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="admin-mark">B</div>
+    <div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">System Settings</div></div>
+  </div>
+  <nav class="admin-nav">
+    <a href="admin-system-settings.html">Settings</a>
+    <a href="admin-login.html">Sign out</a>
+  </nav>
+</header>
+
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-dashboard.html">📊 Dashboard</a>
+    <a href="admin-staff.html">👔 Staff</a>
+    <a href="admin-users-roles.html">🔐 Users & Roles</a>
+    <a href="admin-system-settings.html" class="active">⚙️ System Settings</a>
+    <a href="admin-audit-log.html">📜 Audit Log</a>
+  </aside>
+
+  <main class="admin-main">
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:4px;">System Settings</h1>
+    <p style="color:#718096;font-size:14px;margin-bottom:20px;">Otsile Sechele · System Administrator & DPO</p>
+
+    <div class="settings-section">
+      <div class="head">General</div>
+      <div class="body">
+        <div class="setting-row"><div><div class="lbl">Maintenance mode</div><div class="desc">Shows "Under maintenance" to non-admin users</div></div><div class="toggle" onclick="this.classList.toggle('on')"></div></div>
+        <div class="setting-row"><div><div class="lbl">Public registration open</div><div class="desc">Allows new members to register via app</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="setting-row"><div><div class="lbl">Partner portal open</div><div class="desc">Allows benefit partners to log in</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="head">Security</div>
+      <div class="body">
+        <div class="setting-row"><div><div class="lbl">Require WhatsApp identity at sign-in</div><div class="desc">Staff sign in with WhatsApp number, first name and password</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="setting-row"><div><div class="lbl">Session timeout (minutes)</div><div class="desc">Idle sessions are terminated after</div></div><div><select style="padding:6px 10px;border:1px solid #E2E8F0;border-radius:6px;font-family:inherit;font-size:13px;"><option>15</option><option selected>30</option><option>60</option><option>120</option></select></div></div>
+        <div class="setting-row"><div><div class="lbl">Password minimum length</div><div class="desc">Enforced on password change</div></div><div><select style="padding:6px 10px;border:1px solid #E2E8F0;border-radius:6px;font-family:inherit;font-size:13px;"><option>8</option><option selected>10</option><option>12</option><option>14</option></select></div></div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="head">Integrations</div>
+      <div class="body">
+        <div class="setting-row"><div><div class="lbl">SMS gateway</div><div class="desc">Mascom / Orange bulk SMS API</div></div><span class="badge badge-green">CONNECTED</span></div>
+        <div class="setting-row"><div><div class="lbl">WhatsApp Business API</div><div class="desc">Meta Cloud API for notifications</div></div><span class="badge badge-green">CONNECTED</span></div>
+        <div class="setting-row"><div><div class="lbl">Payroll (GABS)</div><div class="desc">Government Accounting & Budgeting System</div></div><span class="badge badge-blue">MANUAL CSV</span></div>
+        <div class="setting-row"><div><div class="lbl">Metropolitan Life claim API</div><div class="desc">Automated claim submission</div></div><span class="badge badge-grey">NOT CONNECTED</span></div>
+        <div class="setting-row"><div><div class="lbl">Diagnofirm eligibility API</div><div class="desc">Member verification endpoint</div></div><span class="badge badge-grey">NOT CONNECTED</span></div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="head">Backups</div>
+      <div class="body">
+        <div class="setting-row"><div><div class="lbl">Automatic nightly backup</div><div class="desc">Runs at 02:00 CAT daily</div></div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+        <div class="setting-row"><div><div class="lbl">Last backup</div><div class="desc">2026-10-25 02:00 CAT · 482 MB</div></div><button class="btn btn-secondary btn-small" onclick="alert('Restore from backup (demo).')">Restore</button></div>
+        <div class="setting-row"><div><div class="lbl">Backup retention</div><div class="desc">Keep backups for 30 days</div></div><div><select style="padding:6px 10px;border:1px solid #E2E8F0;border-radius:6px;font-family:inherit;font-size:13px;"><option>7 days</option><option>14 days</option><option selected>30 days</option><option>90 days</option></select></div></div>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="head">Break-glass access log (last 5)</div>
+      <div class="body">
+        <div class="break-glass-log"><strong>2026-10-24 03:12</strong> — Otsile Sechele requested emergency access to <strong>BOPEU-DEMO-M-003</strong> records. Reason: "Member reported payroll discrepancy, urgent review." Duration: 15 min. Status: <strong>Reviewed ✓</strong></div>
+        <div class="break-glass-log"><strong>2026-10-18 14:45</strong> — Otsile Sechele requested emergency access to <strong>BOPEU-DEMO-F-004</strong> records. Reason: "DPA data deletion request verification." Duration: 10 min. Status: <strong>Reviewed ✓</strong></div>
+        <div style="padding:12px 0;font-size:12px;color:#718096;">3 more entries — <a href="admin-audit-log.html" style="color:#D32F2F;font-weight:700;">view full audit log →</a></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="alert('Settings saved (demo).')">Save all settings</button>
+      <button class="btn btn-primary" onclick="alert('Export settings JSON (demo).')">Export configuration</button>
+    </div>
+  </main>
+</div>
+
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Lead · BOPEU Admin</title><link rel="stylesheet" href="design-system.css">
+<style>
+body.bop{background:#F2F5F9}
+.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+.admin-mark{width:32px;height:32px;border-radius:8px;background:#D32F2F;display:grid;place-items:center;font-weight:800;color:#fff}
+.admin-nav{display:flex;gap:16px;font-size:13px}
+.admin-nav a{color:#fff;text-decoration:none;font-weight:600;opacity:.85}
+.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}
+.admin-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}
+.admin-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}
+.admin-side a.active{background:#FFEBEE;color:#D32F2F}
+.admin-main{padding:24px;max-width:900px}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.detail-item{padding:12px;background:#F7F9FC;border:1px solid #E2E8F0;border-radius:10px}
+.detail-item .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#718096;font-weight:800;margin-bottom:4px}
+.detail-item .val{font-size:14px;font-weight:600;color:#1A202C}
+.notes-area{width:100%;padding:10px;border:1px solid #E2E8F0;border-radius:10px;font-family:inherit;font-size:14px;min-height:100px}
+@media(max-width:820px){.admin-layout{grid-template-columns:1fr}.admin-side{display:none}.detail-grid{grid-template-columns:1fr}}
+</style></head>
+<body class="bop">
+<header class="admin-header">
+  <div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Staff Portal</div></div></div>
+  <nav class="admin-nav"><a href="admin-sales-pipeline.html">Sales</a><a href="admin-members.html">Members</a><a href="admin-login.html">Sign out</a></nav>
+</header>
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-dashboard.html">📊 Dashboard</a>
+    <a href="admin-sales-pipeline.html" class="active">🎯 Sales</a>
+    <a href="admin-members.html">👥 Members</a>
+    <a href="admin-reports.html">📈 Reports</a>
+  </aside>
+  <main class="admin-main" id="leadMain"><div class="empty">Loading…</div></main>
+</div>
+<script src="js/data.js"></script><script src="js/app.js"></script>
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+<script>
+var STAGES = ['New','Contacted','Qualifying','Application','Converted'];
+var DEMO_LEADS = {
+  'L-1001':{id:'L-1001',name:'Thabo Sekgoma',phone:'+267 71 000 001',email:'thabo@example.com',source:'Walk-in',stage:'New',owner:'N. Sekgoma',employer:'Ministry of Health',jobTitle:'Health Auxiliary',notes:'',created:'2026-09-15'},
+  'L-1002':{id:'L-1002',name:'Boitumelo Radipitse',phone:'+267 71 000 002',email:'',source:'Referral',stage:'Contacted',owner:'T. Molefe',employer:'Gaborone City Council',jobTitle:'Refuse Collector',notes:'Called 15/09 — needs application form.',created:'2026-09-14'}
+};
+document.addEventListener('DOMContentLoaded', function(){
+  var id = new URLSearchParams(location.search).get('id');
+  var leads = LocalStore.get('bopeu_leads') || [];
+  var lead = leads.find(function(l){return l.id===id;}) || DEMO_LEADS[id];
+  if (!lead){ document.getElementById('leadMain').innerHTML='<div class="empty">Lead not found.</div>'; return; }
+  var interactions = LocalStore.get('bopeu_lead_'+id) || [];
+  var html = '<a href="admin-sales-pipeline.html" style="font-size:13px;font-weight:700;color:#D32F2F;text-decoration:none;">← Pipeline</a>' +
+    '<h1 style="font-size:22px;font-weight:800;margin:8px 0 4px;">'+lead.name+'</h1>' +
+    '<p style="color:#718096;font-size:14px;margin:0 0 20px;">Lead '+lead.id+' · Owner: '+lead.owner+'</p>' +
+    '<div class="card"><div class="card-header"><h2>Details</h2></div><div class="card-body"><div class="detail-grid">' +
+    '<div class="detail-item"><div class="lbl">Phone</div><div class="val">'+(lead.phone||'—')+'</div></div>' +
+    '<div class="detail-item"><div class="lbl">Email</div><div class="val">'+(lead.email||'—')+'</div></div>' +
+    '<div class="detail-item"><div class="lbl">Employer</div><div class="val">'+(lead.employer||'—')+'</div></div>' +
+    '<div class="detail-item"><div class="lbl">Job title</div><div class="val">'+(lead.jobTitle||'—')+'</div></div>' +
+    '<div class="detail-item"><div class="lbl">Source</div><div class="val">'+(lead.source||'—')+'</div></div>' +
+    '<div class="detail-item"><div class="lbl">Stage</div><div class="val">'+(lead.stage||'New')+'</div></div>' +
+    '</div></div></div>' +
+    '<div class="card"><div class="card-header"><h2>Change stage</h2></div><div class="card-body"><div class="chip-row">' +
+    STAGES.map(function(s){ return '<button class="chip '+(lead.stage===s?'active':'')+'" onclick="moveStage(\''+lead.id+'\',\''+s+'\')">'+s+'</button>'; }).join('') +
+    '</div></div></div>' +
+    '<div class="card"><div class="card-header"><h2>Interaction log</h2></div><div class="card-body">' +
+    '<div id="interactionList">'+(interactions.length?interactions.map(function(m){return '<div class="checklist-item"><span class="chk-num">·</span><span><strong>'+new Date(m.at).toLocaleString()+'</strong><br>'+m.text+'</span></div>';}).join(''):'<div class="empty">No interactions yet.</div>')+'</div>' +
+    '<div class="form-group mt-md"><label class="form-label">Add interaction</label><input type="text" id="interactionInput" placeholder="e.g. Called, no answer"></div>' +
+    '<button class="btn btn-secondary" onclick="addInteraction(\''+lead.id+'\')">Log interaction</button>' +
+    '</div></div>' +
+    '<div class="card"><div class="card-header"><h2>Notes</h2></div><div class="card-body"><textarea class="notes-area" id="leadNotes">'+(lead.notes||'')+'</textarea><button class="btn btn-primary mt-md" onclick="saveNotes(\''+lead.id+'\')">Save notes</button></div></div>' +
+    '<div class="card"><div class="card-header"><h2>Convert</h2></div><div class="card-body"><p class="text-small text-muted">Once this person is ready to join BOPEU, convert them into a member application.</p><button class="btn btn-primary" onclick="convertLead(\''+lead.id+'\')">Convert to member</button></div></div>';
+  document.getElementById('leadMain').innerHTML = html;
+});
+function moveStage(id, s){
+  var leads = LocalStore.get('bopeu_leads')||[]; var lead = leads.find(function(l){return l.id===id;});
+  if(lead){lead.stage=s;LocalStore.set('bopeu_leads',leads);}
+  location.reload();
+}
+function addInteraction(id){
+  var txt = document.getElementById('interactionInput').value.trim(); if(!txt) return;
+  var list = LocalStore.get('bopeu_lead_'+id)||[]; list.unshift({text:txt,at:new Date().toISOString()}); LocalStore.set('bopeu_lead_'+id,list);
+  location.reload();
+}
+function saveNotes(id){
+  var leads = LocalStore.get('bopeu_leads')||[]; var lead = leads.find(function(l){return l.id===id;});
+  if(lead){lead.notes=document.getElementById('leadNotes').value;LocalStore.set('bopeu_leads',leads);}
+  alert('Notes saved.'); location.reload();
+}
+function convertLead(id){ alert('Member application created from lead '+id+' (demo). Open admin-submissions.html to see it.'); }
+</script>
+</body></html>

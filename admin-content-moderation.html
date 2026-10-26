@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Content Moderation · BOPEU Sales</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+body.bop{background:#F2F5F9}
+.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+.admin-mark{width:32px;height:32px;border-radius:8px;background:#D32F2F;display:grid;place-items:center;font-weight:800;color:#fff}
+.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}
+.admin-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}
+.admin-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}
+.admin-side a.active{background:#FFEBEE;color:#D32F2F}
+.admin-main{padding:24px;max-width:1000px}
+.mod-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px;margin-bottom:12px}
+.mod-card .head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.mod-card .by{font-size:12px;color:#718096}
+.mod-card .title{font-weight:800;font-size:15px;margin-bottom:4px}
+.mod-card .body{font-size:13px;color:#4A5568;line-height:1.6;margin-bottom:10px}
+@media(max-width:820px){.admin-layout{grid-template-columns:1fr}.admin-side{display:none}}
+</style>
+</head>
+<body class="bop">
+<header class="admin-header">
+  <div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Content Moderation</div></div></div>
+  <nav style="display:flex;gap:16px;font-size:13px;"><a href="admin-sales-pipeline.html" style="color:#fff;text-decoration:none;font-weight:600;opacity:.85;">Sales</a><a href="admin-login.html" style="color:#fff;text-decoration:none;font-weight:600;opacity:.85;">Sign out</a></nav>
+</header>
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-sales-pipeline.html">🎯 Pipeline</a>
+    <a href="admin-lead-import.html">📥 Import</a>
+    <a href="admin-content-moderation.html" class="active">✅ Content Moderation</a>
+  </aside>
+  <main class="admin-main">
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:4px;">Member Content Moderation</h1>
+    <p style="color:#718096;font-size:14px;margin-bottom:20px;">Content submitted by members for publication — photos, event flyers, testimonies</p>
+
+    <div class="chip-row" style="margin-bottom:16px;">
+      <button class="chip active">Pending (4)</button>
+      <button class="chip">Approved</button>
+      <button class="chip">Rejected</button>
+    </div>
+
+    <div id="modList"></div>
+  </main>
+</div>
+<script>
+var SUBS = [
+  { id:'SUB-2026-041', by:'Patricia Kgaope', title:'Kanye branch meeting photo', body:'Photo from the Kanye branch meeting on 2026-10-15. Caption: "Great turnout for the check-off Q&A session!"', type:'photo', submitted:'2026-10-23' },
+  { id:'SUB-2026-042', by:'Kabelo Modise', title:'Testimony — bursary success', body:'I would like to share that I successfully completed my MBA with help from the BOPEU bursary. Thank you BOPEU!', type:'testimony', submitted:'2026-10-24' },
+  { id:'SUB-2026-043', by:'Mercy Peters', title:'Event flyer — study group', body:'Study group for UNISA students in Palapye. Open to all BOPEU members. Meeting every Saturday 10am at the community hall.', type:'event', submitted:'2026-10-24' },
+  { id:'SUB-2026-044', by:'Siyanda Kefitlile', title:'Photo from Ghanzi clinic', body:'Members at the Ghanzi payroll clinic on 2026-10-22.', type:'photo', submitted:'2026-10-25' }
+];
+
+var html = '';
+SUBS.forEach(s => {
+  html += '<div class="mod-card">' +
+    '<div class="head"><div><div class="title">' + s.title + '</div><div class="by">' + s.id + ' · Submitted by ' + s.by + ' · ' + s.submitted + '</div></div><span class="badge badge-blue">' + s.type + '</span></div>' +
+    '<div class="body">' + s.body + '</div>' +
+    '<div style="display:flex;gap:8px;"><button class="btn btn-secondary btn-small" onclick="reject(\'' + s.id + '\')">Reject</button><button class="btn btn-primary btn-small" onclick="approve(\'' + s.id + '\')">Approve & publish</button></div>' +
+    '</div>';
+});
+document.getElementById('modList').innerHTML = html;
+
+function approve(id) {
+  if (!confirm('Approve ' + id + ' for publication?')) return;
+  alert('Approved. Content will appear on the member timeline.');
+  document.querySelector('#' + id.replace(/-/g,''))?.remove();
+}
+function reject(id) {
+  var reason = prompt('Rejection reason:');
+  if (!reason) return;
+  alert('Rejected with reason: ' + reason);
+}
+</script>
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

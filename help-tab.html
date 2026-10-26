@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help & Support - BOPEU Member App</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* ============================================================
+           HELP PAGE SPECIFIC STYLES (built from help-tab.html)
+           ============================================================ */
+        :root {
+            --h-primary: #D32F2F;
+            --h-primary-hover: #B71C1C;
+            --h-text: #1A202C;
+            --h-muted: #718096;
+            --h-border: #E2E8F0;
+            --h-bg: #FFFFFF;
+            --h-white: #FFFFFF;
+            --h-light-red: #FFEBEE;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #F7F9FC;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #1A202C;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        }
+        
+        /* Header */
+        .app-header {
+            background: white;
+            border-bottom: 1px solid #E4E9F0;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .app-logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            border-radius: 0;
+        }
+        
+        /* Content Area */
+        .content-area {
+            padding: 24px;
+        }
+        
+        /* Help Cards */
+        .card {
+            background: white;
+            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        
+        .card:last-child {
+            margin-bottom: 0;
+        }
+        
+        .card-header {
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 800;
+            color: #1A202C;
+            letter-spacing: -0.01em;
+            background: transparent;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .card-header:hover {
+            background: #FCFCFD;
+        }
+        
+        .card-header::before,
+        .card-header::after {
+            content: none !important;
+            display: none !important;
+        }
+
+        /* Accordion bodies hidden by default — universal CSS in styles.css handles .acc.open > .acc-body */
+        .acc-body {
+            display: none;
+            padding: 12px 16px;
+            background: white;
+        }
+        
+        /* Support card (no left border) */
+        .card.support-card {
+            border-left: 1px solid var(--h-border);
+        }
+        
+        .card-sub {
+            font-size: 13px;
+            color: var(--h-muted);
+            line-height: 1.5;
+            margin: 0 0 12px;
+            padding: 0 4px;
+        }
+        
+        /* Form launcher (90px thumbnail + left-aligned text) */
+        .form-launcher {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            padding: 12px;
+            margin: 0 0 10px;
+            background: var(--h-white);
+            border: 1px solid var(--h-border);
+            border-radius: 14px;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 400;
+            text-align: left;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--h-text);
+            transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+        }
+        
+        .form-launcher:last-child {
+            margin-bottom: 0;
+        }
+        
+        .form-launcher:hover {
+            border-color: rgba(211,47,47,.35);
+            box-shadow: 0 6px 18px rgba(211,47,47,.07);
+        }
+        
+        .form-launcher:active {
+            transform: scale(.995);
+        }
+        
+        /* Force left alignment on every flex-text span */
+        .form-launcher > span[style] {
+            flex: 1 1 auto;
+            min-width: 0;
+            text-align: left;
+        }
+        
+        /* 90px square rounded thumbnails */
+        .form-launcher .service-icon {
+            flex: 0 0 90px;
+            width: 90px;
+            height: 90px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 38px;
+            line-height: 1;
+            background: var(--h-light-red);
+            border: 1px solid rgba(211,47,47,0.15);
+            text-align: center;
+            box-sizing: border-box;
+        }
+        
+        .fl-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--h-text);
+            line-height: 1.3;
+            margin-bottom: 4px;
+            letter-spacing: -.01em;
+            text-align: left;
+        }
+        
+        .fl-desc {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--h-muted);
+            line-height: 1.4;
+            text-align: left;
+        }
+        
+        /* Support card layout */
+        .support-bar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            padding: 0 16px 10px;
+        }
+        
+        .support-bar .btn { flex: 1 1 0; min-width: 0; }
+        
+        .support-footer {
+            padding: 4px 16px 16px;
+            font-size: 13px;
+            color: var(--h-muted);
+            line-height: 1.55;
+            text-align: center;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            border: 1px solid var(--h-border);
+            background: var(--h-bg);
+            color: var(--h-text);
+            transition: all 0.15s ease;
+            text-align: center;
+            white-space: normal;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-primary {
+            background: var(--h-primary);
+            color: #fff;
+            border-color: var(--h-primary);
+        }
+        
+        .btn-primary:active {
+            background: var(--h-primary-hover);
+        }
+        
+        /* Login / Logout toggle: black text on a clearly visible surface */
+        #loginToggleBtn {
+            color: #1A202C;
+            background: #FFEBEE;
+            border-color: rgba(211,47,47,.28);
+        }
+        
+        #loginToggleBtn.btn-secondary {
+            color: #1A202C;
+            background: #FFFFFF;
+            border-color: #E2E8F0;
+        }
+        
+        .btn-secondary {
+            background: var(--h-bg);
+            color: var(--h-text);
+            border-color: var(--h-border);
+        }
+        
+        .btn-secondary:active {
+            background: #EEF2F5;
+        }
+        
+        /* Settings card direct-child buttons */
+        .card > .btn {
+            display: block;
+            width: calc(100% - 32px);
+            margin-left: 16px;
+            margin-right: 16px;
+        }
+        
+        .card > .btn:last-child {
+            margin-bottom: 16px;
+        }
+        
+        .card > .checkbox-group {
+            padding: 16px 16px 12px;
+        }
+        
+        /* Checkbox */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .checkbox-group input[type=checkbox] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--h-primary);
+            cursor: pointer;
+            flex: 0 0 auto;
+        }
+        
+        .checkbox-group label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--h-text);
+            cursor: pointer;
+        }
+        
+        /* Empty state */
+        .empty-state {
+            padding: 24px 16px;
+            text-align: center;
+            color: var(--h-muted);
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+        
+        .empty-state svg {
+            width: 28px;
+            height: 28px;
+            margin: 0 auto 12px;
+            opacity: 0.5;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #D32F2F;
+            border-top: 1px solid #B71C1C;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 1000;
+            box-shadow: 0 -4px 20px rgba(211,47,47,0.3);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+        }
+        
+        .nav-item.active {
+            background: transparent;
+        }
+        
+        .nav-item img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Modals placeholder */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,32,0.55);
+            backdrop-filter: blur(3px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+        
+        .modal.open {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 88vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 60px rgba(0,0,0,0.38);
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #F7F9FC;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Scripts container */
+        .scripts-container {
+            display: none;
+        }
+    </style>
+    
+    <!-- ALL MODALS FROM ORIGINAL INDEX.HTML -->
+    
+    <!-- Login -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('login-modal')">✕</button>
+            <div id="loginModalBody"></div>
+        </div>
+    </div>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="app-header">
+            <img src="./Assets/logo/bopeu_logo.webp" alt="BOPEU" class="app-logo">
+        </div>
+        
+        <!-- Content Area -->
+        <div class="content-area" id="page-help">
+            <!-- Application Forms -->
+            <div class="card acc" id="menu-forms">
+                <div class="acc-head card-header" role="button" tabindex="0" onclick="toggleHelpAccordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleHelpAccordion(this);}">
+                    Application Forms
+                </div>
+                <div class="acc-body">
+                    <div class="card-sub">Smart 3-step forms with live calculators. Track each submission below.</div>
+                    
+                    <button type="button" class="form-launcher" onclick="openForm('membership')">
+                        <span class="service-icon">📝</span>
+                        <span style="flex:1;min-width:0;">
+                            <div class="fl-title">New Membership</div>
+                            <div class="fl-desc">Register as a BOPEU member (Form A, KYC & GLA)</div>
+                        </span>
+                    </button>
+                    
+                    <button type="button" class="form-launcher" onclick="openForm('bursary')">
+                        <span class="service-icon">🎓</span>
+                        <span style="flex:1;min-width:0;">
+                            <div class="fl-title">Educational Bursary</div>
+                            <div class="fl-desc">0% interest, up to P 30,000, 24 months</div>
+                        </span>
+                    </button>
+                    
+                    <button type="button" class="form-launcher" onclick="openForm('building')">
+                        <span class="service-icon">🏠</span>
+                        <span style="flex:1;min-width:0;">
+                            <div class="fl-title">Building Materials</div>
+                            <div class="fl-desc">Archein scheme - P 200,000, 36 months, free delivery over P 100k</div>
+                        </span>
+                    </button>
+                    
+                    <button type="button" class="form-launcher" onclick="openForm('funeral')">
+                        <span class="service-icon">🛡️</span>
+                        <span style="flex:1;min-width:0;">
+                            <div class="fl-title">Funeral Cover</div>
+                            <div class="fl-desc">Metropolitan Life - 1%, core P 60,000</div>
+                        </span>
+                    </button>
+                    
+                    <button type="button" class="form-launcher" onclick="openForm('loan')">
+                        <span class="service-icon">💰</span>
+                        <span style="flex:1;min-width:0;">
+                            <div class="fl-title">BOPEU Direct Loan</div>
+                            <div class="fl-desc">Quick, Emergency & Ordinary (Babereki SACCOS)</div>
+                        </span>
+                    </button>
+                    
+                    <button type="button" class="form-launcher" onclick="openForm('access')">
+                        <span class="service-icon">🏦</span>
+                        <span style="flex:1;min-width:0;">
+                            <div class="fl-title">Access Bank Partnership</div>
+                            <div class="fl-desc">Personal, Vehicle & Mortgage loans</div>
+                        </span>
+                    </button>
+                    
+                    <button type="button" class="form-launcher" onclick="openForm('grievance')">
+                        <span class="service-icon">🗣️</span>
+                        <span style="flex:1;min-width:0;">
+                            <div class="fl-title">Contact / Grievance</div>
+                            <div class="fl-desc">Workplace disputes, legal support, service interest</div>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Application Tracker -->
+            <div class="card acc" id="menu-tracker">
+                <div class="acc-head card-header" role="button" tabindex="0" onclick="toggleHelpAccordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleHelpAccordion(this);}">
+                    Application Tracker
+                </div>
+                <div class="acc-body">
+                    <div id="trackerList">
+                        <div class="empty-state">No applications yet. Submit a form from the list above to track it here.</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Support & Contacts (no left border) -->
+            <div class="card support-card">
+                <div class="card-header">Support & Contacts</div>
+                <div class="support-bar">
+                    <button class="btn btn-primary" onclick="callSupport()">📞 Call (267) 393 4222</button>
+                    <button class="btn btn-secondary" onclick="whatsappShare('I need assistance with BOPEU services.')">WhatsApp HQ</button>
+                </div>
+                <div class="support-bar">
+                    <button class="btn btn-secondary" onclick="emailSupport()">✉️ Email info@bopeu.org.bw</button>
+                    <button class="btn btn-secondary" onclick="openForm('grievance')">🗣️ Raise Grievance</button>
+                </div>
+                <div class="support-footer" style="font-size:13px;color:var(--h-muted);line-height:1.5;margin-top:8px;text-align:center;">
+                    Babereki SACCOS: 267 392 2526 / 267 316 2335 • communications@babereki.co.bw<br>
+                    Building Materials WhatsApp: 74906982 • Access Bank: send "payslip" to +267 75 750 701 / +267 73 240 284
+                </div>
+            </div>
+            
+            <!-- Our Offices -->
+            <div class="card acc" id="menu-offices">
+                <div class="acc-head card-header" role="button" tabindex="0" onclick="toggleHelpAccordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleHelpAccordion(this);}">
+                    Our Offices
+                </div>
+                <div class="acc-body">
+                    <div id="officesList"></div>
+                </div>
+            </div>
+            
+            <!-- FAQ -->
+            <div class="card acc" id="menu-faq">
+                <div class="acc-head card-header" role="button" tabindex="0" onclick="toggleHelpAccordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleHelpAccordion(this);}">
+                    Frequently Asked Questions
+                </div>
+                <div class="acc-body">
+                    <div id="faqList"></div>
+                </div>
+            </div>
+            
+            <!-- Funeral Claims -->
+            <div class="card acc" id="menu-claims">
+                <div class="acc-head card-header" role="button" tabindex="0" onclick="toggleHelpAccordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleHelpAccordion(this);}">
+                    Funeral Claims (Metropolitan Life)
+                </div>
+                <div class="acc-body">
+                    <div id="claimInitiation"></div>
+                    <div id="claimChecklistSupport" style="margin-top:10px;"></div>
+                </div>
+            </div>
+            
+            <!-- Document Vault -->
+            <div class="card acc" id="menu-vault">
+                <div class="acc-head card-header" role="button" tabindex="0" onclick="toggleHelpAccordion(this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleHelpAccordion(this);}">
+                    Document Vault
+                </div>
+                <div class="acc-body">
+                    <div class="card-sub">Download official BOPEU application forms, or store scanned documents (camera / gallery / PDF) securely on this device for claims and applications.</div>
+                    <div id="pdfLibrary" class="pdf-library"></div>
+                    <div id="vaultList"></div>
+                </div>
+            </div>
+            
+            <!-- Settings & Information -->
+            <div class="card">
+                <div class="card-header">Settings & Information</div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="dataSaver" onchange="toggleDataSaver()">
+                    <label for="dataSaver">Data Saver Mode (hide images)</label>
+                </div>
+                <button class="btn btn-primary" id="loginToggleBtn" onclick="handleLoginToggle()" style="margin-bottom:8px;">Login</button>
+                <button class="btn btn-secondary" onclick="openModal('logo-modal')" style="margin-bottom:8px;">🎨 Change App Logo</button>
+                <button class="btn btn-secondary" onclick="openModal('privacy-modal')" style="margin-bottom:8px;">Privacy Policy</button>
+                <button class="btn btn-secondary" onclick="openModal('terms-modal')" style="margin-bottom:8px;">Terms of Service</button>
+                <button class="btn btn-secondary" onclick="BOPEUAuth.openPortalLogin()" style="margin-bottom:8px;">Staff / Partner Sign In</button>
+                <button class="btn btn-secondary" onclick="clearLocalData()">Clear Local Data</button>
+            </div>
+        </div>
+        
+        <!-- Bottom Navigation -->
+        
+    </div>
+    
+    <!-- JavaScript Files -->
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var container = document.getElementById('pdfLibrary');
+        if (!container || !window.BOPEU_PDF_FORMS) return;
+
+        container.innerHTML = window.BOPEU_PDF_FORMS.map(function (f) {
+          var file = typeof escAttr === 'function' ? escAttr(f.file) : f.file;
+          var name = typeof esc === 'function' ? esc(f.name) : f.name;
+          var disc = typeof esc === 'function' ? esc(f.disc) : f.disc;
+
+          return '<a class="form-launcher" href="' + file + '" download>' +
+            '<span class="service-icon">📄</span>' +
+            '<span style="flex:1;min-width:0;">' +
+            '<div class="fl-title">' + name + '</div>' +
+            '<div class="fl-desc">' + disc + ' &bull; PDF</div>' +
+            '</span>' +
+            '</a>';
+        }).join('');
+      });
+
+      window.toggleHelpAccordion = function (head) {
+        var card = head.closest('.acc');
+        if (!card) return;
+        var open = card.classList.toggle('open');
+        head.setAttribute('aria-expanded', open ? 'true' : 'false');
+      };
+    </script>
+
+    <script src="js/load-bottom-nav.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof loadBottomNav === 'function') {
+                loadBottomNav('help');
+            }
+        });
+    </script>
+</body>
+</html>

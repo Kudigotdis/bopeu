@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard · BOPEU Admin</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+  body.bop { background:#F2F5F9; }
+  .admin-header { background:#1A202C; color:#fff; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:20; }
+  .admin-brand { display:flex; align-items:center; gap:10px; }
+  .admin-mark { width:32px; height:32px; border-radius:8px; background:#D32F2F; display:grid; place-items:center; font-weight:800; color:#fff; }
+  .admin-nav { display:flex; gap:16px; font-size:13px; }
+  .admin-nav a { color:#fff; text-decoration:none; font-weight:600; opacity:.85; }
+  .admin-nav a:hover, .admin-nav a.active { opacity:1; text-decoration:underline; }
+  .admin-layout { display:grid; grid-template-columns:220px 1fr; min-height:calc(100vh - 56px); }
+  .admin-side { background:#fff; border-right:1px solid #E2E8F0; padding:16px 12px; }
+  .admin-side a { display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:8px; font-size:13px; font-weight:600; color:#4A5568; text-decoration:none; margin-bottom:2px; }
+  .admin-side a:hover { background:#F7F9FC; color:#D32F2F; }
+  .admin-side a.active { background:#FFEBEE; color:#D32F2F; }
+  .admin-main { padding:24px; max-width:1100px; }
+  .kpi-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:14px; margin-bottom:20px; }
+  .kpi { background:#fff; border:1px solid #E2E8F0; border-radius:12px; padding:16px; }
+  .kpi .lbl { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:#718096; }
+  .kpi .val { font-size:26px; font-weight:800; color:#1A202C; margin-top:6px; line-height:1; }
+  .kpi .delta { font-size:12px; margin-top:6px; color:#2E7D32; font-weight:600; }
+  @media (max-width:820px) { .admin-layout { grid-template-columns:1fr; } .admin-side { display:none; } }
+</style>
+</head>
+<body class="bop">
+
+<header class="admin-header">
+  <div class="admin-brand">
+    <div class="admin-mark">B</div>
+    <div>
+      <div style="font-weight:800; font-size:14px;">BOPEU Admin</div>
+      <div style="font-size:10px; opacity:.7;">Staff Portal</div>
+    </div>
+  </div>
+  <nav class="admin-nav">
+    <a href="admin-dashboard.html" class="active">Dashboard</a>
+    <a href="admin-submissions.html">Submissions</a>
+    <a href="admin-members.html">Members</a>
+    <a href="admin-content.html">Content</a>
+    <a href="admin-reports.html">Reports</a>
+    <a href="admin-login.html">Sign out</a>
+  </nav>
+</header>
+
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-dashboard.html" class="active">📊 Dashboard</a>
+    <a href="admin-submissions.html">📥 Submissions</a>
+    <a href="admin-members.html">👥 Members</a>
+    <a href="admin-content.html">📰 Content</a>
+    <a href="admin-users-roles.html">🔐 Users &amp; Roles</a>
+    <a href="admin-audit-log.html">📜 Audit Log</a>
+    <a href="admin-reports.html">📈 Reports</a>
+  </aside>
+
+  <main class="admin-main">
+    <h1 style="font-size:22px; font-weight:800; margin-bottom:4px;">Dashboard</h1>
+    <p style="color:#718096; font-size:14px; margin-bottom:20px;">Overview of member activity and pending work.</p>
+
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="lbl">Active members</div>
+        <div class="val" id="adminTotal">—</div>
+        <div class="delta">↑ 12 this month</div>
+      </div>
+      <div class="kpi">
+        <div class="lbl">Pending verification</div>
+        <div class="val" id="adminPending">—</div>
+        <div class="delta" style="color:#F0A92B;">Needs action</div>
+      </div>
+      <div class="kpi">
+        <div class="lbl">Open submissions</div>
+        <div class="val" id="kpiSubmissions">—</div>
+        <div class="delta" style="color:#F0A92B;">—</div>
+      </div>
+      <div class="kpi">
+        <div class="lbl">Open grievances</div>
+        <div class="val" id="kpiGrievances">—</div>
+        <div class="delta" style="color:#F0A92B;">—</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h2>Recent submissions</h2>
+        <a href="admin-submissions.html" style="font-size:13px; font-weight:700; color:#D32F2F; text-decoration:none;">View all →</a>
+      </div>
+      <div class="card-body">
+        <div id="recentSubmissions" class="empty">Loading…</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h2>Recent activity</h2></div>
+      <div class="card-body">
+        <div id="recentActivity" class="empty">Loading…</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Required gate for admin.js DOMContentLoaded -->
+<div class="modal" id="admin-modal" style="position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(15,23,32,.55);">
+  <div style="width:100%;max-width:560px;max-height:88vh;overflow-y:auto;background:#fff;border-radius:16px;padding:20px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #E2E8F0;">
+      <h2 style="font-size:18px;font-weight:800;margin:0;" id="adminModalTitle">Admin</h2>
+      <button style="background:none;border:none;font-size:24px;cursor:pointer;color:#718096;" onclick="closeModal('admin-modal')">&times;</button>
+    </div>
+    <div id="adminModalBody"></div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/admin.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Refresh KPIs via admin.js if present.
+    if (typeof renderAdminStats === 'function') renderAdminStats();
+
+    // Demo submission + grievance counters (real numbers come from application data).
+    var apps = (LocalStore.get('bopeu_applications') || []);
+    document.getElementById('kpiSubmissions').textContent = apps.length;
+    document.getElementById('kpiGrievances').textContent = apps.filter(function (a) { return a.type === 'grievance'; }).length;
+
+    // Demo recent submissions table.
+    var recent = document.getElementById('recentSubmissions');
+    if (!apps.length) {
+      recent.innerHTML = '<div class="text-muted text-small">No submissions yet. Once members submit applications, they will appear here.</div>';
+    } else {
+      recent.className = '';
+      recent.innerHTML = apps.slice(0, 5).map(function (a) {
+        return '<div class="row" style="cursor:pointer;" onclick="location.href=\'admin-submission-detail.html?id=' + encodeURIComponent(a.id) + '\'">' +
+          '<div class="row-icon">📥</div>' +
+          '<div class="row-body">' +
+          '<div class="row-title">' + (a.label || 'Application') + '</div>' +
+          '<div class="row-desc">Ref ' + a.id + ' · ' + new Date(a.submittedAt).toLocaleDateString() + '</div>' +
+          '</div>' +
+          '<span class="badge badge-blue">' + (a.status || 'submitted') + '</span>' +
+          '</div>';
+      }).join('');
+    }
+
+    // Demo recent activity feed.
+    var act = document.getElementById('recentActivity');
+    act.className = '';
+    act.innerHTML =
+      '<div class="checklist-item"><span class="chk-num">✓</span><span><strong>System</strong> — Admin dashboard loaded at ' + new Date().toLocaleTimeString() + '</span></div>' +
+      '<div class="checklist-item"><span class="chk-num">✓</span><span><strong>Staff session</strong> signed in with WhatsApp, first name and password (demo).</span></div>' +
+      '<div class="checklist-item"><span class="chk-num">✓</span><span><strong>3 submissions</strong> awaiting verification.</span></div>' +
+      '<div class="checklist-item"><span class="chk-num">✓</span><span><strong>Content</strong> — 4 notices published this quarter.</span></div>';
+  });
+</script>
+</body>
+</html>

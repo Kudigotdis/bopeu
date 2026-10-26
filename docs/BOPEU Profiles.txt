@@ -1,0 +1,321 @@
+For my BOPEU app I need you to create profiles with information associated to demo users (separated by the groups) to show client what BOPEU members can expect to see when they use the platform so you need to generate information for me I can use for the profile. I have provided you with other files to use in generating unique information for each person and they all need to be government workers who work at different, real places with different positions, roles, based in different parts of Botswana, different ages, different benefits they have selected etc. You need to suggest and add to what can make the profiles seem VERY real.   
+
+OPEU Members:
+- Males:
+-- Jackson Michaels:
+-- James Dudumang:
+-- Kabelo Modise:
+
+-Females:
+-- Mercy Peters:
+-- Siyanda Kefitlile:
+-- Patricia Kgaope:
+
+- BOPEU Staff - Marketing - '(suggest name)': allowing them to edit/manage timeline posts, noticeboard board posts, information throughout the app and communicate with 'Benefit Partners', manage document vault (PDF download documents folder (and links))
+- BOPEU Staff - Sales & Client Services - '(suggest name)': Recruitment they engage people and encourage them to join BOPEU allowing for onboarding of new users (potential members). what else? / they also recieve and manage content sent by BOPEU Members.  
+- BOPEU Staff – Finance & Payroll Reconciliation '(suggest name)':
+- BOPEU Staff – Welfare & Claims Administration (Babereki Services) - '(suggest name)':
+- BOPEU Staff – Regional Operations & Shop Stewards - '(suggest name)':
+- BOPEU Admin - '(suggest name)':
+- Benefit Partner - '(suggest name)': for example 'Orange Mobile Network - Marketing Staff'
+
+-------------------------------------------------------------
+
+BOPEU Members Collected Database info:
+The information you need to gather and structure within a BOPEU-staff-managed database is categorized below:
+
+1. Core Identity & Authentication (The Foundation)
+
+This data is required to securely identify the member and allow them to log into the application.
+• Omang Number (National ID): The primary unique identifier for Botswana citizens.
+- whatsapp number, 
+- mobile network and number/s, 
+- mobile network banking and number/s, 
+- social media handles (facebook, twitter, instagram, tiktok)
+• BOPEU Membership Number: Used to verify that the app user is an active, registered union member.
+• Full Legal Name: Must match their Omang and government payroll records exactly. First Name, Middlename, Surname
+- Residing Town/City and Residing Area/Neighbourhood
+• Digital Identity Token Number: Dynamically generated on the app profile to act as a "Digital Membership Card" that members can present at partners like Diagnofirm.
+
+2. Employment & Payroll Verification Data
+
+Crucial for determining eligibility for parastatal or specific ministry benefits and facilitating deductions.
+• Employment Status: Active, Retired, or Suspended.
+• Employer / Ministry Name: (e.g., BURS, Water Utilities Corporation, Ministry of Education) to segment user permissions or target specific localized engagement.
+• Salary Scale / Grade: Essential if integrating calculators for the 1% basic salary subscription fee deduction (which is capped).
+• Work Location / Region: (e.g., Gaborone, Francistown, Maun) to push region-specific news or localize partner branch access.
+
+3. Benefit Partner Integration & Verification Flags
+
+Rather than holding highly sensitive medical or cellular data, your database needs to act as a verification bridge for third-party partnerships.
+• Medical Aid Provider & Scheme Number: Necessary for Diagnofirm integration to waiver the standard 10% patient copay contribution.
+• Mascom Mobile Number: Needed if the app plans to facilitate discounted Mascom airtime, data bundles, or closed-user-group (CUG) mobile services.
+• Partner Verification Status (Boolean flags): Simple active/inactive triggers that can be securely queried via a secure API by partners to verify if a walk-in client is in good standing with the union.
+
+4. Babereki Financial & Welfare Data (Internal Sub-Schemes)
+
+BOPEU runs significant financial and funeral programs internally via Babereki. The app needs database hooks to display these balances.
+• Babereki SACCOS Member ID: To link the member's profile to their savings and credit cooperative account.
+• Active Loan Status: Meta-information showing current repayment balances or eligibility for the 2% micro-loans.
+• Funeral Policy Details & Dependents List: Names, Omang numbers, and relationships of spouses and children (under 21) covered under the compulsory Babereki/Metropolitan Funeral Scheme to allow easy claims tracking.
+
+5. Engagement & Platform Interaction Logs
+
+To keep the platform collaborative and active, BOPEU staff will need to manage interaction metrics.
+• Shop Steward Status (Role-Based Access): A flag determining if a user is a regular member or a Shop Steward/Regional Leader, unlocking tools to push union notices or manage local grievances.
+• Grievance / Dispute Log: A secure relational table tracking employee workplace disputes, status updates from BOPEU legal reps, and case files.
+• Push Notification Preferences: User consents for receiving bargaining council alerts, strike mandates, or commercial partner promotional offers.
+
+🛡️ Critical Architecture and Data Privacy Note
+
+Because you are managing Omang numbers, medical aid data, and financial indicators in Botswana, your database architecture must comply strictly with the Botswana Data Protection Act (DPA).
+• Encryption: Ensure all personal identifiable information (PII) is encrypted at rest and in transit.
+• Staff Access Controls: BOPEU backend administrators should have strict role-based access control (RBAC), meaning a marketing staff member shouldn't be able to view a user's funeral policy dependents or medical aid numbers.
+
+
+1. Insurance Underwriting & Regulatory Data (The Babereki Insurance Link)
+
+Because the union provides compulsory and optional insurance schemes managed through Babereki Insurance Brokers (partnered with firms like Hollard and Moonlight), the database must track precise underwriting details:
+• Extended Family Tier Metadata: Members frequently add extended relatives (parents, in-laws) up to age 85 to their optional funeral plans. The system must record extended family dates of birth, Omang numbers, and chosen premium tiers to accurately calculate the additional cash payments required beyond the basic payroll deduction.
+• Premium Waiver Flags: Under the standard BOPEU funeral policy, if a member passes away, their immediate family receives a 12-month premium waiver. The system must track active waiver periods to alert staff when a family's free cover window is closing.
+• Asset / Asset-Risk Specifics: Babereki offers short-term insurance (motor, house contents, agriculture). If the app allows members to view active policies or request quotes, the database will need hooks for vehicle registration numbers, physical plot numbers, and policy renewal dates.
+
+2. Complex Payroll & Statutory Fields (The Core Finance Link)
+
+A simple "salary scale" is not enough to reconcile the books with the government's centralized payroll systems (such as the Government Accounting and Budgeting System - GABS).
+• The 1% Cap Calculation Boundaries: BOPEU's monthly union subscription is 1% of the basic salary, but it is strictly capped from P39.90 to P100.00. The database needs to capture the precise, current basic salary to auto-reconcile whether the payroll system is deducting the correct capped amount.
+• P70 / P20 Group Life & Compulsory Fee Triggers: In addition to the 1% fee, there are distinct flat-rate deductions, such as the P70 monthly Group Life/Disability Cover fee and specific P20/P39.50 compulsory funeral administration fees. The staff needs clear database flags separating these deductions to avoid accounting discrepancies or member disputes.
+
+--------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+BOPEU Staff:
+
+To support a multi-department administrative team, your database must implement Role-Based Access Control (RBAC). Instead of creating generic staff profiles, you will need to store department-specific attributes, access logs, and tracking metrics.
+The structural fields, permission mappings, and operational responsibilities needed for each of these internal user roles—including completing the missing staff tier—are detailed below:
+
+1. BOPEU Staff – Marketing
+
+• Suggested Name for System: Communications & Partnerships Specialist (ROLE_MARKETING)
+• Core Database Information Needed: Staff ID, assigned regional branches, corporate email, and API authentication tokens for external content platforms.
+What they manage in the database:
+• timeline_posts & noticeboard_items Tables: Fields for post_id, author_id, content_body, media_url (images/videos), target_audience (e.g., target all members vs. only Water Utilities Corporation members), and scheduled_publish_time.
+• benefit_partners Directory Table: Fields to manage outward-facing partner data like Mascom and Diagnofirm branch locations, contact numbers, active discount descriptions, and verification API keys.
+• document_vault Table: Fields for document_id, file_name, s3_storage_url (secure PDF storage paths), document_category (e.g., Constitution, Forms, Newsletters), and download_count_tracker.
+
+2. BOPEU Staff – Sales & Client Services
+
+• Suggested Name for System: Membership Recruitment & Retention Officer (ROLE_SALES_RECRUITMENT)
+• Core Database Information Needed: Sales Agent Code (for tracking commissions/quotas), assigned field territory, monthly onboarding target counter, and an active mobile field-device ID.
+What else do they manage in the database?
+• leads_onboarding Table (Potential Members): Fields for capturing walk-in or field-marketing data prior to GABS payroll confirmation: prospect_name, contact_number, current_employer_prospect, preferred_followup_date, and onboarding_status (e.g., Contacted, Signed, Awaiting Payroll Verification).
+• member_submissions_moderation Table: Members will send content through the app (e.g., photo updates from local branch meetings, queries, or localized event flyers). This table requires submission_id, submitting_member_id, media_attachment, moderation_status (Pending, Approved, Rejected), and rejection_reason_notes.
+
+3. BOPEU Staff – Operations & Legal Services (The Missing Tier)
+
+• Suggested Name for System: Industrial Relations & Legal Officer (ROLE_OPERATIONS_LEGAL)
+• Why this role is needed: Marketing and Sales cannot legally handle member grievances, workplace disputes, or collective bargaining issues. This department needs a restricted dashboard view to manage active legal representation.
+What they manage in the database:
+• grievance_cases Table: Fields tracking member workplace disputes: case_reference_number, plaintiff_member_id, defendant_employer (e.g., BURS), dispute_type (e.g., Unfair Dismissal, Salary Discrepancy), assigned_legal_officer_id, and case_status (Mediation, Arbitration, High Court, Resolved).
+• bargaining_council_alerts Table: Fields allowing legal staff to draft and broadcast critical updates regarding ongoing public sector salary negotiations directly to the app's notification engine.
+
+4. BOPEU Admin
+
+• Suggested Name for System: System Administrator & Data Protection Officer (ROLE_SUPER_ADMIN)
+• Core Database Information Needed: Full master administrative overrides, role-based access controls, and strict, un-editable security clearance variables.
+What they manage in the database:
+• staff_accounts_permissions Table: Fields tracking internal staff employment states: staff_id, system_role, account_status (Active, Suspended, Terminated), and a permission_matrix_bitmask (governing exactly who can edit profiles vs. view financial balances).
+• system_audit_logs Table: The most critical administrative table. For legal compliance with the Botswana Data Protection Act, this table records every internal staff action. It captures: log_id, staff_user_id, action_performed (e.g., "Updated Member Omang", "Downloaded Member Database", "Approved Loan Application"), ip_address, and timestamp.
+• global_app_settings Table: System-wide toggles like maintenance mode triggers, current API endpoints for third-party servers, and database backup schedules.
+
+System Architecture Summary Mapping
+
+[ BOPEU Central Database ]
+    │
+    ├──► ROLE_SUPER_ADMIN --------► Access to Security Settings & Audit Logs (Reads All)
+    │
+    ├──► ROLE_MARKETING ----------► Read/Write to Noticeboards, App Content, & Partner Links
+    │
+    ├──► ROLE_SALES_RECRUITMENT --► Read/Write to Prospect Leads & Member Content Submissions
+    │
+    └──► ROLE_OPERATIONS_LEGAL ---► Read/Write to Grievance Cases & Dispute Vaults
+
+While the roles we have mapped out cover front-end communication, field onboarding, legal services, and core system administration, they miss the critical financial, welfare, and operational back-office departments that keep BOPEU running. Because BOPEU acts as a financial services provider and insurance distributor (via Babereki), you need specialized backend staff roles to handle the actual money, claims, and local governance.
+To build a fully production-ready system, these additional staff profile types are recommended to prevent severe business blockages:
+
+1. BOPEU Staff – Finance & Payroll Reconciliation
+
+• Suggested System Name: Finance Officer / Payroll Auditor (ROLE_FINANCE_AUDITOR)
+• Why they are missing: When a member signs up via the app or a Sales Officer, their membership isn't truly active until the government payroll system (GABS) or parastatal finance team confirms the 1% salary deduction. Marketing and Sales should never have access to raw bank files or payroll mismatch records.
+What they manage in the database:
+• payroll_reconciliation_batches Table: Uploading and cross-referencing monthly CSV payroll deduction sheets received from the Accountant General against active app users.
+• arrears_tracker Table: Flagging members whose check-offs failed (due to unpaid leave, inter-ministerial transfers, etc.) and updating their app status to "In Arrears" or "Suspended Benefit Status."
+• refund_requests Table: Managing and processing claims when a parastatal over-deducts a member's capped subscription fee.
+
+2. BOPEU Staff – Welfare & Claims Administration (Babereki Services)
+
+• Suggested System Name: Welfare & Insurance Claims Processor (ROLE_WELFARE_CLAIMS)
+• Why they are missing: Members will expect to use the app to submit funeral claims, track bursary applications, or request emergency credit. This role sits between the member and partners like Hollard or Metropolitan.
+What they manage in the database:
+• funeral_claims Table: Reviewing uploaded death certificates, Omang cards of the deceased, and checking if the claimant is a valid dependent before passing data to the insurer.
+• bursary_applications Table: Managing educational grant requests submitted by members for their children, tracking approval_status, disbursement_amount, and school verification attachments.
+• member_welfare_funds Table: Approving or denying localized fast-tracked welfare grants for members facing immediate catastrophic personal emergencies.
+
+3. BOPEU Staff – Regional Operations & Shop Stewards
+
+• Suggested System Name: Regional Coordinator / Chief Shop Steward (ROLE_REGIONAL_COORDINATOR)
+• Why they are missing: BOPEU operates on a decentralized regional structure (Gaborone, Francistown, Maun, Kang, Palapye). Regular Sales or Marketing staff sit at headquarters. You need a trusted, localized role for field leadership who vet issues before they escalate to national legal teams.
+What they manage in the database:
+• local_branch_meetings Table: Creating and managing localized attendance lists, meeting minutes, and local voting agendas that are only visible to members in their specific geographic region.
+• steward_escalations Table: Triage center where local shop stewards receive initial workplace complaints via the app, resolve them locally, or hit an "Escalate to National Legal" button.
+
+Complete BOPEU App Staff Permission Hierarchy
+
+To illustrate how all these roles tie together securely without violating the Botswana Data Protection Act, see the specialized access matrix below:
+
+Staff System Role	Primary App Features Managed	Access to Member Financial/PII Data
+ROLE_SUPER_ADMIN	App Settings, Security, Database Backups, Audit Logs	Full Access (Audit Logged)
+ROLE_MARKETING	Timelines, Noticeboards, Partner Discount Info, PDF Vault	Restricted (No Financials/Omang)
+ROLE_SALES_RECRUITMENT	Lead Capturing, Onboarding Forms, Content Moderation	Medium (Prospective Data Only)
+ROLE_FINANCE_AUDITOR	GABS Files, Subscription Adjustments, Refunds	High (Payroll & Banking Only)
+ROLE_WELFARE_CLAIMS	Funeral Claims, Bursary Approvals, Dependents Auditing	High (Insurance & Family PII)
+ROLE_OPERATIONS_LEGAL	Grievance Tracking, Case Files, Bargaining Alerts	High (Legal & Dispute History)
+ROLE_REGIONAL_COORDINATOR	Localized Branch Alerts, Steward Triage, Local Events	Restricted (Regional Members Only)
+
+
+-------------------------------
+
+BOPEU Staff Info:
+
+To adapt the database structure for BOPEU Staff users while integrating your new data requirements (WhatsApp, mobile wallet accounts, residing addresses, and social media handles), we need to split this into two parts.
+First, we must establish what Personal Identifiable Information (PII) to collect from the Staff themselves to secure the internal backend. Second, we must format the new fields you requested so they function cleanly within both member and staff schemas in Botswana's unique digital ecosystem.
+
+Part 1: What You Missed for the Staff Profile Schema
+
+Just like members, BOPEU staff cannot simply have an email and password. To prevent internal fraud, trace data leaks, and comply with the Botswana Data Protection Act (DPA), their system profiles must capture the following foundational information:
+• Omang Number (National ID): Required to legally tie system actions to a real person. If a staff member downloads a member list illicitly, the system audit log must tie that action back to their legal identity, not just a generic username.
+• Official Corporate Email Address: Used exclusively for password resets, and system alerts (e.g., name@bopeu.org.bw or name@babereki.co.bw).
+• Employee/Staff ID Number: The primary database key used to map their profile to human resources and payroll tables.
+• Department / Cost Centre Code: Maps the staff user to their structural unit (e.g., HQ-Marketing, Francistown-Sales, Gaborone-Finance).
+• Line Manager / Approver ID: A relational database link defining who has the authority to approve data overrides or document uploads committed by this staff user.
+• Active IP / Device Whitelist Bindings: To ensure secure access, the database should track the physical MAC address or authorized IP range of the staff member's work laptop or official field tablet, blocking access from unsecured networks.
+
+Part 2: Structuring Your New Requested Fields
+
+When integrating WhatsApp, network banking, addresses, and social handles, they need to be broken down into structured database fields to match Botswana's local telecommunications layout (Mascom, Orange, BTC).
+
+📱 Mobile Network & Number Data
+
+Do not use a single generic text field for mobile numbers. You must break them down into specific relational tables to account for users who swap SIMs or use multiple networks:
+• Primary Contact Number: The phone number used for system SMS alerts.
+• Mobile Network Provider (Dropdown/Enum): Must restrict inputs to MASCOM, ORANGE, or BTC. This flag is vital for the Marketing team when auditing closed-user-group (CUG) setups or target campaigns.
+• WhatsApp Number Flag (Boolean): A true/false toggle tied to the number. This tells the system's communication engine whether to send a notification via standard SMS or route it through an automated WhatsApp Business API gateway (which is often cheaper for mass union broadcasts).
+
+🏦 Mobile Network Banking (Mobile Money/Wallets)
+
+In Botswana, mobile banking heavily relies on Mobile Money (MNO) wallets like MyZaka (Mascom), Orange Money (Orange), and Smega (BTC) alongside traditional commercial banks. The database needs to capture:
+• Mobile Wallet Provider (Enum): Restrict inputs to MYZAKA, ORANGE_MONEY, SMEGA, or TRADITIONAL_BANK.
+• Mobile Wallet Account Number: The mobile number registered to that wallet.
+• Linked Commercial Bank Name & Account Number: For back-office roles like ROLE_FINANCE_AUDITOR or ROLE_WELFARE_CLAIMS. When a member requests a fast-tracked Babereki loan or a funeral claim payout through the app, the system needs these structured fields to execute automated payouts directly via electronic funds transfer (EFT) or mobile wallet push APIs.
+
+📍 Residing Address Data
+
+To segment members and field sales staff effectively, split the address structure into clear administrative tiers rather than a single text block:
+• Residing Town / City (Enum): Standardized local categories (e.g., Gaborone, Francistown, Palapye, Maun, Kanye, Mochudi).
+• Residing Area / Neighbourhood (Text): Specific locations within those towns (e.g., Phase 2, Block 8, Gaborone West, Gerald Estates, Central).
+• Physical Plot Number (Text/Alphanumeric): Essential for Botswana addresses (e.g., Plot 54352) and directly required by Babereki Insurance Brokers when writing short-term household contents insurance policies.
+
+🌐 Social Media Handles
+
+Collecting social media coordinates helps the Marketing team verify user-submitted app content and execute targeted social media advocacy campaigns:
+• Facebook Profile URL / Handle: Essential for matching members to activities on the highly active BOPEU official Facebook ecosystem.
+• Twitter/X Handle (@handle): For tracking public-sector union conversations and labor trends.
+• Instagram Handle & TikTok Handle: Primarily used to identify and empower younger union members or local field shop stewards to act as organic brand ambassadors for recruitment campaigns.
+
+Data Segregation Reference for Staff vs. Members
+
+To maintain strict compliance with data privacy boundaries, the table below highlights how these new fields are distributed across user roles:
+
+Category	Field Name	Required for Members?	Required for Staff?	System/Business Justification
+Identity	Omang Number	Yes	Yes	Prevents internal system fraud and satisfies DPA tracking
+Identity	Staff ID / Cost Centre	No	Yes	Controls Role-Based Access Control (RBAC) scopes
+Telecom	Primary Mobile & Provider	Yes	Yes	Validates benefit targets (e.g., Mascom discount tracking)
+Telecom	WhatsApp Gateway Flag	Yes	Yes	Routes system communications through cheaper API channels
+Fintech	Mobile Wallet Account / MNO	Yes	No	Automates Babereki SACCOS loan payouts and claims settlement
+Geography	Plot Number & Neighbourhood	Yes	Yes	Maps localized sales targeting and risk/home asset insurance
+Social	Social Platforms Array	Optional	Optional	Moderates public engagement and tracks brand advocacy
+
+-------------------------------------------------------------------------------------------
+
+- Benefit Partner:
+
+To integrate external entities seamlessly into your platform, you need a distinct database schema for Benefit Partner Users. Just like BOPEU staff, partner employees (e.g., an Orange Money manager or a Diagnofirm lab clerk) cannot have unrestricted access to the database. They must interact with the app via a Federated Partner Interface or highly restricted portal accounts.
+The structural fields, permission models, and data types required for your proposed Benefit Partner profiles are outlined below:
+
+1. Suggested Role & System Names
+
+• System Role ID: ROLE_BENEFIT_PARTNER
+• Suggested System Name (General): Partner Account Manager / Partner Verification Agent
+• Specific Examples for Your Database Enums:
+	• Orange Mobile Network - Marketing Staff: Orange_Marketing_Admin
+	• Diagnofirm - Clinical Front Desk Staff: Diagnofirm_Verification_Agent
+	• Mascom - Retail Sales Lead: Mascom_Corporate_Agent
+
+2. Core Identity & Authentication Fields (For the Partner User)
+
+To prevent corporate espionage, trace data leaks, and satisfy the Botswana Data Protection Act (DPA), you must know exactly which specific employee at a partner company performed a query or processed a benefit.
+• Partner Organization ID (Relational Key): Points to a master benefit_partners_directory table (e.g., maps this user directly to Orange Botswana, Diagnofirm, or Mascom).
+• Corporate Email & Sub-domain Enforcement: Authentication must be tied strictly to their corporate domain (e.g., user@orange.co.bw or clerk@diagnofirm.co.bw). Personal emails (Gmail/Yahoo) are strictly forbidden at the database schema level.
+• Partner Employee ID / Payroll Number: Their internal reference key within their own company's HR system.
+• Partner Branch / Location Code: Identifies which physical branch or retail store the partner user is operating from (e.g., Orange Shop - Airport Junction, Diagnofirm - Main Mall Gaborone).
+• API Client Key & Secret Hash: If the partner user is logging in via an automated API integration (like an automated retail point-of-sale terminal verifying a member), the database stores their secure cryptographic handshake credentials here.
+
+3. What Partner Users Need to Manage & View (Database Scope)
+
+Unlike union staff, a Benefit Partner should never see a member’s basic salary, union voting history, grievance logs, or unrelated insurance details. Their access is restricted strictly to their immediate commercial offerings.
+
+📈 For Telecom Partners (e.g., Orange Mobile Network - Marketing/Product Staff)
+
+• partner_campaign_offers Table: Fields to push custom mobile deals directly into the BOPEU app feed: promo_id, bundle_name (e.g., "BOPEU Exclusive 10GB Data"), discounted_price_bwp, start_date, and end_date.
+• cug_enrollment_requests Table: When a member uses the app to join an Orange Closed User Group (CUG) or switch to a corporate SIM plan, the partner staff logs in to view and pull the member's primary_mobile_number, requested sim_serial_number, and electronic signature to process the activation on the telecom network backend.
+• mobile_wallet_payout_logs Table: For Orange Money staff to reconcile instant Babereki loan transfers routed through the app into members' mobile wallets.
+
+🔬 For Medical/Retail Partners (e.g., Diagnofirm Verification & Claims Staff)
+
+• member_eligibility_pings Table: A real-time, read-only verification view. When a clerk types a member's Omang into their dashboard, your database returns a simple JSON string: [Is_Active: True, Copay_Waiver_Eligible: True, Medical_Aid_Verified: True]. It does not expose any medical history.
+• partner_redemption_records Table: Tracks when a member utilizes a discount or waiver. Fields include: redemption_id, member_omang_hash, service_rendered_category (e.g., Blood Panel Testing), discount_value_saved, and transaction_timestamp.
+
+4. Cross-Organization Audit Security (Crucial for the App Architecture)
+
+Because data crosses organizational boundaries, you must log Inter-Organization API Handshakes. Your system_audit_logs table must feature an extended relational link specifically for third parties:
+• originating_partner_ip: Tracks the server location initiating the request.
+• partner_user_token: Logs exactly which individual partner employee accessed BOPEU member data.
+• data_scope_accessed: Restricts and documents the precise fields exposed (e.g., “Diagnofirm User X requested validation for Omang Y — Response Sent: Valid Member”).
+
+Simplified Relational Map: How the Database Restricts Partner Access
+
+                  [ BOPEU Member Profile ]
+                             │
+            ┌────────────────┴────────────────┐
+            ▼                                 ▼
+   [ BOPEU Internal Staff ]        [ External Benefit Partner ]
+   (Full View: Payroll,             (Zero Direct Access)
+    Welfare, Grievances)                      │
+                                              ▼
+                             [ Secure API Token Gateway ]
+                                              │
+                      ┌───────────────────────┴───────────────────────┐
+                      ▼                                               ▼
+           [ Orange Telecom Staff ]                       [ Diagnofirm Medical Staff ]
+    • Uploads CUG Mobile Bundles                   • Verifies 10% Copay Waiver Eligibility
+    • Reconciles Orange Money Logs                 • Logs Non-Sensitive Service Redemptions

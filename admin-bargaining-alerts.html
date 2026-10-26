@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Bargaining Alerts · BOPEU Legal</title>
+<link rel="stylesheet" href="design-system.css">
+<style>body.bop{background:#F2F5F9}.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20}.admin-mark{width:32px;height:32px;border-radius:8px;background:#D32F2F;display:grid;place-items:center;font-weight:800;color:#fff}.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}.admin-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}.admin-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}.admin-side a.active{background:#FFEBEE;color:#D32F2F}.admin-main{padding:24px;max-width:900px}.alert-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px;margin-bottom:12px}</style>
+</head>
+<body class="bop">
+<header class="admin-header"><div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Bargaining Alerts</div></div></div></header>
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-grievances.html">⚖️ Cases</a>
+    <a href="admin-bargaining-alerts.html" class="active">📢 Bargaining Alerts</a>
+  </aside>
+  <main class="admin-main">
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:4px;">Bargaining Alerts</h1>
+    <p style="color:#718096;font-size:14px;margin-bottom:20px;">Broadcast updates on salary negotiations and bargaining council outcomes</p>
+    <div style="text-align:right;margin-bottom:16px;"><button class="btn btn-primary" onclick="newAlert()">+ New alert</button></div>
+    <div class="alert-card">
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px;"><div><strong>Public sector salary negotiations — update #4</strong><div style="font-size:12px;color:#718096;">2026-10-20 · By Dineo Tlhabi · Sent to 37,412 members</div></div><span class="badge badge-green">SENT</span></div>
+      <p style="font-size:13px;color:#4A5568;line-height:1.6;margin:0;">Negotiations resumed 15 October. Council has tabled a revised offer. Members will be consulted before any agreement is signed. Next session: 28 October.</p>
+    </div>
+    <div class="alert-card">
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px;"><div><strong>Draft: Strike mandate consultation</strong><div style="font-size:12px;color:#718096;">Draft · Not sent · Awaiting approval</div></div><span class="badge badge-blue">DRAFT</span></div>
+      <p style="font-size:13px;color:#4A5568;line-height:1.6;margin:0;">Members to be consulted on strike mandate following breakdown of negotiations. Voting opens 5 November.</p>
+    </div>
+  </main>
+</div>
+<script>
+function newAlert() { alert('Compose new bargaining alert (demo).\n\nFields: title, body, audience (all / sector / region), send via (in-app / SMS / WhatsApp / all), schedule.'); }
+</script>
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

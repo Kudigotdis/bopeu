@@ -6,521 +6,320 @@
 <title>BLIC Know Your Customer</title>
 <style>
   :root{
-    --ink:#1A202C;
-    --muted:#718096;
+    --ink:#868e96; --dark:#2D3748; --muted:#868e96;
     --line:#E2E8F0;
-    --brand:#D32F2F;
-    --brand2:#B71C1C;
-    --danger:#B71C1C;
-    --gold:#C9A227;
-    --soft:#F4F5F7;
+    --brand:#D32F2F; --brand2:#B71C1C; --danger:#B71C1C;
+    --gold:#C9A227; --soft:#F4F5F7;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html{height:100%}
+  *::-webkit-scrollbar{display:none;width:0;height:0}
+  *{scrollbar-width:none;-ms-overflow-style:none}
+  html{height:100%;overflow:hidden}
   body{
-    margin:0;
-    height:100dvh;
+    margin:0;height:100dvh;overflow:hidden;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    background:#E9ECEF;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:var(--ink);
+    background:#E9ECEF;display:flex;align-items:center;justify-content:center;
+    color:var(--ink);font-size:16px;
   }
   .phone{
-    width:100%;
-    max-width:400px;
-    height:100dvh;
-    max-height:900px;
-    background:#F4F5F7;
-    display:flex;
-    flex-direction:column;
-    overflow:hidden;
-    position:relative;
+    width:100%;max-width:400px;height:100dvh;max-height:900px;
+    background:#F4F5F7;display:flex;flex-direction:column;overflow:hidden;position:relative;
   }
-  @media (min-width:430px){
-    .phone{border-radius:30px;box-shadow:0 34px 70px rgba(0,0,0,.55);height:860px}
-  }
+  @media (min-width:430px){.phone{border-radius:30px;box-shadow:0 34px 70px rgba(0,0,0,.55);height:860px}}
 
-  /* ---------- header ---------- */
+  /* header */
   .topbar{
-    flex:0 0 auto;
-    background:linear-gradient(135deg,#D32F2F 0%,#B71C1C 100%);
-    color:#fff;
-    padding:14px 18px 12px;
+    flex:0 0 auto;background:#fff;border-bottom:3px solid var(--brand);
+    color:var(--ink);padding:12px 18px;display:flex;align-items:center;gap:12px;
   }
-  .brand{
-    font-size:9px;
-    letter-spacing:.18em;
-    text-transform:uppercase;
-    opacity:.78;
-    font-weight:700;
+  .tb-home{display:flex;align-items:center;flex:0 0 auto}
+  .tb-logo{width:46px;height:46px;object-fit:contain}
+  .tb-text{
+    flex:1 1 auto;min-width:0;display:flex;flex-direction:column;
+    align-items:flex-end;text-align:right;gap:2px;
   }
-  .topbar h1{
-    margin:3px 0 0;
-    font-size:15.5px;
-    font-weight:800;
-    letter-spacing:-.01em;
+  .tb-text .brand{
+    margin:0;font-size:15px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted);font-weight:800;line-height:1.2;
+  }
+  .tb-text h1{
+    margin:0;font-size:16px;font-weight:800;color:var(--ink);
+    letter-spacing:-.01em;line-height:1.25;
   }
 
-  /* ---------- progress bar ---------- */
+  /* progress bar */
   .progressbar{
-    flex:0 0 auto;
-    background:#fff;
-    border-bottom:1px solid var(--line);
-    padding:10px 18px 11px;
-    box-shadow:0 3px 12px rgba(0,0,0,.08);
-    position:relative;
-    z-index:6;
+    flex:0 0 auto;background:#fff;border-bottom:1px solid var(--line);
+    padding:11px 18px 12px;box-shadow:0 3px 12px rgba(0,0,0,.08);
+    position:relative;z-index:6;
   }
   .progressbar .pb-top{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    margin-bottom:7px;
+    display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px;
   }
   .progressbar .pb-lbl{
-    font-size:9px;
-    font-weight:800;
-    letter-spacing:.11em;
-    text-transform:uppercase;
-    color:var(--muted);
+    font-size:14px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+    color:#1a202c;
   }
   .progressbar .pb-pct{
-    font-size:13px;
-    font-weight:800;
-    color:var(--brand);
-    font-variant-numeric:tabular-nums;
+    font-size:16px;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums;
   }
-  .pb-track{
-    height:6px;
-    border-radius:6px;
-    background:#EBF0F3;
-    overflow:hidden;
-  }
+  .pb-track{height:6px;border-radius:6px;background:#EBF0F3;overflow:hidden}
   .pb-fill{
-    height:100%;
-    width:0%;
-    border-radius:6px;
+    height:100%;width:0%;border-radius:6px;
     background:linear-gradient(90deg,#D32F2F 0%,#B71C1C 100%);
     transition:width .3s ease;
   }
 
-  /* ---------- scroll area ---------- */
+  /* scroll area */
   .scroll{
-    flex:1 1 auto;
-    overflow-y:auto;
-    overscroll-behavior:contain;
-    -webkit-overflow-scrolling:touch;
-    padding:10px 10px 26px;
+    flex:1 1 auto;overflow-y:auto;overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;padding:12px 12px 26px;
   }
 
-  /* ---------- accordion ---------- */
+  /* accordion */
   .acc{
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:14px;
-    margin-bottom:9px;
-    overflow:hidden;
-    transition:box-shadow .2s ease,border-color .2s ease;
+    background:#fff;border:1px solid var(--line);border-radius:14px;
+    margin-bottom:10px;overflow:hidden;transition:box-shadow .2s ease,border-color .2s ease;
   }
-  .acc.open{
-    border-color:#FFCDD2;
-    box-shadow:0 8px 20px rgba(211,47,47,.10);
-  }
+  .acc.open{border-color:#FFCDD2;box-shadow:0 8px 20px rgba(211,47,47,.10)}
   .acc-head{
-    width:100%;
-    border:0;
-    background:transparent;
-    font:inherit;
-    text-align:left;
-    cursor:pointer;
-    padding:12px 13px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
+    width:100%;border:0;background:transparent;font:inherit;font-size:16px;text-align:left;
+    cursor:pointer;padding:14px;display:flex;flex-direction:column;gap:3px;
     transition:background .18s ease;
   }
   .acc.open .acc-head{background:#FFEBEE}
-  .acc-left{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .acc-headrow{
+    display:flex;align-items:baseline;justify-content:space-between;gap:10px;width:100%;
+  }
   .acc-title{
-    font-size:13px;
-    font-weight:800;
-    color:var(--ink);
-    letter-spacing:-.01em;
+    font-size:16px;font-weight:800;color:#1a202c;letter-spacing:-.01em;line-height:1.3;
   }
   .acc-sub{
-    font-size:10px;
-    font-weight:500;
-    color:var(--muted);
-    line-height:1.25;
+    font-size:13px;font-weight:600;color:#868e96;line-height:1.35;
   }
   .acc-total{
-    font-size:10px;
-    font-weight:800;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    color:var(--brand);
-    background:#FFEBEE;
-    border:1px solid #EF9A9A;
-    border-radius:20px;
-    padding:3px 8px;
-    white-space:nowrap;
+    font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--brand);background:#FFEBEE;border:1px solid #EF9A9A;border-radius:20px;
+    padding:3px 8px;white-space:nowrap;line-height:1.3;
   }
-  .acc-total.muted{
-    color:var(--muted);
-    background:#F7F9FB;
-    border-color:var(--line);
-  }
-  .acc-body{
-    display:none;
-    padding:12px 13px 14px;
-    border-top:1px solid var(--line);
-  }
+  .acc-total.muted{color:var(--muted);background:#F7F9FB;border-color:var(--line)}
+  .acc-body{display:none;padding:6px 14px 14px;border-top:1px solid var(--line)}
   .acc.open .acc-body{display:block}
 
-  /* ---------- sub headings ---------- */
+  /* subhead */
   .subhead{
-    font-size:9px;
-    font-weight:800;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    color:var(--gold);
-    margin:14px 0 8px;
-    padding-bottom:5px;
-    border-bottom:1px solid #EDEFF2;
+    font-size:15px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--dark);margin:14px 0 8px;padding-bottom:5px;border-bottom:1px solid #EDEFF2;
   }
   .subhead:first-child{margin-top:0}
 
-  /* ---------- fields ---------- */
+  /* full-width field inputs */
   .field{
-    display:flex;
-    flex-direction:column;
-    gap:3px;
-    min-width:0;
+    display:block;width:100%;margin-top:10px;
+    font-family:inherit;font-size:16px;font-weight:700;color:var(--ink);
+    background:#F7F9FB;border:1px solid var(--line);border-radius:10px;
+    padding:11px 12px;
   }
-  .field > label{
-    font-size:9px;
-    font-weight:800;
-    letter-spacing:.07em;
-    text-transform:uppercase;
-    color:var(--muted);
-    padding-left:2px;
+  .field::placeholder{font-weight:600;color:#adb5bd}
+  .field:focus{outline:2px solid #EF9A9A;outline-offset:-1px;background:#fff}
+  select.field{
+    -webkit-appearance:none;appearance:none;background-image:none;cursor:pointer;
   }
-  .field input,
-  .field select,
-  .field textarea{
-    width:100%;
-    font-family:inherit;
-    font-size:12.5px;
-    font-weight:600;
-    color:var(--ink);
-    background:#F7F9FB;
-    border:1px solid var(--line);
-    border-radius:9px;
-    padding:9px 10px;
-    transition:border-color .15s ease,background .15s ease;
-  }
-  .field textarea{
-    resize:none;
-    min-height:54px;
-    line-height:1.45;
-  }
-  .field input::placeholder,
-  .field textarea::placeholder{color:#a8b4be;font-weight:500}
-  .field input:focus,
-  .field select:focus,
-  .field textarea:focus{
-    outline:2px solid #EF9A9A;
-    outline-offset:-1px;
-    background:#fff;
-  }
-  .field input[type=date]{font-weight:700}
-  .field input[type=number]{font-variant-numeric:tabular-nums}
+  textarea.field{resize:none;min-height:54px;line-height:1.4}
 
-  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
-  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:8px}
-  .grid-2 .field{margin:0}
-  .grid-3 .field{margin:0}
-  .mb{margin-bottom:8px}
-  .mb:last-child{margin-bottom:0}
-
-  /* ---------- PIP toggle ---------- */
+  /* PIP */
   .pip-box{
-    margin-top:6px;
-    padding:11px;
-    background:#F8FAFB;
-    border:1px solid var(--line);
-    border-radius:11px;
+    margin-top:10px;padding:12px;background:#F8FAFB;
+    border:1px solid var(--line);border-radius:11px;
   }
   .pip-q{
-    font-size:11.5px;
-    font-weight:700;
-    color:var(--ink);
-    line-height:1.45;
-    margin:0 0 10px;
+    font-size:15px;font-weight:700;color:var(--dark);line-height:1.45;margin:0 0 10px;
   }
-  .pip-opts{
-    display:flex;
-    gap:8px;
-  }
+  .pip-opts{display:flex;gap:8px}
   .pip-opt{
-    flex:1 1 0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:6px;
-    padding:10px 8px;
-    border-radius:9px;
-    border:1px solid var(--line);
-    background:#F7F9FB;
-    font-size:11.5px;
-    font-weight:800;
-    letter-spacing:.04em;
-    color:var(--muted);
-    cursor:pointer;
-    user-select:none;
-    transition:all .15s ease;
+    flex:1 1 0;display:flex;align-items:center;justify-content:center;gap:6px;
+    padding:10px 8px;border-radius:10px;border:1px solid var(--line);background:#F7F9FB;
+    font-size:15px;font-weight:800;letter-spacing:.04em;color:var(--muted);
+    cursor:pointer;user-select:none;transition:all .15s ease;
   }
-  .pip-opt input{
-    width:14px;height:14px;margin:0;
-    accent-color:var(--brand);
-    cursor:pointer;
-  }
-  .pip-opt:has(input:checked){
-    background:#FFEBEE;
-    border-color:#EF9A9A;
-    color:var(--brand);
-  }
+  .pip-opt input{width:15px;height:15px;margin:0;accent-color:var(--brand);cursor:pointer}
+  .pip-opt:has(input:checked){background:#FFEBEE;border-color:#EF9A9A;color:var(--brand)}
   .pip-note{
-    margin:10px 0 0;
-    padding:9px 10px;
-    font-size:10px;
-    line-height:1.5;
-    color:var(--gold);
-    background:#F5F6F8;
-    border:1px dashed #D9E1E8;
-    border-radius:9px;
+    margin:10px 0 0;padding:9px 10px;font-size:13px;line-height:1.5;
+    color:var(--gold);background:#F5F6F8;border:1px dashed #D9E1E8;border-radius:9px;
   }
 
-  /* ---------- document checklist ---------- */
+  /* document checklist */
   .doc-item{
-    display:flex;
-    align-items:flex-start;
-    gap:10px;
-    padding:11px 0;
-    border-bottom:1px dashed var(--line);
+    display:flex;align-items:flex-start;gap:10px;
+    padding:12px 0;border-bottom:1px dashed var(--line);
   }
   .doc-item:last-child{border-bottom:0}
   .doc-num{
-    flex:0 0 auto;
-    width:22px;height:22px;
-    border-radius:50%;
-    background:#FFEBEE;
-    border:1px solid #EF9A9A;
-    color:var(--brand);
-    font-size:10px;
-    font-weight:800;
-    display:flex;align-items:center;justify-content:center;
+    flex:0 0 auto;width:22px;height:22px;border-radius:50%;
+    background:#FFEBEE;border:1px solid #EF9A9A;color:var(--brand);
+    font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;
     margin-top:1px;
   }
-  .doc-body{
-    flex:1 1 auto;
-    min-width:0;
-  }
+  .doc-body{flex:1 1 auto;min-width:0}
   .doc-label{
-    display:flex;
-    align-items:flex-start;
-    gap:7px;
-    font-size:11.5px;
-    font-weight:700;
-    color:var(--ink);
-    line-height:1.45;
-    margin-bottom:8px;
-    cursor:pointer;
-    user-select:none;
+    display:flex;align-items:flex-start;gap:7px;
+    font-size:15px;font-weight:700;color:var(--dark);line-height:1.45;
+    margin-bottom:8px;cursor:pointer;user-select:none;
   }
   .doc-label input[type=checkbox]{
-    width:15px;height:15px;margin:2px 0 0;
-    accent-color:var(--brand);
-    cursor:pointer;
-    flex:0 0 auto;
+    width:16px;height:16px;margin:2px 0 0;
+    accent-color:var(--brand);cursor:pointer;flex:0 0 auto;
   }
   .doc-desc{
-    font-size:10px;
-    color:var(--muted);
-    line-height:1.5;
-    margin:0 0 8px;
-    padding-left:22px;
+    font-size:13px;color:var(--muted);line-height:1.5;
+    margin:0 0 8px;padding-left:23px;
   }
   .doc-upload{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:6px;
-    padding:9px;
-    border-radius:9px;
-    border:1px dashed #EF9A9A;
-    background:#FFEBEE;
-    color:var(--brand);
-    font-size:10.5px;
-    font-weight:800;
-    letter-spacing:.03em;
-    cursor:pointer;
-    position:relative;
-    overflow:hidden;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+    padding:10px;border-radius:10px;border:1px dashed #EF9A9A;
+    background:#FFEBEE;color:var(--brand);
+    font-size:15px;font-weight:800;letter-spacing:.03em;
+    cursor:pointer;position:relative;overflow:hidden;
     transition:background .15s ease;
   }
   .doc-upload:active{background:#FFCDD2}
   .doc-upload input[type=file]{
-    position:absolute;inset:0;
-    width:100%;height:100%;
-    opacity:0;cursor:pointer;
+    position:absolute;inset:0;width:100%;height:100%;
+    opacity:0;cursor:pointer;-webkit-appearance:none;appearance:none;
   }
+  .doc-upload input[type=file]::-webkit-file-upload-button{display:none}
   .doc-upload svg{
-    width:14px;height:14px;
-    fill:none;stroke:currentColor;stroke-width:1.8;
+    width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;
     stroke-linecap:round;stroke-linejoin:round;
   }
   .doc-upload.has-file{
-    background:#FFEBEE;
-    border-style:solid;
-    border-color:#EF9A9A;
+    background:#FFEBEE;border-style:solid;border-color:#EF9A9A;
   }
 
-  /* ---------- signature pad ---------- */
+  /* signature */
   .sig-wrap{
-    border:1px solid var(--line);
-    border-radius:10px;
-    background:#fff;
-    overflow:hidden;
-    position:relative;
+    border:1px solid var(--line);border-radius:10px;background:#fff;
+    overflow:hidden;position:relative;margin-top:10px;
   }
   .sig-wrap .sig-hint{
-    position:absolute;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:10.5px;
-    font-weight:600;
-    color:#B8C4CE;
-    pointer-events:none;
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:15px;font-weight:600;color:#B8C4CE;pointer-events:none;
     transition:opacity .2s ease;
   }
   .sig-wrap.signed .sig-hint{opacity:0}
-  canvas.sigpad{
-    display:block;
-    width:100%;
-    height:120px;
-    touch-action:none;
-    cursor:crosshair;
-  }
-  .sig-actions{
-    display:flex;
-    justify-content:flex-end;
-    margin-top:6px;
-  }
+  canvas.sigpad{display:block;width:100%;height:120px;touch-action:none;cursor:crosshair}
+  .sig-actions{display:flex;justify-content:flex-end;margin-top:6px}
   .sig-clear{
-    font-family:inherit;
-    font-size:10px;
-    font-weight:800;
-    letter-spacing:.06em;
-    text-transform:uppercase;
-    color:var(--danger);
-    background:#fff5f1;
-    border:1px solid #f2d6ce;
-    border-radius:7px;
-    padding:6px 11px;
-    cursor:pointer;
+    font-family:inherit;font-size:13px;font-weight:800;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--danger);background:#fff5f1;
+    border:1px solid #f2d6ce;border-radius:7px;padding:6px 11px;cursor:pointer;
     transition:background .15s ease;
   }
   .sig-clear:active{background:#ffe4da}
 
-  /* ---------- consent / notes ---------- */
-  .consent{
-    font-size:10.5px;
-    line-height:1.6;
-    color:var(--muted);
-    margin:0 0 10px;
-  }
+  /* consent / notes */
+  .consent{font-size:15px;line-height:1.6;color:var(--muted);margin:0 0 10px}
   .consent:last-child{margin-bottom:0}
-  .consent strong{color:var(--ink);font-weight:800}
+  .consent strong{color:var(--dark);font-weight:800}
 
-  .notes{
-    margin:8px 0 0;
-    padding-left:16px;
-    font-size:10.5px;
-    line-height:1.65;
-    color:var(--muted);
-  }
+  .notes{margin:8px 0 0;padding-left:16px;font-size:15px;line-height:1.65;color:var(--muted)}
   .notes li{margin-bottom:6px}
   .notes li::marker{color:#EF9A9A}
-  .notes strong{color:var(--ink);font-weight:800}
+  .notes strong{color:var(--dark);font-weight:800}
   .notes:first-child{margin-top:0}
 
-  /* ---------- official use badge ---------- */
+  /* official badge */
   .official{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    padding:9px 11px;
-    background:#F5F6F8;
-    border:1px dashed #D9E1E8;
-    border-radius:10px;
-    margin-bottom:12px;
+    display:flex;align-items:center;gap:8px;padding:9px 11px;
+    background:#F5F6F8;border:1px dashed #D9E1E8;border-radius:10px;margin-bottom:12px;
   }
   .official svg{
-    width:15px;height:15px;
-    fill:none;stroke:var(--gold);stroke-width:1.8;
-    stroke-linecap:round;stroke-linejoin:round;
-    flex:0 0 auto;
+    width:15px;height:15px;fill:none;stroke:var(--gold);stroke-width:1.8;
+    stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;
   }
   .official span{
-    font-size:10px;
-    font-weight:800;
-    letter-spacing:.09em;
-    text-transform:uppercase;
-    color:var(--gold);
-    line-height:1.4;
+    font-size:13px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--gold);line-height:1.4;
   }
 
-  /* ---------- version footer ---------- */
+  /* disclaimer — darker */
   .disclaimer{
-    margin:14px 4px 0;
-    font-size:9px;
-    line-height:1.5;
-    text-align:center;
-    color:#A0AEB9;
+    margin:16px 4px 0;font-size:15px;line-height:1.55;
+    text-align:center;color:var(--dark);font-weight:700;
   }
-  .disclaimer strong{color:#8492A0;font-weight:700}
-  /* ===== BOPEU app styling bridge ===== */
-  .topbar{
-    flex:0 0 auto;
-    background:#fff;
-    border-bottom:3px solid var(--brand);
-    color:var(--ink);
-    padding:12px 18px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-  }
-  .tb-home{display:flex;align-items:center}
-  .tb-logo{width:46px;height:46px;object-fit:contain}
-  .tb-text{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px}
-  .tb-text .brand{margin:0;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:800;opacity:1;line-height:1.2}
-  .tb-text h1{margin:0;font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.01em;line-height:1.25}
+  .disclaimer strong{color:#1A202C;font-weight:800}
 
-  .b-nav{flex:0 0 auto;display:flex;align-items:stretch;background:var(--brand);height:60px;z-index:20}
-  .b-nav a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:#fff;font-size:8.5px;font-weight:700;letter-spacing:.03em}
+  /* bottom nav */
+  .b-nav{
+    flex:0 0 auto;display:flex;align-items:stretch;
+    background:var(--brand);height:60px;z-index:20;
+  }
+  .b-nav a{
+    flex:1;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:3px;
+    text-decoration:none;color:#fff;font-size:15px;font-weight:700;
+    letter-spacing:.02em;
+  }
   .b-nav a img{width:19px;height:19px;object-fit:contain;opacity:.62;filter:brightness(0) invert(1)}
-  .b-nav a span{opacity:.85}
 
-  .form-logos{margin:18px 6px 2px;padding-top:14px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
+  /* form logos — white background */
+  .form-logos{
+    margin:16px 0 4px;padding:14px;background:#fff;
+    border:1px solid var(--line);border-radius:14px;
+    display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;
+  }
   .form-logos img{height:44px;width:auto;object-fit:contain;max-width:46%}
 
+  /* DOB 3-column picker */
+  .dob{display:flex;gap:8px;margin-top:10px}
+  .dob-btn{
+    flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;
+    padding:8px 4px;font-family:inherit;border:1px solid var(--line);border-radius:10px;
+    background:#F7F9FB;cursor:pointer;transition:background .15s ease,border-color .15s ease;
+  }
+  .dob-btn:active{background:#FFEBEE;border-color:#EF9A9A}
+  .dob-btn.set{background:#FFEBEE;border-color:#EF9A9A}
+  .dob-cap{
+    font-size:14px;font-weight:700;letter-spacing:.04em;color:var(--muted);line-height:1.1;
+  }
+  .dob-val{
+    font-size:16px;font-weight:800;color:var(--ink);line-height:1.2;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
+  }
+  .dob-btn.set .dob-val{color:var(--brand)}
+
+  /* centered floating picker */
+  .dp-overlay{
+    position:absolute;inset:0;z-index:90;background:rgba(15,20,30,.45);
+    display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  .dp-overlay[hidden]{display:none}
+  .dp-card{
+    width:100%;max-width:300px;max-height:72%;background:#fff;border-radius:16px;
+    overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.38);
+  }
+  .dp-head{
+    flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:12px 14px;border-bottom:1px solid var(--line);
+    font-size:16px;font-weight:800;color:var(--ink);background:#FFEBEE;
+  }
+  .dp-close{
+    flex:0 0 auto;width:28px;height:28px;border-radius:50%;border:1px solid #f2d6ce;
+    background:#fff;color:var(--brand2);font-size:16px;line-height:1;font-weight:700;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;
+  }
+  .dp-list{
+    flex:1 1 auto;position:relative;overflow-y:auto;overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;padding:8px;
+  }
+  .dp-opt{
+    display:block;width:100%;text-align:left;padding:12px;border:0;border-radius:9px;
+    background:transparent;font-family:inherit;font-size:16px;font-weight:600;
+    color:var(--ink);cursor:pointer;
+  }
+  .dp-opt:active{background:#F4F5F7}
+  .dp-opt.sel{background:#FFEBEE;color:var(--brand);font-weight:800}
 </style>
 </head>
 <body>
@@ -528,7 +327,9 @@
 <div class="phone">
 
   <div class="topbar">
-    <a class="tb-home" href="../index.html?tab=2" title="Back to BOPEU app"><img class="tb-logo" src="../Assets/logo/bopeu_logo.webp" alt="BOPEU"></a>
+    <a class="tb-home" href="../index.html?tab=2" title="Back to BOPEU app">
+      <img class="tb-logo" src="../Assets/logo/bopeu_logo.webp" alt="BOPEU">
+    </a>
     <span class="tb-text">
       <span class="brand">BLIC &middot; Babereki Life Insurance Company</span>
       <h1>Know Your Customer — Individual</h1>
@@ -540,218 +341,128 @@
       <span class="pb-lbl">Form completion</span>
       <span class="pb-pct" id="pbPct">0%</span>
     </div>
-    <div class="pb-track">
-      <div class="pb-fill" id="pbFill"></div>
-    </div>
+    <div class="pb-track"><div class="pb-fill" id="pbFill"></div></div>
   </div>
 
   <div class="scroll" id="scroll">
 
-    <!-- ============ SECTION A: IDENTITY ============ -->
-    <section class="acc open">
+    <!-- SECTION A -->
+    <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Section A &middot; Identity Details</span>
-          <span class="acc-sub">Name, date of birth, ID &amp; nationality</span>
+          <span class="acc-total muted" id="badge-a">0/6</span>
         </span>
-        <span class="acc-total muted" id="badge-a">0/6</span>
+        <span class="acc-sub">Name, date of birth, ID &amp; nationality</span>
       </button>
       <div class="acc-body">
-        <div class="field mb">
-          <label>Title</label>
-          <select data-track>
-            <option value="">— Select title —</option>
-            <option>Mr</option>
-            <option>Mrs</option>
-            <option>Ms</option>
-            <option>Dr</option>
-            <option>Prof</option>
-          </select>
+        <select class="field" data-track aria-label="Title">
+          <option value="" disabled selected>Title</option>
+          <option>Mr</option><option>Mrs</option><option>Ms</option>
+          <option>Dr</option><option>Prof</option>
+        </select>
+
+        <input class="field" type="text" placeholder="Name(s) — full given name" autocomplete="off" data-track aria-label="Names">
+
+        <input class="field" type="text" placeholder="Surname" autocomplete="off" data-track aria-label="Surname">
+
+        <div class="dob" data-dob-target="secADob">
+          <button class="dob-btn" type="button" data-dob="y"><span class="dob-cap">Year</span><span class="dob-val">&mdash;</span></button>
+          <button class="dob-btn" type="button" data-dob="m"><span class="dob-cap">Month</span><span class="dob-val">&mdash;</span></button>
+          <button class="dob-btn" type="button" data-dob="d"><span class="dob-cap">Day</span><span class="dob-val">&mdash;</span></button>
         </div>
-        <div class="field mb">
-          <label>Name(s)</label>
-          <input type="text" placeholder="Full given name(s)" autocomplete="off" data-track>
-        </div>
-        <div class="field mb">
-          <label>Surname</label>
-          <input type="text" placeholder="Surname" autocomplete="off" data-track>
-        </div>
-        <div class="grid-2">
-          <div class="field">
-            <label>Date of Birth</label>
-            <input type="date" data-track>
-          </div>
-          <div class="field">
-            <label>ID / Passport No.</label>
-            <input type="text" inputmode="numeric" placeholder="Omang / Passport" autocomplete="off" data-track>
-          </div>
-        </div>
-        <div class="field">
-          <label>Nationality</label>
-          <input type="text" placeholder="e.g. Motswana" autocomplete="off" data-track>
-        </div>
+
+        <input class="field" type="text" inputmode="numeric" placeholder="ID / Passport No." autocomplete="off" data-track aria-label="ID or Passport">
+
+        <input class="field" type="text" placeholder="Nationality (e.g. Motswana)" autocomplete="off" data-track aria-label="Nationality">
       </div>
     </section>
 
-    <!-- ============ SECTION B: ADDRESS & CONTACT ============ -->
+    <!-- SECTION B -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Section B &middot; Address &amp; Contact</span>
-          <span class="acc-sub">Residence, phone, email &amp; employer</span>
+          <span class="acc-total muted" id="badge-b">0/17</span>
         </span>
-        <span class="acc-total muted" id="badge-b">0/12</span>
+        <span class="acc-sub">Residence, phone, email &amp; employer</span>
       </button>
       <div class="acc-body">
 
         <div class="subhead">Postal Address</div>
-        <div class="field">
-          <label>Postal Address</label>
-          <textarea placeholder="P.O. Box / Private Bag ..." autocomplete="off" data-track></textarea>
-        </div>
+        <textarea class="field" placeholder="Postal Address (P.O. Box / Private Bag)" autocomplete="off" data-track aria-label="Postal Address"></textarea>
 
         <div class="subhead">Physical Address</div>
-        <div class="grid-2">
-          <div class="field">
-            <label>Plot / Ward</label>
-            <input type="text" placeholder="Plot / Ward" autocomplete="off" data-track>
-          </div>
-          <div class="field">
-            <label>Town / Village</label>
-            <input type="text" placeholder="Town / Village" autocomplete="off" data-track>
-          </div>
-        </div>
-        <div class="field">
-          <label>Country</label>
-          <input type="text" placeholder="Country" autocomplete="off" data-track>
-        </div>
+        <input class="field" type="text" placeholder="Plot Number" autocomplete="off" data-track aria-label="Physical Plot Number">
+        <input class="field" type="text" placeholder="Street" autocomplete="off" data-track aria-label="Physical Street">
+        <input class="field" type="text" placeholder="Area / Neighbourhood" autocomplete="off" data-track aria-label="Physical Area">
+        <input class="field" type="text" placeholder="Town / City" autocomplete="off" data-track aria-label="Physical Town">
 
         <div class="subhead">Permanent Address</div>
-        <div class="grid-2">
-          <div class="field">
-            <label>Plot / Ward</label>
-            <input type="text" placeholder="Plot / Ward" autocomplete="off" data-track>
-          </div>
-          <div class="field">
-            <label>Town / Village</label>
-            <input type="text" placeholder="Town / Village" autocomplete="off" data-track>
-          </div>
-        </div>
-        <div class="field mb">
-          <label>Country</label>
-          <input type="text" placeholder="Country" autocomplete="off" data-track>
-        </div>
+        <input class="field" type="text" placeholder="Plot Number" autocomplete="off" data-track aria-label="Permanent Plot Number">
+        <input class="field" type="text" placeholder="Street" autocomplete="off" data-track aria-label="Permanent Street">
+        <input class="field" type="text" placeholder="Area / Neighbourhood" autocomplete="off" data-track aria-label="Permanent Area">
+        <input class="field" type="text" placeholder="Town / City" autocomplete="off" data-track aria-label="Permanent Town">
 
         <div class="subhead">Residence History</div>
-        <div class="field mb">
-          <label>Duration of Residence</label>
-          <input type="text" placeholder="e.g. 5 years" autocomplete="off" data-track>
-        </div>
-        <div class="field">
-          <label>Previous Residence (if less than 2 years)</label>
-          <textarea placeholder="State previous place of residence" autocomplete="off" data-track></textarea>
-        </div>
+        <input class="field" type="text" placeholder="Duration of Residence (e.g. 5 years)" autocomplete="off" data-track aria-label="Duration">
+        <textarea class="field" placeholder="Previous Residence (if less than 2 years)" autocomplete="off" data-track aria-label="Previous Residence"></textarea>
 
         <div class="subhead">Contact Details</div>
-        <div class="grid-2">
-          <div class="field">
-            <label>Telephone Number</label>
-            <input type="tel" inputmode="tel" placeholder="+267 ..." autocomplete="off" data-track>
-          </div>
-          <div class="field">
-            <label>Mobile Number</label>
-            <input type="tel" inputmode="tel" placeholder="+267 ..." autocomplete="off" data-track>
-          </div>
-        </div>
-        <div class="field">
-          <label>Email Address</label>
-          <input type="email" inputmode="email" placeholder="name@example.com" autocomplete="off" data-track>
-        </div>
+        <input class="field" type="tel" inputmode="tel" placeholder="Telephone Number" autocomplete="off" data-track aria-label="Telephone">
+        <input class="field" type="tel" inputmode="tel" placeholder="Mobile Number" autocomplete="off" data-track aria-label="Mobile">
+        <input class="field" type="email" inputmode="email" placeholder="Email Address" autocomplete="off" data-track aria-label="Email">
 
         <div class="subhead">Employment</div>
-        <div class="grid-2">
-          <div class="field">
-            <label>Employer</label>
-            <input type="text" placeholder="Employer" autocomplete="off" data-track>
-          </div>
-          <div class="field">
-            <label>Location of Work</label>
-            <input type="text" placeholder="Location" autocomplete="off" data-track>
-          </div>
-        </div>
-        <div class="field">
-          <label>Telephone (Work)</label>
-          <input type="tel" inputmode="tel" placeholder="+267 ..." autocomplete="off" data-track>
-        </div>
+        <input class="field" type="text" placeholder="Employer" autocomplete="off" data-track aria-label="Employer">
+        <input class="field" type="text" placeholder="Location of Work" autocomplete="off" data-track aria-label="Location">
+        <input class="field" type="tel" inputmode="tel" placeholder="Telephone (Work)" autocomplete="off" data-track aria-label="Work Telephone">
       </div>
     </section>
 
-    <!-- ============ SECTION C: BANKING ============ -->
+    <!-- SECTION C -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Section C &middot; Banking Details</span>
-          <span class="acc-sub">Account, source of funds &amp; business</span>
+          <span class="acc-total muted" id="badge-c">0/7</span>
         </span>
-        <span class="acc-total muted" id="badge-c">0/7</span>
+        <span class="acc-sub">Account, source of funds &amp; business</span>
       </button>
       <div class="acc-body">
-        <div class="field mb">
-          <label>Account Holder Name</label>
-          <input type="text" placeholder="As it appears on account" autocomplete="off" data-track>
-        </div>
-        <div class="field mb">
-          <label>Account Number</label>
-          <input type="text" inputmode="numeric" placeholder="Account number" autocomplete="off" data-track>
-        </div>
-        <div class="grid-2">
-          <div class="field">
-            <label>Bank Name</label>
-            <input type="text" placeholder="Bank" autocomplete="off" data-track>
-          </div>
-          <div class="field">
-            <label>Branch</label>
-            <input type="text" placeholder="Branch" autocomplete="off" data-track>
-          </div>
-        </div>
-        <div class="field mb">
-          <label>Account Type</label>
-          <select data-track>
-            <option value="">— Select type —</option>
-            <option>Savings</option>
-            <option>Current / Cheque</option>
-            <option>Call</option>
-            <option>Fixed Deposit</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Source of Funds</label>
-          <select data-track>
-            <option value="">— Select source —</option>
-            <option>Salary</option>
-            <option>Business</option>
-            <option>Investments</option>
-            <option>Rental Income</option>
-            <option>Pension</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div class="field" style="margin-top:8px">
-          <label>Nature of Business (if funds from sources other than salary)</label>
-          <textarea placeholder="State nature of business" autocomplete="off" data-track></textarea>
-        </div>
+        <input class="field" type="text" placeholder="Account Holder Name" autocomplete="off" data-track aria-label="Account Holder">
+        <input class="field" type="text" inputmode="numeric" placeholder="Account Number" autocomplete="off" data-track aria-label="Account Number">
+        <input class="field" type="text" placeholder="Bank Name" autocomplete="off" data-track aria-label="Bank Name">
+        <input class="field" type="text" placeholder="Branch" autocomplete="off" data-track aria-label="Branch">
+        <select class="field" data-track aria-label="Account Type">
+          <option value="" disabled selected>Account Type</option>
+          <option>Savings</option>
+          <option>Current / Cheque</option>
+          <option>Call</option>
+          <option>Fixed Deposit</option>
+          <option>Other</option>
+        </select>
+        <select class="field" data-track aria-label="Source of Funds">
+          <option value="" disabled selected>Source of Funds</option>
+          <option>Salary</option>
+          <option>Business</option>
+          <option>Investments</option>
+          <option>Rental Income</option>
+          <option>Pension</option>
+          <option>Other</option>
+        </select>
+        <textarea class="field" placeholder="Nature of Business (if funds from sources other than salary)" autocomplete="off" data-track aria-label="Nature of Business"></textarea>
       </div>
     </section>
 
-    <!-- ============ SECTION D: AML / CFT & PIP ============ -->
+    <!-- SECTION D -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Section D &middot; AML / CFT &amp; PIP Status</span>
-          <span class="acc-sub">Anti-money laundering &amp; prominent person</span>
+          <span class="acc-total muted" id="badge-d">0/1</span>
         </span>
-        <span class="acc-total muted" id="badge-d">0/1</span>
+        <span class="acc-sub">Anti-money laundering &amp; prominent person</span>
       </button>
       <div class="acc-body">
 
@@ -783,14 +494,14 @@
       </div>
     </section>
 
-    <!-- ============ CERTIFIED DOCUMENTS CHECKLIST ============ -->
+    <!-- CERTIFIED DOCUMENTS CHECKLIST -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Certified Documents Checklist</span>
-          <span class="acc-sub">Documents required for verification</span>
+          <span class="acc-total muted" id="badge-docs">0/4</span>
         </span>
-        <span class="acc-total muted" id="badge-docs">0/4</span>
+        <span class="acc-sub">Documents required for verification</span>
       </button>
       <div class="acc-body">
 
@@ -870,14 +581,14 @@
       </div>
     </section>
 
-    <!-- ============ SECTION E: DECLARATION ============ -->
+    <!-- SECTION E -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Section E &middot; Declaration</span>
-          <span class="acc-sub">Truthfulness, signature &amp; place</span>
+          <span class="acc-total muted" id="badge-e">0/8</span>
         </span>
-        <span class="acc-total muted" id="badge-e">0/7</span>
+        <span class="acc-sub">Truthfulness, signature &amp; place</span>
       </button>
       <div class="acc-body">
 
@@ -888,65 +599,42 @@
           may be held liable for it.
         </p>
 
-        <div class="field mb">
-          <label>Full Name</label>
-          <input type="text" placeholder="Full name" autocomplete="off" data-track>
+        <input class="field" type="text" placeholder="Full Name" autocomplete="off" data-track aria-label="Full Name">
+
+        <div class="dob" data-dob-target="secEDob">
+          <button class="dob-btn" type="button" data-dob="y"><span class="dob-cap">Year</span><span class="dob-val">&mdash;</span></button>
+          <button class="dob-btn" type="button" data-dob="m"><span class="dob-cap">Month</span><span class="dob-val">&mdash;</span></button>
+          <button class="dob-btn" type="button" data-dob="d"><span class="dob-cap">Day</span><span class="dob-val">&mdash;</span></button>
         </div>
 
-        <div class="field mb">
-          <label>Date</label>
-          <input type="date" data-track>
+        <div class="sig-wrap" id="sigWrap">
+          <div class="sig-hint">Sign here with your finger</div>
+          <canvas class="sigpad" id="sigPad"></canvas>
+        </div>
+        <div class="sig-actions">
+          <button class="sig-clear" type="button" id="sigClear">Clear signature</button>
         </div>
 
-        <div class="field mb">
-          <label>Signature</label>
-          <div class="sig-wrap" id="sigWrap">
-            <div class="sig-hint">Sign here with your finger</div>
-            <canvas class="sigpad" id="sigPad"></canvas>
-          </div>
-          <div class="sig-actions">
-            <button class="sig-clear" type="button" id="sigClear">Clear signature</button>
-          </div>
-        </div>
-
-        <div class="field mb">
-          <label>Place</label>
-          <input type="text" placeholder="Place" autocomplete="off" data-track>
-        </div>
+        <input class="field" type="text" placeholder="Place" autocomplete="off" data-track aria-label="Place">
 
         <div class="subhead">Physical Address (Current)</div>
-        <div class="grid-2">
-          <div class="field">
-            <label>Plot / Ward</label>
-            <input type="text" placeholder="Plot / Ward" autocomplete="off" data-track>
-          </div>
-          <div class="field">
-            <label>Town / Village</label>
-            <input type="text" placeholder="Town / Village" autocomplete="off" data-track>
-          </div>
-        </div>
-        <div class="grid-2">
-          <div class="field">
-            <label>Country</label>
-            <input type="text" placeholder="Country" autocomplete="off" data-track>
-          </div>
-          <div class="field">
-            <label>Occupation</label>
-            <input type="text" placeholder="Occupation" autocomplete="off" data-track>
-          </div>
-        </div>
+        <input class="field" type="text" placeholder="Plot Number" autocomplete="off" data-track aria-label="Current Plot">
+        <input class="field" type="text" placeholder="Street" autocomplete="off" data-track aria-label="Current Street">
+        <input class="field" type="text" placeholder="Area / Neighbourhood" autocomplete="off" data-track aria-label="Current Area">
+        <input class="field" type="text" placeholder="Town / City" autocomplete="off" data-track aria-label="Current Town">
 
+        <input class="field" type="text" placeholder="Occupation" autocomplete="off" data-track aria-label="Occupation">
       </div>
     </section>
 
-    <!-- ============ SECTION F: STATUTORY CONSENT ============ -->
+    <!-- SECTION F -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Section F &middot; Statutory Consent</span>
-          <span class="acc-sub">Data protection &amp; AML/CFT retention</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">Data protection &amp; AML/CFT retention</span>
       </button>
       <div class="acc-body">
         <p class="consent">
@@ -964,14 +652,14 @@
       </div>
     </section>
 
-    <!-- ============ SECTION G: FOR OFFICIAL USE ============ -->
+    <!-- SECTION G -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Section G &middot; For Official Use</span>
-          <span class="acc-sub">Receiving officer &amp; authorisation</span>
+          <span class="acc-total muted">Office</span>
         </span>
-        <span class="acc-total muted">Office</span>
+        <span class="acc-sub">Receiving officer &amp; authorisation</span>
       </button>
       <div class="acc-body">
 
@@ -983,32 +671,23 @@
           <span>To be completed by receiving officer only</span>
         </div>
 
-        <div class="field mb">
-          <label>Receiving Officer Name</label>
-          <input type="text" placeholder="Officer full name" autocomplete="off" data-track>
+        <input class="field" type="text" placeholder="Receiving Officer Name" autocomplete="off" data-track aria-label="Officer Name">
+
+        <div class="dob" data-dob-target="secGDob">
+          <button class="dob-btn" type="button" data-dob="y"><span class="dob-cap">Year</span><span class="dob-val">&mdash;</span></button>
+          <button class="dob-btn" type="button" data-dob="m"><span class="dob-cap">Month</span><span class="dob-val">&mdash;</span></button>
+          <button class="dob-btn" type="button" data-dob="d"><span class="dob-cap">Day</span><span class="dob-val">&mdash;</span></button>
         </div>
 
-        <div class="field mb">
-          <label>Date</label>
-          <input type="date" data-track>
+        <div class="sig-wrap" id="sigWrapOff">
+          <div class="sig-hint">Officer signature</div>
+          <canvas class="sigpad" id="sigPadOff"></canvas>
+        </div>
+        <div class="sig-actions">
+          <button class="sig-clear" type="button" id="sigClearOff">Clear signature</button>
         </div>
 
-        <div class="field mb">
-          <label>Signature</label>
-          <div class="sig-wrap" id="sigWrapOff">
-            <div class="sig-hint">Officer signature</div>
-            <canvas class="sigpad" id="sigPadOff"></canvas>
-          </div>
-          <div class="sig-actions">
-            <button class="sig-clear" type="button" id="sigClearOff">Clear signature</button>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Place</label>
-          <input type="text" placeholder="Place" autocomplete="off" data-track>
-        </div>
-
+        <input class="field" type="text" placeholder="Place" autocomplete="off" data-track aria-label="Officer Place">
       </div>
     </section>
 
@@ -1025,86 +704,163 @@
   </div>
 
   <div class="b-nav">
-    <a href="../index.html?tab=0"><img src="../Assets/icons/timeline_icon.webp" alt="Timeline"><span>Timeline</span></a>
-    <a href="../index.html?tab=1"><img src="../Assets/icons/notices_icon.webp" alt="Updates"><span>Updates</span></a>
-    <a href="../index.html?tab=2"><img src="../Assets/icons/benefits_icon.webp" alt="Benefits"><span>Benefits</span></a>
-    <a href="../index.html?tab=3"><img src="../Assets/icons/claims_icon.webp" alt="Card"><span>Card</span></a>
-    <a href="../index.html?tab=4"><img src="../Assets/icons/menu_icon.webp" alt="Help"><span>Help</span></a>
+    <a href="../index.html?tab=0"><img src="../Assets/icons/timeline_icon.webp" alt="Timeline"></a>
+    <a href="../index.html?tab=1"><img src="../Assets/icons/notices_icon.webp" alt="Updates"></a>
+    <a href="../index.html?tab=2"><img src="../Assets/icons/benefits_icon.webp" alt="Benefits"></a>
+    <a href="../index.html?tab=3"><img src="../Assets/icons/claims_icon.webp" alt="Card"></a>
+    <a href="../index.html?tab=4"><img src="../Assets/icons/menu_icon.webp" alt="Help"></a>
   </div>
 
+  <!-- centered floating picker -->
+  <div class="dp-overlay" id="dpOverlay" hidden>
+    <div class="dp-card" role="dialog" aria-modal="true" aria-labelledby="dpTitle">
+      <div class="dp-head">
+        <span id="dpTitle">Select</span>
+        <button class="dp-close" type="button" id="dpClose" aria-label="Close">&times;</button>
+      </div>
+      <div class="dp-list" id="dpList"></div>
+    </div>
   </div>
+
+</div>
 
 <script>
 (function () {
   "use strict";
 
+  /* ==================== DATE STATES ==================== */
+  var dateStates = {
+    secADob: { y: null, m: null, d: null },
+    secEDob: { y: null, m: null, d: null },
+    secGDob: { y: null, m: null, d: null }
+  };
+  var MONTHS = ["January","February","March","April","May","June",
+                "July","August","September","October","November","December"];
+  var MONTHS_SHORT = ["Jan","Feb","Mar","Apr","May","Jun",
+                      "Jul","Aug","Sep","Oct","Nov","Dec"];
+
+  function daysInMonth(y, m) { return new Date(y || 2000, m, 0).getDate(); }
+
+  function renderDob(container, dob) {
+    var btns = container.querySelectorAll(".dob-btn");
+    var vals = [
+      dob.y ? String(dob.y) : "\u2014",
+      dob.m ? MONTHS_SHORT[dob.m - 1] : "\u2014",
+      dob.d ? String(dob.d) : "\u2014"
+    ];
+    Array.prototype.forEach.call(btns, function (b, i) {
+      var v = b.querySelector(".dob-val");
+      if (v) v.textContent = vals[i];
+      var isSet = (i === 0 && !!dob.y) || (i === 1 && !!dob.m) || (i === 2 && !!dob.d);
+      b.classList.toggle("set", isSet);
+    });
+  }
+
+  /* ==================== PICKER ==================== */
+  var overlay = document.getElementById("dpOverlay");
+  var dpTitle = document.getElementById("dpTitle");
+  var dpList  = document.getElementById("dpList");
+  var picker  = { dob: null, refresh: null, kind: null };
+
+  function closePicker() {
+    overlay.hidden = true;
+    picker.dob = null; picker.refresh = null; picker.kind = null;
+  }
+  function openPicker(dob, refreshFn, kind) {
+    picker.dob = dob; picker.refresh = refreshFn; picker.kind = kind;
+
+    var html = "";
+    var nowY = new Date().getFullYear();
+
+    if (kind === "y") {
+      dpTitle.textContent = "Select Year";
+      for (var y = nowY; y >= nowY - 100; y--) {
+        html += '<button type="button" class="dp-opt' + (dob.y === y ? " sel" : "") +
+                '" data-v="' + y + '">' + y + "</button>";
+      }
+    } else if (kind === "m") {
+      dpTitle.textContent = "Select Month";
+      for (var m = 1; m <= 12; m++) {
+        html += '<button type="button" class="dp-opt' + (dob.m === m ? " sel" : "") +
+                '" data-v="' + m + '">' + MONTHS[m - 1] + "</button>";
+      }
+    } else {
+      dpTitle.textContent = "Select Day";
+      var max = dob.m ? daysInMonth(dob.y || 2000, dob.m) : 31;
+      for (var d = 1; d <= max; d++) {
+        html += '<button type="button" class="dp-opt' + (dob.d === d ? " sel" : "") +
+                '" data-v="' + d + '">' + d + "</button>";
+      }
+    }
+
+    dpList.innerHTML = html;
+    overlay.hidden = false;
+
+    var sel = dpList.querySelector(".dp-opt.sel");
+    if (sel) {
+      dpList.scrollTop = Math.max(0, sel.offsetTop - dpList.clientHeight / 2 + sel.offsetHeight / 2);
+    } else {
+      dpList.scrollTop = 0;
+    }
+  }
+
+  dpList.addEventListener("click", function (e) {
+    var btn = e.target.closest(".dp-opt");
+    if (!btn) return;
+    var dob = picker.dob;
+    if (!dob) { closePicker(); return; }
+    var v = Number(btn.getAttribute("data-v"));
+    if (picker.kind === "y") dob.y = v;
+    else if (picker.kind === "m") dob.m = v;
+    else dob.d = v;
+
+    if (dob.d && dob.m) {
+      var maxDay = daysInMonth(dob.y || 2000, dob.m);
+      if (dob.d > maxDay) dob.d = maxDay;
+    }
+    if (picker.refresh) picker.refresh();
+    closePicker();
+    updateProgress();
+  });
+
+  document.getElementById("dpClose").addEventListener("click", closePicker);
+  overlay.addEventListener("click", function (e) {
+    if (e.target === overlay) closePicker();
+  });
+
   /* ==================== PROGRESS TRACKING ==================== */
-  var tracked = document.querySelectorAll("[data-track]");
-
   function countFilled() {
-    var filled = 0;
+    var tracked = document.querySelectorAll("[data-track]");
+    var filled = 0, total = 0;
+    var radioSeen = {};
+
     tracked.forEach(function (el) {
-      var type = el.type;
-      if (type === "radio") {
-        if (document.querySelector('input[name="' + el.name + '"]:checked')) {
-          /* count radio group once */
-        }
+      if (el.type === "radio") {
+        if (radioSeen[el.name]) return;
+        radioSeen[el.name] = true;
+        total++;
+        if (document.querySelector('input[name="' + el.name + '"]:checked')) filled++;
+      } else if (el.type === "checkbox") {
+        total++;
+        if (el.checked) filled++;
+      } else {
+        total++;
+        if (el.value && el.value.trim() !== "") filled++;
       }
     });
 
-    /* count radios by group */
-    var radioGroups = {};
-    tracked.forEach(function (el) {
-      if (el.type !== "radio") return;
-      radioGroups[el.name] = false;
-    });
-    tracked.forEach(function (el) {
-      if (el.type !== "radio") return;
-      if (document.querySelector('input[name="' + el.name + '"]:checked')) {
-        radioGroups[el.name] = true;
-      }
-    });
-    var radioFilled = 0, radioTotal = 0;
-    Object.keys(radioGroups).forEach(function (k) {
-      radioTotal++;
-      if (radioGroups[k]) radioFilled++;
+    document.querySelectorAll(".dob[data-dob-target]").forEach(function (el) {
+      var target = el.getAttribute("data-dob-target");
+      var dob = dateStates[target];
+      total++;
+      if (dob && dob.y && dob.m && dob.d) filled++;
     });
 
-    /* non-radio */
-    var nonRadioFilled = 0, nonRadioTotal = 0;
-    tracked.forEach(function (el) {
-      if (el.type === "radio") return;
-      nonRadioTotal++;
-      if (el.type === "checkbox") {
-        if (el.checked) nonRadioFilled++;
-      } else if (el.value && el.value.trim() !== "") {
-        nonRadioFilled++;
-      }
-    });
-
-    return {
-      filled: nonRadioFilled + radioFilled,
-      total: nonRadioTotal + radioTotal
-    };
+    return { filled: filled, total: total };
   }
 
-  function updateProgress() {
-    var c = countFilled();
-    var pct = c.total ? Math.round((c.filled / c.total) * 100) : 0;
-
-    document.getElementById("pbPct").textContent = pct + "%";
-    document.getElementById("pbFill").style.width = pct + "%";
-
-    updateBadge("a", "SECTION_A");
-    updateBadge("b", "SECTION_B");
-    updateBadge("c", "SECTION_C");
-    updateBadge("d", "SECTION_D");
-    updateBadge("docs", "DOCS");
-    updateBadge("e", "SECTION_E");
-  }
-
-  /* per-section badges */
   function sectionStats(sectionEl) {
+    if (!sectionEl) return { filled: 0, total: 0 };
     var list = sectionEl.querySelectorAll("[data-track]");
     var radioSeen = {};
     var filled = 0, total = 0;
@@ -1115,25 +871,46 @@
         radioSeen[el.name] = true;
         total++;
         if (document.querySelector('input[name="' + el.name + '"]:checked')) filled++;
+      } else if (el.type === "checkbox") {
+        total++;
+        if (el.checked) filled++;
       } else {
         total++;
-        if (el.type === "checkbox") {
-          if (el.checked) filled++;
-        } else if (el.value && el.value.trim() !== "") {
-          filled++;
-        }
+        if (el.value && el.value.trim() !== "") filled++;
       }
     });
+
+    sectionEl.querySelectorAll(".dob[data-dob-target]").forEach(function (el) {
+      var target = el.getAttribute("data-dob-target");
+      var dob = dateStates[target];
+      total++;
+      if (dob && dob.y && dob.m && dob.d) filled++;
+    });
+
     return { filled: filled, total: total };
   }
 
-  function updateBadge(id, selector) {
+  function updateBadge(id) {
     var el = document.getElementById("badge-" + id);
     if (!el) return;
     var section = el.closest(".acc");
-    if (!section) return;
     var s = sectionStats(section);
     el.textContent = s.filled + "/" + s.total;
+  }
+
+  function updateProgress() {
+    var c = countFilled();
+    var pct = c.total ? Math.round((c.filled / c.total) * 100) : 0;
+
+    document.getElementById("pbPct").textContent = pct + "%";
+    document.getElementById("pbFill").style.width = pct + "%";
+
+    updateBadge("a");
+    updateBadge("b");
+    updateBadge("c");
+    updateBadge("d");
+    updateBadge("docs");
+    updateBadge("e");
   }
 
   /* ==================== SIGNATURE PADS ==================== */
@@ -1144,13 +921,11 @@
     if (!canvas || !wrap) return;
 
     var ctx = canvas.getContext("2d");
-    var drawing = false;
-    var dirty = false;
+    var drawing = false, dirty = false;
 
     function resize() {
       var rect = canvas.getBoundingClientRect();
       var dpr = window.devicePixelRatio || 1;
-      /* preserve existing drawing on resize */
       var prev = dirty ? canvas.toDataURL() : null;
       canvas.width = Math.round(rect.width * dpr);
       canvas.height = Math.round(rect.height * dpr);
@@ -1161,9 +936,7 @@
       ctx.strokeStyle = "#1A202C";
       if (prev) {
         var img = new Image();
-        img.onload = function () {
-          ctx.drawImage(img, 0, 0, rect.width, rect.height);
-        };
+        img.onload = function () { ctx.drawImage(img, 0, 0, rect.width, rect.height); };
         img.src = prev;
       }
     }
@@ -1171,33 +944,22 @@
     function point(evt) {
       var rect = canvas.getBoundingClientRect();
       var src = evt.touches ? evt.touches[0] : evt;
-      return {
-        x: src.clientX - rect.left,
-        y: src.clientY - rect.top
-      };
+      return { x: src.clientX - rect.left, y: src.clientY - rect.top };
     }
-
     function start(evt) {
       evt.preventDefault();
-      drawing = true;
-      dirty = true;
+      drawing = true; dirty = true;
       wrap.classList.add("signed");
       var p = point(evt);
-      ctx.beginPath();
-      ctx.moveTo(p.x, p.y);
+      ctx.beginPath(); ctx.moveTo(p.x, p.y);
     }
     function move(evt) {
       if (!drawing) return;
       evt.preventDefault();
       var p = point(evt);
-      ctx.lineTo(p.x, p.y);
-      ctx.stroke();
+      ctx.lineTo(p.x, p.y); ctx.stroke();
     }
-    function end(evt) {
-      if (!drawing) return;
-      drawing = false;
-      if (evt) evt.preventDefault();
-    }
+    function end(evt) { if (!drawing) return; drawing = false; if (evt) evt.preventDefault(); }
 
     canvas.addEventListener("mousedown", start);
     canvas.addEventListener("mousemove", move);
@@ -1217,10 +979,6 @@
       });
     }
 
-    /* mark signature as part of progress when signed */
-    var observer = new MutationObserver(function () { updateProgress(); });
-    observer.observe(wrap, { attributes: true, attributeFilter: ["class"] });
-
     window.addEventListener("resize", resize);
     resize();
   }
@@ -1239,25 +997,41 @@
     });
   });
 
-  /* ==================== EVENT DELEGATION ==================== */
+  /* ==================== EVENTS ==================== */
   var scroll = document.getElementById("scroll");
 
   scroll.addEventListener("click", function (e) {
     var head = e.target.closest(".acc-head");
-    if (head) {
-      head.parentElement.classList.toggle("open");
+    if (head) { head.parentElement.classList.toggle("open"); return; }
+
+    var dobBtn = e.target.closest(".dob-btn");
+    if (dobBtn) {
+      var container = dobBtn.closest(".dob");
+      if (!container) return;
+      var target = container.getAttribute("data-dob-target");
+      var dob = dateStates[target];
+      if (!dob) return;
+      var kind = dobBtn.getAttribute("data-dob");
+      openPicker(dob, function () { renderDob(container, dob); }, kind);
+      return;
     }
   });
 
-  /* update progress on any change / input */
   scroll.addEventListener("input", updateProgress);
   scroll.addEventListener("change", updateProgress);
 
   /* ==================== BOOT ==================== */
   setupSignaturePad("sigPad", "sigWrap", "sigClear");
   setupSignaturePad("sigPadOff", "sigWrapOff", "sigClearOff");
-  updateProgress();
 
+  /* render any initial values */
+  document.querySelectorAll(".dob[data-dob-target]").forEach(function (el) {
+    var target = el.getAttribute("data-dob-target");
+    var dob = dateStates[target];
+    if (dob) renderDob(el, dob);
+  });
+
+  updateProgress();
 })();
 </script>
 </body>

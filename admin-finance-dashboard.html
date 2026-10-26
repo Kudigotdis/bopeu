@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finance Dashboard · BOPEU Admin</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+body.bop { background:#F2F5F9; }
+.admin-header { background:#1A202C; color:#fff; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:20; }
+.admin-mark { width:32px; height:32px; border-radius:8px; background:#D32F2F; display:grid; place-items:center; font-weight:800; color:#fff; }
+.admin-nav { display:flex; gap:16px; font-size:13px; }
+.admin-nav a { color:#fff; text-decoration:none; font-weight:600; opacity:.85; }
+.admin-layout { display:grid; grid-template-columns:220px 1fr; min-height:calc(100vh - 56px); }
+.admin-side { background:#fff; border-right:1px solid #E2E8F0; padding:16px 12px; }
+.admin-side a { display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:8px; font-size:13px; font-weight:600; color:#4A5568; text-decoration:none; margin-bottom:2px; }
+.admin-side a.active { background:#FFEBEE; color:#D32F2F; }
+.admin-side .role-badge { margin-top:16px; padding:10px 12px; background:#FFEBEE; border-radius:8px; font-size:11px; font-weight:800; color:#D32F2F; text-transform:uppercase; letter-spacing:.06em; }
+.admin-main { padding:24px; max-width:1100px; }
+.kpi-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:14px; margin-bottom:20px; }
+.kpi { background:#fff; border:1px solid #E2E8F0; border-radius:12px; padding:16px; }
+.kpi .lbl { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:#718096; }
+.kpi .val { font-size:26px; font-weight:800; color:#1A202C; margin-top:6px; line-height:1; }
+.kpi .delta { font-size:12px; margin-top:6px; font-weight:600; }
+.kpi .delta.warn { color:#B71C1C; }
+.kpi .delta.ok { color:#2E7D32; }
+@media(max-width:820px){ .admin-layout { grid-template-columns:1fr; } .admin-side { display:none; } }
+</style>
+</head>
+<body class="bop">
+
+<header class="admin-header">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="admin-mark">B</div>
+    <div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Finance & Payroll</div></div>
+  </div>
+  <nav class="admin-nav">
+    <a href="admin-finance-dashboard.html">Finance</a>
+    <a href="admin-login.html">Sign out</a>
+  </nav>
+</header>
+
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-finance-dashboard.html" class="active">💰 Finance Dashboard</a>
+    <a href="admin-payroll-batches.html">📋 Payroll Batches</a>
+    <a href="admin-payroll-batches.html#arrears">⚠️ Arrears Tracker</a>
+    <a href="admin-payroll-batches.html#refunds">↩️ Refund Requests</a>
+    <a href="admin-reports.html">📈 Reports</a>
+    <a href="admin-audit-log.html">📜 Audit Log</a>
+    <div class="role-badge">Signed in as Finance Officer<br><span style="font-weight:600;text-transform:none;letter-spacing:0;">Thabo Motsamai</span></div>
+  </aside>
+
+  <main class="admin-main">
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:4px;">Finance Dashboard</h1>
+    <p style="color:#718096;font-size:14px;margin-bottom:20px;">Payroll reconciliation and subscription tracking — Thabo Motsamai</p>
+
+    <div class="kpi-grid" id="financeKpi"></div>
+
+    <div class="card">
+      <div class="card-header"><h2>Latest payroll batch</h2><a href="admin-payroll-batches.html" style="font-size:13px;font-weight:700;color:#D32F2F;text-decoration:none;">View all →</a></div>
+      <div class="card-body" id="latestBatch"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><h2>Recent reconciliation activity</h2></div>
+      <div class="card-body" id="recentActivity"></div>
+    </div>
+  </main>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('financeKpi').innerHTML =
+    '<div class="kpi"><div class="lbl">Active members</div><div class="val">37,412</div><div class="delta ok">↑ 187 this month</div></div>' +
+    '<div class="kpi"><div class="lbl">This batch rows</div><div class="val">286</div><div class="delta">DEMO-BATCH-2026-10-A</div></div>' +
+    '<div class="kpi"><div class="lbl">Mismatches</div><div class="val">7</div><div class="delta warn">Needs review</div></div>' +
+    '<div class="kpi"><div class="lbl">In arrears</div><div class="val">12</div><div class="delta warn">4 new this week</div></div>' +
+    '<div class="kpi"><div class="lbl">Refund requests</div><div class="val">2</div><div class="delta">Pending approval</div></div>' +
+    '<div class="kpi"><div class="lbl">Total collected (Oct)</div><div class="val">P2.4M</div><div class="delta ok">98.2% of expected</div></div>';
+
+  document.getElementById('latestBatch').innerHTML =
+    '<div class="checklist-item"><span class="chk-num">1</span><span><strong>DEMO-BATCH-2026-10-A</strong> · Uploaded 2026-10-25 by Thabo Motsamai</span></div>' +
+    '<div class="checklist-item"><span class="chk-num">2</span><span>286 rows processed · 279 matched · <strong style="color:#B71C1C;">7 mismatches</strong></span></div>' +
+    '<div class="checklist-item"><span class="chk-num">3</span><span>4 transfer-code exceptions · 2 refunds pending · 1 awaiting approval</span></div>' +
+    '<a class="btn btn-primary mt-md" href="admin-payroll-batches.html" style="display:inline-block;">Open batch reconciliation</a>';
+
+  document.getElementById('recentActivity').innerHTML =
+    '<div class="row"><div class="row-icon">📋</div><div class="row-body"><div class="row-title">Batch DEMO-BATCH-2026-09-C reconciled</div><div class="row-desc">286 rows · 0 mismatches · Approved 2026-09-28</div></div></div>' +
+    '<div class="row"><div class="row-icon">↩️</div><div class="row-body"><div class="row-title">Refund approved — member BOPEU-DEMO-M-003</div><div class="row-desc">P14.30 over-deduction · 2026-09-22</div></div></div>' +
+    '<div class="row"><div class="row-icon">⚠️</div><div class="row-body"><div class="row-title">3 new arrears flagged</div><div class="row-desc">Member transfers between ministries · 2026-10-20</div></div></div>';
+});
+</script>
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

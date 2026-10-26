@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Claim Review · Metropolitan Life Partner</title>
+<link rel="stylesheet" href="design-system.css">
+<style>body.bop{background:#F2F5F9}.p-header{background:#0F7A4D;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20}.p-mark{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-weight:800;color:#fff}.p-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}.p-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}.p-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}.p-side a.active{background:#E7F4EC;color:#0F7A4D}.p-main{padding:24px;max-width:1100px}.admin-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}.admin-table th{background:#F7F9FC;text-align:left;font-size:11px;font-weight:800;text-transform:uppercase;color:#718096;padding:12px;border-bottom:1px solid #E2E8F0}.admin-table td{padding:12px;border-bottom:1px solid #E2E8F0;font-size:13px}</style>
+</head>
+<body class="bop">
+<header class="p-header"><div style="display:flex;align-items:center;gap:10px;"><div class="p-mark">M</div><div><div style="font-weight:800;font-size:14px;">Metropolitan Life</div><div style="font-size:10px;opacity:.8;">Claims Reviewer</div></div></div></header>
+<div class="p-layout">
+  <aside class="p-side">
+    <a href="partner-dashboard.html">📊 Dashboard</a>
+    <a href="partner-claim-review.html" class="active">📋 Claims</a>
+  </aside>
+  <main class="p-main">
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:4px;">Funeral Claim Review</h1>
+    <p style="color:#718096;font-size:14px;margin-bottom:20px;">Claims submitted by BOPEU members via the portal</p>
+    <div class="callout" style="margin-bottom:16px;"><span class="callout-label">Data access</span><p>You see only claim details and member identity. No salary, no SACCOS, no grievance data.</p></div>
+    <table class="admin-table">
+      <thead><tr><th>Claim</th><th>Member</th><th>Deceased</th><th>DoD</th><th>Benefit</th><th>Docs</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        <tr><td><strong>CLM-2026-022</strong></td><td>Jackson Michaels</td><td>Masego Michaels (Spouse)</td><td>2026-10-15</td><td>P60,000</td><td>3/5</td><td><span class="badge badge-red">DOCS MISSING</span></td><td><button class="btn btn-secondary btn-small">View</button></td></tr>
+        <tr><td><strong>CLM-2026-023</strong></td><td>Patricia Kgaope</td><td>Demo-Mother PK</td><td>2026-10-18</td><td>P60,000 (ext.)</td><td>5/5</td><td><span class="badge badge-blue">UNDER REVIEW</span></td><td><button class="btn btn-secondary btn-small">View</button></td></tr>
+        <tr><td><strong>CLM-2026-024</strong></td><td>Kabelo Modise</td><td>Demo-Child KM A</td><td>2026-10-20</td><td>P30,000</td><td>5/5</td><td><span class="badge badge-green">APPROVED</span></td><td><button class="btn btn-secondary btn-small">View</button></td></tr>
+      </tbody>
+    </table>
+  </main>
+</div>
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

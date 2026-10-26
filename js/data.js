@@ -244,6 +244,7 @@ window.BOPEU_CONTACTS = {
    3b. DOCUMENT VAULT - OFFICIAL PDF FORMS (downloads)
    ===================================================== */
 window.BOPEU_PDF_FORMS = [
+    { name: "Member Self-Service Platform Guide", disc: "BOPEU \u00b7 Presentation guide", file: "docs/PDFs/00-BOPEU_Member_Self_Service_Platform_Presentation_Guide.pdf" },
     { name: "Extended Family Application", disc: "BLIC \u00b7 BOPEU Group Funeral Scheme", file: "docs/PDFs/BOPEU_BABEREKI_EXTENDED FAMILY APPLICATION FORM.pdf" },
     { name: "Extended Family (Funeral Cover)", disc: "BOPEU Group Funeral Scheme \u00b7 Bona Life", file: "docs/PDFs/BOPEU_FAMILY - EXTENDED FAMILY.pdf" },
     { name: "Group Life Nomination of Beneficiaries", disc: "BLIC \u00b7 Group Life Assurance form", file: "docs/PDFs/BOPEU_BLIC-APPLICATION - GROUP LIFE ASSURANCE NOMINATION OF BENEFICIARIES.pdf" },
@@ -308,28 +309,209 @@ window.BOPEU_ARTICLES = [
 window.BOPEU_NOTICES = [
     {
         id: "n1",
-        title: "Revised Lending Scheme - Effective 1 March 2026",
+        title: "Revised Lending Scheme \u2014 Effective 1 March 2026",
         body: "Take advantage of the revised lending scheme through our Access Bank partnership. WhatsApp the word 'payslip' to apply.",
-        date: "2026-09-14"
+        date: "2026-09-14",
+        category: "Finance & Lending",
+        cardLabel: "MEMBER FINANCE UPDATE",
+        summary: "BOPEU members can begin an enquiry about the revised lending arrangement with Access Bank by sending the word \u201cpayslip\u201d through the officially confirmed WhatsApp application channel.",
+        intro: "The revised scheme is stated as effective from 1 March 2026. Members considering a loan should first confirm which Access Bank product and offer applies to them, what the current terms are, and whether the repayments fit their budget.",
+        sections: [
+            {
+                heading: "How to begin",
+                paragraphs: [
+                    "Send the single word payslip to the WhatsApp number or official WhatsApp link designated for this BOPEU\u2013Access Bank offer. The app should open the verified recipient with the message prefilled; it must not send documents automatically.",
+                    "A WhatsApp enquiry is an application starting point, not confirmation that a loan has been approved. The bank may ask for supporting information, identity checks and affordability or credit assessments before making a decision.",
+                ],
+            },
+            {
+                heading: "Prepare before you apply",
+                bullets: [
+                    "Have your latest payslip available in case the authorised bank representative requests it.",
+                    "Be ready to provide identity, employment, income and residential information through a verified bank channel if requested.",
+                    "If the application asks for a bank statement or other document, check that the recipient is an official Access Bank Botswana or BOPEU-approved contact before sending it.",
+                    "Keep a copy of your application reference and any written offer or quotation you receive.",
+                ]
+            },
+            {
+                heading: "Understand the cost before accepting",
+                paragraphs: [
+                    "Ask for the amount you qualify to borrow, the interest rate and how it is calculated, all fees and insurance costs, the repayment period, the instalment amount, the total amount repayable, and the consequences of missed payments.",
+                    "Do not judge an offer only by the amount paid into your account or the monthly instalment. Compare the full cost and check how the proposed repayment would affect household expenses, transport, food, school costs and other existing commitments.",
+                ],
+            },
+            {
+                heading: "Who qualifies?",
+                paragraphs: [
+                    "Eligibility, qualifying employer groups, maximum loan amounts, pricing, repayment terms and required documents must be confirmed against the current BOPEU-approved scheme terms and the bank's assessment. Do not assume that BOPEU membership alone guarantees approval or a particular interest rate.",
+                ],
+            },
+        ],
+        importantNotice: "Never send an Omang image, payslip, bank statement, PIN, password or security verification code to an unverified WhatsApp number. Confirm the official Access Bank or BOPEU channel before sharing any document.",
+        memberActions: [
+            "Open the verified Access Bank lending contact from this notice.",
+            "Send the message: payslip.",
+            "Wait for instructions from the verified representative and provide documents only after checking the recipient.",
+            "Read the written offer and repayment schedule before accepting.",
+        ]
     },
     {
         id: "n2",
-        title: "Monthly Subscription Deduction",
+        title: "Monthly Subscription & Funeral Cover Deduction",
         body: "BOPEU subscriptions and funeral cover premiums are deducted via payroll stop-order on the 15th of each month.",
-        date: "2026-09-01"
+        date: "2026-09-01",
+        category: "Membership & Payroll",
+        cardLabel: "PAYROLL REMINDER",
+        summary: "BOPEU membership subscriptions and applicable funeral-cover premiums are processed through the member\u2019s authorised payroll stop-order. Check your payslip and raise any unexpected difference early.",
+        intro: "The monthly payroll stop-order cycle has a stated 15th-of-the-month cut-off in BOPEU membership paperwork. Use your payslip to check which deductions were actually processed and whether the amounts match your membership and cover arrangements.",
+        sections: [
+            {
+                heading: "What may appear on your payslip",
+                paragraphs: [
+                    "The BOPEU membership subscription and any applicable funeral-cover or optional-family-cover premiums are not necessarily the same line item. Check the deduction descriptions and compare them with your membership records, cover selection and latest approved schedule.",
+                    "BOPEU's current public funeral-cover page describes the membership subscription as 1% of basic salary, capped between P39.90 and P100.00. Online and older application forms can show different figures, so use the current amount confirmed by BOPEU payroll and your applicable signed terms rather than assuming an old form is still current.",
+                ],
+            },
+            {
+                heading: "What the 15th means",
+                paragraphs: [
+                    "The supplied notice identifies the 15th of each month as the payroll stop-order date. BOPEU paperwork also refers to the 15th as a monthly cut-off. Depending on your salary group, ministry or employer payroll cycle, a deduction may be processed or visible on the payslip at a different point in the payroll run. Confirm the operative date with your payroll office if the timing is unclear.",
+                ],
+            },
+            {
+                heading: "What members should check",
+                bullets: [
+                    "Confirm that the BOPEU subscription line appears and that the amount matches your current approved contribution.",
+                    "Check funeral-cover deductions separately, including any selected parent or extended-family cover and any premium-waiver option.",
+                    "If you changed ministry, employer, salary group, bank account or payroll details, check that the stop-order followed the change correctly.",
+                    "If the deduction is missing, duplicated or different from the approved amount, keep the relevant payslip and contact your payroll office and BOPEU for reconciliation.",
+                    "If salary deductions stop, do not assume membership or insurance cover remains uninterrupted; ask BOPEU/Babereki to confirm your current status in writing.",
+                ]
+            },
+            {
+                heading: "Why it matters",
+                paragraphs: [
+                    "A missing or incorrect deduction can create uncertainty about membership standing or insurance premiums being received by the relevant administrator. Early reporting gives payroll and BOPEU a chance to investigate the entry, timing or remittance before the issue continues into later months.",
+                ],
+            },
+        ],
+        importantNotice: "Do not calculate optional funeral-cover premiums from a generic notice alone. Premiums depend on the applicable policy, selected dependants and cover options. The current signed membership/policy schedule and confirmation from BOPEU/Babereki take precedence over older forms.",
+        memberActions: [
+            "Review the latest payslip after the monthly payroll run.",
+            "Compare subscription and funeral-cover deductions against your current approved schedule.",
+            "Save the payslip if an entry is missing or incorrect.",
+            "Contact payroll and BOPEU/Babereki to request reconciliation and keep the reference number.",
+        ]
     },
     {
         id: "n3",
         title: "Diagnofirm+ Health Partnership Reminder",
         body: "Present your BOPEU membership card at Diagnofirm Medical Laboratories for exclusive discounts on your lab tests.",
-        date: "2026-08-26"
+        date: "2026-08-26",
+        category: "Health & Member Benefits",
+        cardLabel: "MEMBER BENEFIT",
+        summary: "Present your valid BOPEU membership card when visiting Diagnofirm Medical Laboratories and confirm the applicable member benefit before your test is performed.",
+        intro: "BOPEU members can use the union's Diagnofirm health-partnership information to ask about eligible laboratory services and member concessions. Carry your membership card and verify the terms for the specific service you need before proceeding.",
+        sections: [
+            {
+                heading: "At the laboratory",
+                bullets: [
+                    "Show your current physical or digital BOPEU membership card to the reception or verification desk before payment or service processing.",
+                    "Tell staff that you are asking to use the BOPEU member benefit and ask them to confirm your eligibility using the approved verification process.",
+                    "Ask whether your requested test is included, whether a referral or medical-aid authorisation is needed, and what amount you will be expected to pay.",
+                    "Keep your receipt or transaction reference so any billing or discount query can be followed up.",
+                ]
+            },
+            {
+                heading: "What the published benefit says",
+                paragraphs: [
+                    "BOPEU's benefit reference describes the Diagnofirm partnership as including no 10% patient share and up to 35% off for members without medical aid. The exact application can depend on the service, medical-aid arrangements, exclusions and the partner's current verification rules.",
+                    "\u201cUp to 35%\u201d is a maximum headline, not a promise that every test receives a 35% discount. Have Diagnofirm confirm the actual price or concession for your test before consenting to the service.",
+                ],
+            },
+            {
+                heading: "Protect your health information",
+                paragraphs: [
+                    "Only provide the information needed by the laboratory to identify you, process a test or confirm benefit eligibility. BOPEU membership verification is not the same as permission to display your medical history to the union or other partners.",
+                    "Never share your BOPEU password, security code or another person's membership card. If a discount is not applied, ask the laboratory for a written explanation and report the issue through the app or BOPEU's official contact channel.",
+                ],
+            },
+        ],
+        importantNotice: "Benefits, exclusions, eligible test categories and medical-aid handling must be confirmed with Diagnofirm under the current partner agreement. This notice does not replace a clinician's advice, a medical-aid scheme rule or the laboratory's quotation.",
+        memberActions: [
+            "Open your digital BOPEU membership card before arriving or bring the physical card.",
+            "Tell the reception desk you want to verify the BOPEU benefit before the service is processed.",
+            "Ask for the final price, applicable concession and any exclusions.",
+            "Keep your receipt and report any unresolved eligibility or billing issue.",
+        ]
     },
     {
         id: "n4",
         title: "Funeral Claim Deadline Reminder",
         body: "Funeral claims must be filed within 6 months of death and all documents submitted within 12 months.",
-        date: "2026-08-20"
-    }
+        date: "2026-08-20",
+        category: "Funeral Cover & Family Support",
+        cardLabel: "TIME-SENSITIVE REMINDER",
+        summary: "Notify the funeral-scheme administrator within 6 months of the date of death and submit all required claim documents within 12 months of the date of death.",
+        intro: "If a member or covered dependant passes away, contact the BOPEU/Babereki claims team as soon as possible. Do not wait until all paperwork has been collected before giving the required claim notification: notification and final document submission are separate deadlines.",
+        sections: [
+            {
+                heading: "Two deadlines to remember",
+                paragraphs: [
+                    "Record the date of death, date of first notification, the name of the person or office notified, and the claim reference. Ask for written acknowledgement of the notification and a checklist of outstanding documents.",
+                    "Do not treat the 12-month document period as permission to postpone notifying the claim. The 6-month notification deadline is a separate requirement under the published scheme information.",
+                ],
+                bullets: [
+                    "Claim notification: submit written notification within 6 months from the date of death.",
+                    "Supporting documents: submit the complete set of documents requested for the claim within 12 months from the date of death.",
+                ]
+            },
+            {
+                heading: "Documents commonly requested",
+                paragraphs: [
+                    "This is a preparation list, not a guarantee that every document is required in every case. The administrator may request further proof depending on who died, the relationship to the member, the cover selected and the policy terms. Use the current claim checklist issued for your particular scheme.",
+                ],
+                bullets: [
+                    "Completed claim form supplied by the current claims administrator.",
+                    "Certified death certificate.",
+                    "Certified Omang/identity document for the claimant and proof of age where requested.",
+                    "Proof of relationship to the deceased; for a spouse claim, a marriage certificate may be requested.",
+                    "Birth certificate for a claim involving a minor child, where applicable.",
+                    "Police report where required by the policy, including specified accidental-death circumstances.",
+                    "Claimant's bank-account confirmation or proof of bank account.",
+                    "Affidavit, proof of name change or relationship, KYC form, or further evidence if requested by the administrator.",
+                ]
+            },
+            {
+                heading: "Where to start",
+                paragraphs: [
+                    "Contact the current BOPEU/Babereki claims office or your nearest BOPEU office and say that you need to notify a funeral claim. Ask which claim form, insurer/administrator, certification standard and submission channel apply to your policy. Keep copies of everything submitted and proof of delivery.",
+                    "If some documents are delayed, still make the claim notification within the 6-month period and ask the claims officer to record what is outstanding and when it must be supplied. Do not assume an extension has been granted unless you receive written confirmation.",
+                ],
+            },
+        ],
+        importantNotice: "Deadlines are measured from the date of death. Late notification or incomplete submission may affect admissibility under the policy. Current BOPEU webpages and older/alternate downloadable forms may not name the same insurer or administrator; obtain the current claim pack from BOPEU/Babereki rather than reusing a saved old form.",
+        memberActions: [
+            "Notify the claims administrator in writing as soon as possible and within 6 months of the date of death.",
+            "Request a claim reference and a current document checklist.",
+            "Collect certified documents and any policy-specific evidence requested.",
+            "Submit all required documents within 12 months of the date of death and keep proof of submission.",
+            "Use the app's claim tracker to record follow-ups and outstanding documents, if available.",
+        ]
+    },
+];
+
+/* =====================================================
+   6B. NOTICE GALLERY (Updates / Notices tab)
+   Photos live in Assets/notice_gallery.
+   ===================================================== */
+window.BOPEU_GALLERY = [
+    { src: "Assets/notice_gallery/00.jpg", alt: "BOPEU notice gallery image 1" },
+    { src: "Assets/notice_gallery/01.jpg", alt: "BOPEU notice gallery image 2" },
+    { src: "Assets/notice_gallery/02.jpg", alt: "BOPEU notice gallery image 3" },
+    { src: "Assets/notice_gallery/03.jpg", alt: "BOPEU notice gallery image 4" },
+    { src: "Assets/notice_gallery/04.jpg", alt: "BOPEU notice gallery image 5" },
+    { src: "Assets/notice_gallery/05.jpg", alt: "BOPEU notice gallery image 6" }
 ];
 
 /* =====================================================
@@ -346,177 +528,258 @@ window.BOPEU_TIMELINE_POSTS = [
         tag: "Values",
         cover: "Assets/timeline_feed_images/What_We_Stand_For-Our-Values.jpg",
         paragraphs: [
-            "BOPEU exists to protect workers, strengthen their collective voice and help create fairer workplaces and better conditions of service.",
-            "Every action we take is guided by effective labour representation, protecting workers' rights, fair wages and better working conditions, social justice and equality, empowered and informed members, and worker solidarity."
+            "BOPEU works to protect workers, strengthen their collective voice and promote fairer workplaces and better conditions of service across Botswana.",
+            "A fair workplace does not happen by accident. It takes informed workers, effective representation, constructive engagement and the willingness to stand together. BOPEU helps members understand workplace processes, raise concerns through appropriate channels and participate in collective efforts to improve conditions of service."
         ],
         sections: [
-            { h: "What we stand for", b: "Effective Labour Representation - representing members and protecting their interests in the workplace. Protecting Workers' Rights - protecting and representing workers on labour matters. Fair Wages & Better Working Conditions - working toward fair wages, safe workplaces and improved conditions of service. Social Justice & Equality - promoting social justice, equality and good governance. Empowered & Informed Members - building an empowered, informed and united public workforce. Worker Solidarity - standing in solidarity with workers locally, regionally and internationally." },
-            { h: "What BOPEU actually does for members", b: "Legal Representation, Organising Members, Dispute Resolution, Collective Bargaining, Grievance Management and Disciplinary Hearing Assistance." }
+            { h: "Effective labour representation", b: "BOPEU represents members’ workplace interests through appropriate union structures and processes. Depending on the issue and applicable rules, support may include advice, engagement with an employer, assistance during a grievance or disciplinary process, and representation in formal labour forums." },
+            { h: "Protecting workers’ rights", b: "Members should be treated fairly and consistently, with workplace procedures handled according to applicable laws, policies, collective agreements and conditions of service. Keep records and seek guidance early if you believe a process is unfair." },
+            { h: "Fair wages and better working conditions", b: "BOPEU advocates for fair remuneration, transparent application of employment conditions, safe workplaces and improvements to conditions of service. Salary adjustments, allowances and other changes depend on negotiations, applicable agreements, employer decisions and formal implementation; distinguish proposals from approved outcomes." },
+            { h: "Social justice, equality and good governance", b: "A fair public service values dignity, equal treatment, accountability and access to fair processes. Members should be able to raise concerns without discrimination and understand how workplace decisions are made." },
+            { h: "Empowered and informed members", b: "Read verified notices, access approved documents, attend branch activities and ask questions through the appropriate shop steward or official contact channel." },
+            { h: "Worker solidarity", b: "Solidarity means supporting one another respectfully across ministries, districts, occupations and generations. Share verified information and participate constructively in union activities." },
+            { h: "What BOPEU does", b: "BOPEU’s work may include labour representation, member organising, dispute-resolution guidance, collective bargaining, grievance support and assistance during disciplinary hearings, subject to union procedures, applicable law and the circumstances of each case." }
+        ],
+        memberActions: [
+            "Read official notices and distinguish confirmed decisions from proposals.",
+            "Keep appointment letters, payslips and relevant correspondence for workplace matters.",
+            "Contact the relevant shop steward, regional office or BOPEU channel for case-specific guidance.",
+            "Do not post confidential personnel records or another member’s personal information publicly."
         ]
     },
     {
         id: "member-benefits",
-        title: "Member Benefits - What You Get",
-        teaser: "Your membership card isn't just proof of membership - it connects you to a growing network of financial, health, lifestyle and family benefits.",
+        title: "Member Benefits — What You Get",
+        teaser: "Your membership card connects you to more.",
         date: "September 2026",
-        category: "Membership",
+        category: "Member Benefits",
         tag: "Benefits",
         cover: "Assets/timeline_feed_images/memeber_benefits-What-You-Get.webp",
         paragraphs: [
-            "Your BOPEU membership gives you more. Education, finance, family protection, health, shopping, travel, building materials and connectivity - all in one union card.",
-            "Your membership card isn't just proof of membership - it connects you to a growing network of financial, health, lifestyle and family benefits."
+            "Explore services, schemes and partner offers that may be available to eligible members, from insurance and savings to health, lifestyle and family support.",
+            "BOPEU membership can connect members with union services, Babereki-related financial and insurance services, and participating partner offers. The app is a place to discover current offers, read their terms and learn how to apply or verify eligibility."
         ],
         sections: [
-            { h: "Education", b: "Educational bursary and interest-free financial assistance. Maximum stated amount: P30,000 with a maximum repayment period of 24 months. Can support tuition, study accommodation, books/materials and academic research." },
-            { h: "Home & Building", b: "Archein Hardware partnership for building-material financing: up to P200,000 credit, 4% monthly interest calculated on a reduced balance, up to 36 months, no deposit, and nationwide delivery with free delivery stated for material values above P100,000." },
-            { h: "Financial Services", b: "Access to Babereki SACCOS, BOPEU Direct Loans, Quick Loan, Emergency Loan, Ordinary Loan and Access Bank lending facilities." },
-            { h: "Family Protection", b: "BOPEU Funeral Cover: P60,000 core benefit for member, spouse and qualifying children, no medical tests, and a 12-month premium waiver." },
-            { h: "Health & Wellness", b: "Diagnofirm partnership with no 10% patient share and up to 35% off for members without medical aid. Additional listed benefits: 10% off Virgin Active and 15% off Penalty Box." },
-            { h: "Lifestyle & Shopping", b: "Up to 10% off at selected supermarkets and clothing stores, selected health and wellness discounts, hotel and travel member rates, and hardware and automotive savings." },
-            { h: "Utilities & Connectivity", b: "Airtime schemes, building-material schemes and other partner-based utility benefits." }
+            { h: "Your digital membership card", b: "Your card supports membership identification in approved app and partner workflows. It does not automatically guarantee every discount, loan, insurance benefit or service. Eligibility, good-standing status, partner participation and offer terms may apply." },
+            { h: "Financial and savings services", b: "Members may be able to explore savings and credit services through Babereki SACCOS or other approved arrangements. Before accepting credit, review interest and fees, repayment frequency, total repayment, required documents and consequences of missed payments." },
+            { h: "Insurance and family protection", b: "The app may provide information about funeral cover, group life assurance and other insurance products. Covered persons, benefit amounts, exclusions, waiting periods, premiums and claim requirements are determined by current policy wording and insurer decisions." },
+            { h: "Health and wellness offers", b: "Confirm the provider branch, covered service, discount calculation, exclusions and verification process before booking or paying. A discount is not a substitute for medical advice or medical-aid authorisation where required." },
+            { h: "Shopping, travel and lifestyle offers", b: "Offers may be limited to selected locations, products, dates or payment methods. Check the individual offer card for validity dates, proof-of-membership requirements and terms." },
+            { h: "Educational and family support", b: "Where an assistance programme is open, the app should explain eligibility, eligible expenses, required documents, application windows, assessment criteria and how decisions are communicated. Published maximums are not guaranteed awards." }
+        ],
+        memberActions: [
+            "Open the specific benefit card and read its eligibility criteria and full terms.",
+            "Check offer dates and whether it applies at your intended branch.",
+            "Use only official application and partner contacts shown in the verified app.",
+            "Keep receipts, application references and written confirmations.",
+            "Report outdated partner details through official BOPEU channels."
         ]
     },
     {
         id: "family-protection",
         title: "Complete Family Protection",
-        teaser: "Because your family deserves financial security when it matters most. BOPEU Funeral Cover protects members, spouses and children under 21.",
+        teaser: "Because your family deserves financial security when it matters most.",
         date: "September 2026",
-        category: "Family Protection",
+        category: "Insurance & Family",
         tag: "Insurance",
         cover: "Assets/timeline_feed_images/Complete_Family_Protection-Insurance.jpg",
         paragraphs: [
-            "BOPEU provides a group funeral scheme underwritten by Metropolitan Life, designed to provide financial protection to members and their families when a death occurs.",
-            "Compulsory cover for the member, spouse and qualifying children under 21 comes with a 12-month premium waiver, no medical tests, an easy claims process and quick settlement - all at a discounted rate available specifically to BOPEU members."
+            "Learn how member funeral cover is intended to support eligible families, what to verify in the policy and how to prepare for a claim.",
+            "Bereavement can bring emotional strain alongside urgent practical and financial responsibilities. Funeral cover is designed to help eligible beneficiaries manage some costs associated with a death. Keep policy information and family details up to date."
         ],
         sections: [
-            { h: "Key benefits", b: "P60,000 core benefit. Compulsory cover for the member, spouse and children under 21. 12-month premium waiver included. No medical tests. Easy claims process and quick settlement. Discounted cover specifically available to BOPEU members." },
-            { h: "Subscription", b: "Subscription is 1% of basic salary, with the stated subscription range capped between P39.90 and P100.00 per month." }
+            { h: "Who may be covered?", b: "The supplied programme description refers to members, spouses and children under 21. The exact definition of an eligible spouse or child, age limits, dependency requirements, cover start date and extended-family options must be checked against the current policy schedule." },
+            { h: "Understand the cover", b: "Check the insured benefit amount, premium or payroll deduction, covered lives, exclusions, waiting periods, policy status and claim process. A headline benefit amount may not apply to every member or circumstance." },
+            { h: "Keep family information current", b: "Update spouse and dependent details where required and confirm that names, identity information and relationships match supporting records. Submit sensitive documents only through approved secure channels—not a public timeline or unverified WhatsApp number." },
+            { h: "When a death occurs", b: "Contact the official BOPEU/Babereki claims channel promptly. Ask for the current claim form, notification and submission deadlines, document checklist, claimant requirements and claim reference." },
+            { h: "Documents commonly requested", b: "Depending on policy and circumstances, a claim may require a completed form, official death certificate or accepted proof of death, identity documents for the deceased and claimant, proof of relationship or dependency, policy details and payment instructions. Follow the insurer’s current checklist." },
+            { h: "Track the claim", b: "Record when the claim was reported, documents submitted, receiving office and claim reference. If a document is unavailable or a deadline is at risk, contact the claims team immediately and ask for written guidance." }
         ],
-        funeralTable: {
-            title: "Family benefit structure",
-            rows: [
-                { label: "Member / spouse / qualifying core family", value: "P60,000" },
-                { label: "Child aged 16-21", value: "P60,000" },
-                { label: "Child aged 7-15", value: "P30,000" },
-                { label: "Child aged 0-6", value: "P15,000" }
-            ]
-        }
+        memberActions: [
+            "Confirm who is listed as covered in the current policy.",
+            "Keep official claims contacts available to your family.",
+            "Ask for the latest approved claim deadlines and document checklist.",
+            "Submit documents through verified secure channels and retain a receipt or reference."
+        ]
     },
     {
         id: "financial-support",
         title: "Financial Support When Life Takes an Unexpected Turn",
-        teaser: "Emergency loans, savings and credit through Babereki SACCOS, and BOPEU financial assistance when you need it most.",
+        teaser: "Savings, credit and assistance for life’s difficult moments.",
         date: "September 2026",
-        category: "Financial Support",
+        category: "Financial Wellbeing",
         tag: "Finance",
         cover: "Assets/timeline_feed_images/Emergency_Funds_Available-Union-Loan-Scheme.png",
         paragraphs: [
-            "BOPEU's in-house lending scheme includes an Emergency Loan designed for members who need short-term financial assistance.",
-            "The wider BOPEU benefits information also describes financial-assistance services providing emergency loans and financial advisory services to support members' economic stability."
+            "Find out about available savings, credit and assistance routes, and compare the full cost and repayment obligations before taking a loan.",
+            "Unexpected expenses such as urgent travel, essential repairs or a family emergency can pressure a household budget. BOPEU-related financial services may provide options for eligible members, but every product has its own assessment process, terms and limits. Borrow only after understanding the full cost."
         ],
         sections: [
-            { h: "BOPEU Emergency Loan", b: "P2,001 - P20,000 with a repayment period of up to 24 months. Published information states a minimum loan of P1,000 and an approval turnaround of 48 hours." },
-            { h: "Babereki SACCOS", b: "BOPEU provides access to Babereki SACCOS, described as providing cooperative savings and credit solutions for members." },
-            { h: "Union financial support", b: "BOPEU also provides financial advisory services to support members' economic stability, alongside the Emergency Loan and Babereki savings and credit facilities." }
+            { h: "Babereki SACCOS savings and credit", b: "A savings and credit cooperative can help members build a savings habit and may provide credit under its rules. Ask about membership, minimum savings, withdrawal conditions, loan eligibility, interest or charges, guarantors and repayment terms." },
+            { h: "Emergency lending", b: "Confirm current loan amounts, eligibility, required documents, interest rate and fees, repayment period, repayment method and whether approval times are estimates or service commitments. A stated turnaround is not a guarantee of approval or disbursement." },
+            { h: "Affordability before applying", b: "Compare instalments with take-home pay after essential expenses and existing deductions. Ask for the total amount repayable, not only the monthly instalment. Consider whether repayments remain manageable if overtime or variable income changes." },
+            { h: "Avoid unverified offers and scams", b: "Use contact details published in the verified BOPEU app or official channels. Do not pay unofficial release fees or share a PIN, password or security code." },
+            { h: "If you already have a loan", b: "Check your statement and payslip for deductions, record discrepancies and contact the provider through an official channel. Ask for a written balance and repayment schedule; seek help early if repayment becomes difficult." }
+        ],
+        memberActions: [
+            "Read current product terms and eligibility criteria.",
+            "Request a written quotation or repayment schedule before accepting credit.",
+            "Keep your application reference and official receipts.",
+            "Never share mobile-money PINs, banking passwords or security codes."
         ]
     },
     {
         id: "educational-bursary",
-        title: "Educational Bursary - Interest-Free Support",
-        teaser: "Interest-free financial assistance up to P30,000 for tuition, study accommodation, books, materials and academic research.",
+        title: "Educational Bursary — Interest-Free Support",
+        teaser: "Support your studies, skills and long-term career development.",
         date: "September 2026",
-        category: "Education",
+        category: "Education & Development",
         tag: "Bursary",
         cover: "Assets/timeline_feed_images/educational_bursaries.webp",
         paragraphs: [
-            "BOPEU members can access an educational bursary with interest-free financial assistance. The maximum stated amount is P30,000, repaid over a maximum of 24 months.",
-            "The bursary can support tuition, study accommodation, books and materials, and academic research - giving members a practical route to further their education."
+            "Learn how educational assistance may support eligible study costs, what evidence to prepare and how decisions are communicated.",
+            "Education and professional development can strengthen a member’s career and the public services communities rely on. Where BOPEU or a related scheme offers educational assistance, use the published application rules to understand eligibility, covered expenses and assessment processes."
         ],
         sections: [
-            { h: "What it covers", b: "Tuition, study accommodation, books and materials, and academic research." },
-            { h: "Amount & repayment", b: "Maximum stated amount: P30,000. Maximum repayment period: 24 months. Financial assistance is interest-free." }
+            { h: "What expenses might be considered?", b: "Depending on the approved scheme, eligible costs may include tuition, required study materials, books, study accommodation or academic research. The scheme rules determine coverage; some personal or retrospective expenses may be excluded." },
+            { h: "Who can apply?", b: "Eligibility may depend on membership status, good standing, course or institution, academic progress, available funding and the purpose of the application. Check the current call for applications." },
+            { h: "Prepare a complete application", b: "Common evidence may include an application form, proof of admission or registration, fee statement or quotation, course details, academic records where required, and proof of identity or membership. Follow the current checklist and secure upload route." },
+            { h: "Understand amount and conditions", b: "A published maximum—such as P30,000 in the supplied draft description—is not an automatic award. Approved rules determine the maximum, expenses, assessment criteria, payment method and any reporting or repayment conditions." },
+            { h: "Track your application", b: "Save the submission confirmation and reference. Check whether the application is received, awaiting documents, under review, approved, declined or awaiting disbursement. Respond to requests by the stated deadline." }
+        ],
+        memberActions: [
+            "Read the current bursary notice and confirm the application window.",
+            "Gather only documents requested in the official checklist.",
+            "Submit through the approved channel and save your reference.",
+            "Do not assume funding is approved until you receive formal written confirmation."
         ]
     },
     {
         id: "lifestyle-shopping",
         title: "Lifestyle & Shopping Discounts",
-        teaser: "Up to 10% off at selected supermarkets and clothing stores, plus health, wellness, hotel, travel, hardware and automotive savings.",
+        teaser: "Make your membership work harder in everyday life.",
         date: "September 2026",
-        category: "Lifestyle",
+        category: "Member Benefits",
         tag: "Shopping",
         cover: "Assets/timeline_feed_images/lifestyle_discounts_at_selected_retailers_and_hotels.webp",
         paragraphs: [
-            "Your membership unlocks lifestyle and shopping savings across selected retailers, hotels, health and wellness providers, and more.",
-            "Enjoy up to 10% off at selected supermarkets and clothing stores, plus hotel and travel member rates, hardware and automotive savings, and selected health and wellness discounts."
+            "Discover selected partner offers for shopping, health, wellness, accommodation, travel, hardware and automotive services.",
+            "Participating partner offers can help eligible members save on selected goods and services, provided the offer is active and the purchase meets its conditions. The app should display actual terms so members can check the value before travelling or spending."
         ],
         sections: [
-            { h: "Lifestyle & Shopping", b: "Up to 10% off at selected supermarkets and clothing stores, selected health and wellness discounts, hotel and travel member rates, and hardware and automotive savings." }
+            { h: "Where offers may be available", b: "Depending on active agreements, offers may include selected supermarkets and clothing retailers, health and wellness providers, hotels, travel services, hardware suppliers or automotive businesses. Availability varies by partner, branch, product and date." },
+            { h: "Check the real saving", b: "The supplied brief mentions discounts of up to 10% at selected retailers. “Up to” is a maximum, not a universal discount. Check eligible items, sale-item exclusions, stacking rules and any spending limit." },
+            { h: "How to redeem", b: "Open the partner listing, check validity dates and redemption instructions, then present your digital membership card or required proof before payment. Ask the partner to confirm the discount before completing the purchase." },
+            { h: "Keep offer details current", b: "Offers can change or expire. If a listing is outdated or a branch refuses a published benefit, keep the receipt and report the issue through official BOPEU feedback channels." }
+        ],
+        memberActions: [
+            "Browse the live partner directory before making a trip.",
+            "Check the exact branch, exclusions, dates and redemption steps.",
+            "Present your membership card before payment and review the receipt.",
+            "Report incorrect or expired offers through the app."
         ]
     },
     {
         id: "utilities-connectivity",
         title: "Utilities & Connectivity",
-        teaser: "Airtime schemes, building-material schemes and other partner-based utility benefits for BOPEU members.",
+        teaser: "Airtime schemes, building materials and partner-based savings.",
         date: "September 2026",
-        category: "Utilities",
+        category: "Everyday Savings",
         tag: "Connectivity",
         cover: "Assets/timeline_feed_images/utilities_airtime_and_building_materia_schemes.webp",
         paragraphs: [
-            "Beyond the core benefits, BOPEU members can access convenient utility and connectivity offerings through partner schemes.",
-            "This includes airtime schemes, building-material schemes and other partner-based utility benefits - helping members save on everyday needs."
+            "Explore approved connectivity, building-material and essential-service schemes intended to help members manage everyday costs and home projects.",
+            "Connectivity and home-building expenses are important parts of everyday life in Botswana. Where active agreements exist, members may be able to access selected mobile services, airtime arrangements, building-material offers or other partner benefits through the app."
         ],
         sections: [
-            { h: "Utilities & Connectivity", b: "Airtime schemes, building-material schemes and other partner-based utility benefits." }
+            { h: "Airtime and mobile services", b: "Telecommunications offers may differ by provider, plan, eligibility, SIM type, contract length and coverage. Confirm current price, bundle allowance, validity period, activation requirements, recurring charges and cancellation process." },
+            { h: "Building materials and home projects", b: "A scheme may help members access selected products or payment arrangements, subject to partner stock, pricing, delivery areas and credit conditions. Ask for an itemised quotation, delivery costs, return policy and written payment terms." },
+            { h: "Other utility offers", b: "Each listing should identify the provider, eligible members, product or service, offer dates, exclusions, contact details and support route. Offers can be added or withdrawn." },
+            { h: "Protect your information", b: "Apply only through verified channels. Never share mobile-money PINs, online-banking credentials or security codes. Check payroll deductions or recurring payments against the written agreement and payslip." }
+        ],
+        memberActions: [
+            "Review the exact offer and provider before applying.",
+            "Ask for written pricing and recurring deduction details.",
+            "Confirm delivery, activation and cancellation terms.",
+            "Report a deduction or activation that does not match the agreement."
         ]
     },
     {
         id: "funeral-cover",
         title: "BOPEU Funeral Cover",
-        teaser: "Group funeral cover underwritten by Metropolitan Life - subscription is 1% of basic salary, capped between P39.90 and P100.00.",
+        teaser: "Group funeral protection for eligible members and their families.",
         date: "September 2026",
-        category: "Family Protection",
+        category: "Insurance & Family",
         tag: "Insurance",
         cover: "Assets/timeline_feed_images/insurance_bopeu_funeral_cover.webp",
         paragraphs: [
-            "BOPEU provides a group funeral scheme underwritten by Metropolitan Life, designed to give members and their families financial protection when a death occurs.",
-            "Subscription is 1% of basic salary, with the stated subscription range capped between P39.90 and P100.00 per month. Cover is discounted specifically for BOPEU members."
+            "Understand the group funeral cover described in BOPEU materials, how payroll deductions may work and what to check in the current policy.",
+            "The supplied brief describes a group funeral arrangement underwritten by Metropolitan Life and a premium linked to basic salary, subject to a stated monthly minimum and cap. Verify the current policy schedule and payslip deductions because product terms and payroll arrangements can change."
         ],
         sections: [
-            { h: "How it works", b: "Group funeral scheme underwritten by Metropolitan Life. Compulsory cover for the member, spouse and children under 21, with a 12-month premium waiver included." },
-            { h: "Key benefits", b: "P60,000 core benefit, no medical tests, easy claims process and quick settlement, at a discounted rate available specifically to BOPEU members. Subscription is 1% of basic salary, capped between P39.90 and P100.00." }
+            { h: "Underwriter and policy documents", b: "The supplied description names Metropolitan Life as the underwriter. Confirm the current insurer, policy or group scheme reference, policyholder, effective date and latest member-facing policy wording with BOPEU/Babereki." },
+            { h: "Premium and payroll deduction", b: "The supplied brief describes a contribution of 1% of basic salary, with a minimum of P39.90 and maximum of P100 per month. Treat these as draft figures until confirmed against the current approved schedule. Check separate compulsory fees or group-life deductions and do not combine lines unless the official schedule says to." },
+            { h: "Who is included?", b: "The supplied description refers to the member, spouse and children under 21. Confirm eligibility definitions, waiting periods, exclusions, extensions and benefit amounts from the current policy wording and member cover schedule." },
+            { h: "Claims and settlement", b: "Notify the official claims channel promptly and request the current form, document checklist, claim deadlines and reference number. Settlement depends on policy terms, complete documents, verification and insurer assessment." },
+            { h: "If the deduction looks wrong", b: "Compare payslip lines with the approved contribution schedule and ask BOPEU/Babereki for reconciliation. Keep payslips and written responses. If your employment status or payroll office changes, ask whether the deduction instruction and cover status need revalidation." }
+        ],
+        memberActions: [
+            "Read the latest approved funeral policy summary.",
+            "Confirm covered dependants and the contribution on your payslip.",
+            "Keep official claims contacts available to your family.",
+            "Ask for written clarification of unexplained deductions or cover-status issues."
         ]
     },
     {
         id: "emergency-loan",
         title: "Emergency Loan & Financial Assistance",
-        teaser: "BOPEU's in-house Emergency Loan: P2,001-P20,000, repayable over up to 24 months, with a stated 48-hour approval turnaround.",
+        teaser: "A possible short-term option when urgent expenses arise.",
         date: "September 2026",
-        category: "Financial Support",
+        category: "Financial Wellbeing",
         tag: "Finance",
         cover: "Assets/timeline_feed_images/finance_financial_assistance.webp",
         paragraphs: [
-            "BOPEU's in-house lending scheme includes an Emergency Loan designed for members who need short-term financial assistance.",
-            "The wider BOPEU benefits information describes financial-assistance services providing emergency loans and financial advisory services to support members' economic stability."
+            "Review the emergency-loan range described in the supplied brief and verify current eligibility, costs and approval timelines before applying.",
+            "An urgent medical expense, essential repair or unexpected family cost can pressure a household budget. The supplied brief describes a BOPEU in-house emergency loan, but members should verify current terms before applying. Credit is a commitment: an application may be declined, and an indicative processing time does not guarantee approval or payment."
         ],
         sections: [
-            { h: "Emergency Loan", b: "P2,001 - P20,000 with a repayment period of up to 24 months. Published information states a minimum loan of P1,000 and an approval turnaround of 48 hours." },
-            { h: "Financial assistance", b: "BOPEU provides financial advisory services alongside emergency lending to support members' economic stability." }
+            { h: "Loan amount and term in the supplied brief", b: "The source brief describes a range of P2,001 to P20,000, repayment over up to 24 months and a stated 48-hour approval turnaround. Treat these as unverified draft details until BOPEU publishes current approved terms. Confirm whether any timeframe refers to review, approval or disbursement." },
+            { h: "Check the full cost", b: "Request the interest rate, all fees, total amount repayable, repayment schedule, late-payment consequences and early-settlement rules in writing. Compare the instalment with take-home pay after existing deductions and essential expenses." },
+            { h: "Prepare the application", b: "Use the official checklist. Depending on the product, this may include proof of identity, membership status, payslip or income evidence, payout details and consent to verify information. Submit financial information only through approved secure processes." },
+            { h: "After applying", b: "Save the application reference and monitor its status. Respond to requests through official channels. Do not pay unofficial fees to an individual promising approval, and never share a PIN or security code." },
+            { h: "If repayment becomes difficult", b: "Contact the lender promptly and ask what options are available under the agreement. Keep written records and avoid taking additional high-cost credit without understanding the consequences." }
+        ],
+        memberActions: [
+            "Confirm current approved loan amount, term, rates and fees.",
+            "Request a written repayment schedule and total repayment figure.",
+            "Use the official application channel and save your reference.",
+            "Never treat 48 hours as guaranteed approval or disbursement."
         ]
     },
     {
         id: "babereki-saccos",
-        title: "Babereki SACCOS - Savings & Credit",
-        teaser: "Cooperative savings and credit solutions for BOPEU members through Babereki SACCOS.",
+        title: "Babereki SACCOS — Savings & Credit",
+        teaser: "Cooperative savings and credit solutions for BOPEU members.",
         date: "September 2026",
-        category: "Financial Support",
+        category: "Financial Wellbeing",
         tag: "Savings",
-        cover: "Assets/timeline_feed_images/finane_access_to_babareki_saccos.webp",
+        cover: "Assets/timeline_feed_images/finance_access_to_babareki_saccos.webp",
         paragraphs: [
-            "BOPEU provides access to Babereki SACCOS, described as providing cooperative savings and credit solutions for members.",
-            "Members can use these savings and credit facilities alongside BOPEU Direct Loans and the Emergency Loan to manage short-term financial needs and build savings."
+            "Learn how cooperative savings and credit may support financial planning, and what to ask before joining or applying for credit.",
+            "Savings can create a buffer for planned expenses and unexpected events. A savings and credit cooperative may give eligible members a structured way to save and, subject to its rules, apply for credit. Understand the cooperative’s membership rules and product terms before making financial decisions."
         ],
         sections: [
-            { h: "Babereki SACCOS", b: "Cooperative savings and credit solutions for BOPEU members, supporting economic stability alongside BOPEU's lending and advisory services." }
+            { h: "Build a savings habit", b: "Choose a realistic amount and ask how contributions are recorded, when savings can be withdrawn, whether notice is required, and whether any balance is restricted or pledged against a loan. Keep statements and check transactions regularly." },
+            { h: "Understand membership", b: "Ask about eligibility, joining requirements, member rights and responsibilities, share capital if applicable, account fees, governance, complaint routes and how to update personal details. Read current member rules and fee schedules." },
+            { h: "Credit and loan eligibility", b: "Access to credit is not automatic. It may depend on membership duration, savings history, affordability, guarantors, outstanding obligations and lending policy. Obtain a written offer with rate, fees, instalments, total repayment and consequences of missed payments." },
+            { h: "Statements and reconciliation", b: "Review your SACCOS statement and payroll deductions. If a payment is missing or a balance does not match, contact the official channel and provide date, amount and reference—never send your password or PIN." },
+            { h: "Plan for long-term security", b: "Savings work best with a budget and realistic goals. Keep emergency funds separate from money committed to loan repayments and avoid borrowing more than you can comfortably repay." }
+        ],
+        memberActions: [
+            "Request the current SACCOS membership guide and fee schedule.",
+            "Set a savings target that fits your budget.",
+            "Read loan terms and ask for a written total repayment amount.",
+            "Check statements and report discrepancies through official channels."
         ]
     }
 ];

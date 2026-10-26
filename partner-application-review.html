@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Application Review · Partner Portal</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+body.bop{background:#F2F5F9}
+.p-header{background:#0F7A4D;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+.p-mark{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-weight:800;color:#fff}
+.p-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}
+.p-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}
+.p-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}
+.p-side a.active{background:#E7F4EC;color:#0F7A4D}
+.p-main{padding:24px;max-width:1000px}
+.app-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:16px;margin-bottom:12px}
+@media(max-width:820px){.p-layout{grid-template-columns:1fr}.p-side{display:none}}
+</style>
+</head>
+<body class="bop">
+<header class="p-header">
+  <div style="display:flex;align-items:center;gap:10px;"><div class="p-mark">F</div><div><div style="font-weight:800;font-size:14px;">First Capital Bank</div><div style="font-size:10px;opacity:.8;">Partner Portal</div></div></div>
+  <nav style="display:flex;gap:16px;font-size:13px;"><a href="partner-dashboard.html" style="color:#fff;text-decoration:none;font-weight:600;opacity:.85;">Dashboard</a><a href="partner-login.html" style="color:#fff;text-decoration:none;font-weight:600;opacity:.85;">Sign out</a></nav>
+</header>
+<div class="p-layout">
+  <aside class="p-side">
+    <a href="partner-dashboard.html">📊 Dashboard</a>
+    <a href="partner-offers.html">🎁 Offers</a>
+    <a href="partner-application-review.html" class="active">📋 Application Review</a>
+    <a href="partner-analytics.html">📈 Analytics</a>
+    <a href="partner-documents.html">📄 Documents</a>
+    <a href="partner-users.html">👥 Users</a>
+  </aside>
+  <main class="p-main">
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:4px;">Member-Consented Loan Applications</h1>
+    <p style="color:#718096;font-size:14px;margin-bottom:20px;">Onalenna Setshwane · Babereki + First Capital Bank Facility Officer</p>
+
+    <div class="callout" style="margin-bottom:16px;">
+      <span class="callout-label">Data access</span>
+      <p>You can see only applications where the member has explicitly consented to share their data with First Capital Bank. No search across the BOPEU membership register.</p>
+    </div>
+
+    <div id="appList"></div>
+  </main>
+</div>
+<script>
+var APPS = [
+  { id:'FCB-APP-2026-041', member:'James Dudumang', amount:180000, term:60, purpose:'Consolidate 2 existing loans', status:'pending-review', consent:'2026-10-24 09:15', salary:9650 },
+  { id:'FCB-APP-2026-042', member:'Mercy Peters', amount:85000, term:48, purpose:'Home improvement', status:'pending-review', consent:'2026-10-25 08:42', salary:8120 },
+  { id:'FCB-APP-2026-043', member:'Patricia Kgaope', amount:200000, term:60, purpose:'Debt consolidation', status:'documents-requested', consent:'2026-10-20 14:30', salary:10750 }
+];
+
+var html = '';
+APPS.forEach(a => {
+  var dti = (a.amount / a.term) / a.salary * 100;
+  html += '<div class="app-card">' +
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">' +
+      '<div><div style="font-weight:800;font-size:15px;">' + a.member + '</div><div style="font-size:12px;color:#718096;">' + a.id + ' · Consent given ' + a.consent + '</div></div>' +
+      '<span class="badge badge-blue">' + a.status + '</span>' +
+    '</div>' +
+    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px;">' +
+      '<div class="stat"><div class="stat-label">Amount</div><div class="stat-value" style="font-size:14px;">P ' + a.amount.toLocaleString() + '</div></div>' +
+      '<div class="stat"><div class="stat-label">Term</div><div class="stat-value" style="font-size:14px;">' + a.term + ' months</div></div>' +
+      '<div class="stat"><div class="stat-label">DTI</div><div class="stat-value" style="font-size:14px;color:' + (dti > 40 ? '#B71C1C' : '#2E7D32') + ';">' + dti.toFixed(1) + '%</div></div>' +
+    '</div>' +
+    '<div style="font-size:13px;color:#4A5568;margin-bottom:12px;"><strong>Purpose:</strong> ' + a.purpose + '</div>' +
+    '<div style="display:flex;gap:8px;">' +
+      '<button class="btn btn-secondary btn-small" onclick="alert(\'Request docs (demo).\')">Request docs</button>' +
+      '<button class="btn btn-secondary btn-small" onclick="alert(\'Refer to credit team (demo).\')">Refer to credit</button>' +
+      '<button class="btn btn-primary btn-small" onclick="alert(\'Approve application (demo).\')">Approve</button>' +
+      '<button class="btn btn-ghost btn-small" style="color:#B71C1C;" onclick="alert(\'Decline with reason (demo).\')">Decline</button>' +
+    '</div>' +
+    '</div>';
+});
+document.getElementById('appList').innerHTML = html;
+</script>
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

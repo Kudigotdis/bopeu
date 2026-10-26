@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Import Leads · BOPEU Admin</title><link rel="stylesheet" href="design-system.css">
+<style>
+body.bop{background:#F2F5F9}
+.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+.admin-mark{width:32px;height:32px;border-radius:8px;background:#D32F2F;display:grid;place-items:center;font-weight:800;color:#fff}
+.admin-nav{display:flex;gap:16px;font-size:13px}
+.admin-nav a{color:#fff;text-decoration:none;font-weight:600;opacity:.85}
+.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}
+.admin-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}
+.admin-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}
+.admin-side a.active{background:#FFEBEE;color:#D32F2F}
+.admin-main{padding:24px;max-width:900px}
+@media(max-width:820px){.admin-layout{grid-template-columns:1fr}.admin-side{display:none}}
+</style></head>
+<body class="bop">
+<header class="admin-header">
+  <div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Staff Portal</div></div></div>
+  <nav class="admin-nav"><a href="admin-sales-pipeline.html">Sales</a><a href="admin-members.html">Members</a><a href="admin-login.html">Sign out</a></nav>
+</header>
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-dashboard.html">📊 Dashboard</a>
+    <a href="admin-sales-pipeline.html" class="active">🎯 Sales</a>
+    <a href="admin-members.html">👥 Members</a>
+  </aside>
+  <main class="admin-main">
+    <h1 style="font-size:22px;font-weight:800;margin:0 0 4px;">Bulk lead import</h1>
+    <p style="color:#718096;font-size:14px;margin:0 0 20px;">Upload a CSV with columns: name, phone, email, employer, source, owner.</p>
+    <div class="card"><div class="card-header"><h2>Upload CSV</h2></div><div class="card-body">
+      <input type="file" accept=".csv" id="csvFile" onchange="parseCsv(event)">
+      <div class="callout mt-md"><span class="callout-label">Duplicate detection</span><p>Phone numbers and emails are checked against existing leads. Duplicates are skipped automatically.</p></div>
+      <div id="importPreview" class="mt-md"></div>
+    </div></div>
+  </main>
+</div>
+<script src="js/data.js"></script><script src="js/app.js"></script>
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+<script>
+function parseCsv(e){
+  var file = e.target.files[0]; if (!file) return;
+  var r = new FileReader();
+  r.onload = function(ev){
+    var lines = ev.target.result.split(/\r?\n/).filter(Boolean);
+    var head = lines.shift().split(',').map(function(h){return h.trim().toLowerCase();});
+    var rows = lines.map(function(l){
+      var v = l.split(',');
+      var o = {}; head.forEach(function(h,i){o[h]=(v[i]||'').trim();});
+      return o;
+    });
+    var leads = LocalStore.get('bopeu_leads')||[];
+    var newRows = rows.filter(function(r){
+      return !leads.some(function(l){ return (l.phone && l.phone===r.phone) || (l.email && l.email===r.email); });
+    });
+    document.getElementById('importPreview').innerHTML =
+      '<p class="text-small text-muted">Found '+rows.length+' rows · '+newRows.length+' new · '+(rows.length-newRows.length)+' duplicates skipped.</p>' +
+      '<table style="width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:8px;overflow:hidden;margin-top:12px;"><thead><tr style="background:#F7F9FC;">' +
+      head.map(function(h){return '<th style="text-align:left;padding:8px;font-size:11px;text-transform:uppercase;color:#718096;">'+h+'</th>';}).join('') +
+      '</tr></thead><tbody>' + newRows.slice(0,20).map(function(r){return '<tr>'+head.map(function(h){return '<td style="padding:8px;border-top:1px solid #E2E8F0;">'+(r[h]||'')+'</td>';}).join('')+'</tr>';}).join('') + '</tbody></table>' +
+      '<button class="btn btn-primary mt-md" onclick=\'commitImport('+JSON.stringify(newRows).replace(/'/g,'&#39;')+')\'>Import '+newRows.length+' leads</button>';
+  };
+  r.readAsText(file);
+}
+function commitImport(rows){
+  var leads = LocalStore.get('bopeu_leads')||[];
+  rows.forEach(function(r){
+    leads.push({id:'L-'+Date.now()+'-'+Math.floor(Math.random()*999),name:r.name||'',phone:r.phone||'',email:r.email||'',employer:r.employer||'',source:r.source||'Import',stage:'New',owner:r.owner||'Unassigned'});
+  });
+  LocalStore.set('bopeu_leads',leads);
+  alert(rows.length+' leads imported.');
+  location.href='admin-sales-pipeline.html';
+}
+</script>
+</body></html>

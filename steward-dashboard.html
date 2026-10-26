@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop Steward Dashboard · BOPEU</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+body.bop { background:#F2F5F9; }
+.steward-header { background:#D32F2F; color:#fff; padding:16px; display:flex; align-items:center; justify-content:space-between; }
+.steward-mark { width:40px; height:40px; border-radius:10px; background:rgba(255,255,255,.2); display:grid; place-items:center; font-weight:800; color:#fff; font-size:16px; }
+.steward-badge { background:rgba(255,255,255,.2); padding:4px 10px; border-radius:999px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; }
+.page { padding:20px; max-width:800px; margin:0 auto; }
+.role-notice { background:#FFF3E0; border-left:4px solid #F0A92B; padding:12px 16px; border-radius:8px; font-size:13px; margin-bottom:20px; line-height:1.5; }
+</style>
+</head>
+<body class="bop">
+
+<header class="steward-header">
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="steward-mark">KM</div>
+    <div>
+      <div style="font-weight:800;font-size:14px;">Kabelo Modise</div>
+      <div style="font-size:11px;opacity:.8;">Shop Steward · Francistown / North-East</div>
+    </div>
+  </div>
+  <span class="steward-badge">STEWARD MODE</span>
+</header>
+
+<main class="page">
+
+  <div class="role-notice">
+    <strong>Elevated access enabled.</strong> As a workplace shop steward, you can view and triage cases in <strong>Francistown / North-East</strong> only. You cannot see national payroll files, other regions' members, bank details, or unassigned legal case files.
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Your region at a glance</h2></div>
+    <div class="card-body">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;text-align:center;">
+        <div style="background:#F7F9FC;padding:14px;border-radius:10px;">
+          <div style="font-size:24px;font-weight:800;color:#D32F2F;">42</div>
+          <div style="font-size:11px;color:#718096;text-transform:uppercase;font-weight:800;margin-top:2px;">Members</div>
+        </div>
+        <div style="background:#F7F9FC;padding:14px;border-radius:10px;">
+          <div style="font-size:24px;font-weight:800;color:#D32F2F;">4</div>
+          <div style="font-size:11px;color:#718096;text-transform:uppercase;font-weight:800;margin-top:2px;">Local Cases</div>
+        </div>
+        <div style="background:#F7F9FC;padding:14px;border-radius:10px;">
+          <div style="font-size:24px;font-weight:800;color:#D32F2F;">3</div>
+          <div style="font-size:11px;color:#718096;text-transform:uppercase;font-weight:800;margin-top:2px;">Meetings</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Local cases assigned to you</h2></div>
+    <div class="card-body">
+      <div class="row"><div class="row-icon">🔺</div><div class="row-body"><div class="row-title">Overtime allowance enquiry</div><div class="row-desc">DEMO-GRV-2026-038 · Siyanda Kefitlile · 1 day open</div></div><button class="btn btn-secondary btn-small">Triage</button></div>
+      <div class="row"><div class="row-icon">🔺</div><div class="row-body"><div class="row-title">Shift allowance discrepancy</div><div class="row-desc">DEMO-GRV-2026-041 · Self · 4 days open</div></div><button class="btn btn-primary btn-small">Escalate to National Legal</button></div>
+      <div class="row"><div class="row-icon">✓</div><div class="row-body"><div class="row-title">Uniform allowance query</div><div class="row-desc">DEMO-GRV-2026-027 · Resolved 2026-10-15</div></div><span class="badge badge-green">CLOSED</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Regional meetings</h2></div>
+    <div class="card-body">
+      <div class="row"><div class="row-icon">📅</div><div class="row-body"><div class="row-title">Francistown member check-off Q&A</div><div class="row-desc">2026-11-04 · BOPEU North-East Regional Desk</div></div><button class="btn btn-secondary btn-small">View</button></div>
+      <div class="row"><div class="row-icon">📅</div><div class="row-body"><div class="row-title">Monthly Shop Steward Sync</div><div class="row-desc">2026-10-28 · BOPEU HQ, Gaborone (hybrid)</div></div><button class="btn btn-secondary btn-small">RSVP</button></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><h2>Shop steward tools</h2></div>
+    <div class="card-body">
+      <button class="btn btn-primary btn-block mb-sm" onclick="alert('Start local triage (demo).')">+ Log a new local case</button>
+      <button class="btn btn-secondary btn-block mb-sm" onclick="alert('Schedule branch meeting (demo).')">+ Schedule local meeting</button>
+      <button class="btn btn-secondary btn-block mb-sm" onclick="alert('Request national legal escalation (demo).')">Request National Legal Support</button>
+      <button class="btn btn-secondary btn-block" onclick="location.href='index.html'">← Back to member app</button>
+    </div>
+  </div>
+
+  <div class="callout" style="margin-top:20px;">
+    <span class="callout-label">What you can and cannot do</span>
+    <ul style="margin:8px 0 0;padding-left:20px;font-size:13px;line-height:1.7;">
+      <li>✅ Triage cases in your assigned region</li>
+      <li>✅ Schedule meetings and log attendance</li>
+      <li>✅ Escalate to National Legal with reason</li>
+      <li>❌ Access national payroll or bank files</li>
+      <li>❌ View other regions' member records</li>
+      <li>❌ Approve claims or loans</li>
+    </ul>
+  </div>
+
+</main>
+
+</body>
+</html>

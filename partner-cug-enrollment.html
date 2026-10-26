@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CUG Enrolment · Orange Partner Portal</title>
+<link rel="stylesheet" href="design-system.css">
+<style>body.bop{background:#F2F5F9}.p-header{background:#0F7A4D;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20}.p-mark{width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,.2);display:grid;place-items:center;font-weight:800;color:#fff}.p-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}.p-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}.p-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}.p-side a.active{background:#E7F4EC;color:#0F7A4D}.p-main{padding:24px;max-width:1100px}.admin-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}.admin-table th{background:#F7F9FC;text-align:left;font-size:11px;font-weight:800;text-transform:uppercase;color:#718096;padding:12px;border-bottom:1px solid #E2E8F0}.admin-table td{padding:12px;border-bottom:1px solid #E2E8F0;font-size:13px}</style>
+</head>
+<body class="bop">
+<header class="p-header"><div style="display:flex;align-items:center;gap:10px;"><div class="p-mark">O</div><div><div style="font-weight:800;font-size:14px;">Orange Botswana</div><div style="font-size:10px;opacity:.8;">Partner Portal</div></div></div></header>
+<div class="p-layout">
+  <aside class="p-side">
+    <a href="partner-dashboard.html">📊 Dashboard</a>
+    <a href="partner-offers.html">🎁 Offers</a>
+    <a href="partner-cug-enrollment.html" class="active">📱 CUG Enrolment</a>
+    <a href="partner-analytics.html">📈 Analytics</a>
+  </aside>
+  <main class="p-main">
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:4px;">CUG Enrolment Requests</h1>
+    <p style="color:#718096;font-size:14px;margin-bottom:20px;">Members requesting to join the Orange Closed User Group</p>
+    <div class="callout" style="margin-bottom:16px;"><span class="callout-label">Data access</span><p>You see only consented fields: member name, phone, SIM serial. No salary, ID, or other BOPEU data.</p></div>
+    <table class="admin-table">
+      <thead><tr><th>Reference</th><th>Member</th><th>Phone</th><th>Requested plan</th><th>Consented</th><th>Status</th><th></th></tr></thead>
+      <tbody id="cugList"></tbody>
+    </table>
+  </main>
+</div>
+<script>
+var CUGS = [
+  { id:'CUG-2026-019', member:'Jackson Michaels', phone:'+267 7X XXX 101', plan:'BOPEU 10GB', consented:'2026-10-24', status:'awaiting-member' },
+  { id:'CUG-2026-020', member:'Mercy Peters', phone:'+267 7X XXX 104', plan:'BOPEU 5GB', consented:'2026-10-24', status:'ready-to-activate' },
+  { id:'CUG-2026-021', member:'Siyanda Kefitlile', phone:'+267 7X XXX 105', plan:'BOPEU 10GB', consented:'2026-10-22', status:'active' }
+];
+var statusCls = { 'awaiting-member':'badge-grey', 'ready-to-activate':'badge-blue', 'active':'badge-green' };
+document.getElementById('cugList').innerHTML = CUGS.map(c => '<tr><td><strong>' + c.id + '</strong></td><td>' + c.member + '</td><td>' + c.phone + '</td><td>' + c.plan + '</td><td>' + c.consented + '</td><td><span class="badge ' + statusCls[c.status] + '">' + c.status + '</span></td><td><button class="btn btn-secondary btn-small" onclick="alert(\'Activate on Orange network (demo).\')">Activate</button></td></tr>').join('');
+</script>
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+node_modules/
+.kilo/
+.tiermux/
+.design-rules/
+.kilorules
+*.log
+.playwright/
+test-results/
+__pycache__/
+*.pyc

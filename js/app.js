@@ -28,6 +28,23 @@ class LocalStore {
     }
 }
 
+/* Login prompt: only auto-open the login modal once per app session */
+const LoginPrompt = {
+    key: 'bopeu_login_prompted',
+    seen() {
+        try {
+            return sessionStorage.getItem(this.key) === '1';
+        } catch (e) {
+            return false;
+        }
+    },
+    mark() {
+        try {
+            sessionStorage.setItem(this.key, '1');
+        } catch (e) { /* storage unavailable */ }
+    }
+};
+
 const BOPEU_WHATSAPP = '2673214200';
 
 /* =====================================================
@@ -51,12 +68,26 @@ function switchTab(tabIndex) {
 
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
-    if (modal) modal.classList.add('active');
+    if (modal) {
+        modal.classList.add('active');
+        modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
+        return;
+    }
+    // The member app has no staff admin modal. Keep the legacy
+    // "Admin Dashboard" entry point useful by sending it to staff sign-in.
+    if (modalId === 'admin-modal') {
+        window.location.href = 'admin-login.html';
+    }
 }
 
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
-    if (modal) modal.classList.remove('active');
+    if (modal) {
+        modal.classList.remove('active');
+        modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
+    }
 }
 
 function toast(message) {
@@ -94,82 +125,34 @@ function openWhatsapp(message) {
 }
 
 /* =====================================================
-   4. LOGIN / OTP (demo flow)
+   4. LOGIN / SESSION
+   All credential handling lives in js/auth.js so the member,
+   staff and partner portals share one login contract:
+   WhatsApp number + first name + password.
    ===================================================== */
-function requestOtp() {
-    const identifier = document.getElementById('loginIdentifier').value.trim();
-    if (!identifier) {
-        toast('Please enter your Omang or Employee Number.');
-        return;
-    }
-    const otp = String(Math.floor(100000 + Math.random() * 900000));
-    LocalStore.set('bopeu_otp', otp);
-    document.getElementById('otpHint').textContent = 'Demo OTP: ' + otp;
-    toast('OTP sent to your registered mobile number.\n\nDemo OTP: ' + otp);
-}
-
 function doLogin() {
-    const identifier = document.getElementById('loginIdentifier').value.trim();
-    if (!identifier) {
-        toast('Please enter your Omang or Employee Number.');
-        return;
-    }
-    const enteredOtp = document.getElementById('loginOtp').value.trim();
-    const correctOtp = LocalStore.get('bopeu_otp') || '123456';
-    if (enteredOtp !== correctOtp) {
-        toast('Invalid OTP. Try again, or use the demo OTP shown.');
-        return;
-    }
-    finishLogin(identifier);
+    if (window.BOPEUAuth) return window.BOPEUAuth.loginFromForm();
+    toast('Sign-in is still loading. Please try again.');
+    return false;
 }
 
 function skipLogin() {
-    finishLogin('090000111');
-    toast('Signed in with the demo member profile. Complete member registration for full services.');
-}
-
-function finishLogin(identifier) {
-    let profile = loadOnboarding();
-    if (!profile) {
-        const mock = BOPEU_MOCK_MEMBERS.find(m => m.omang === identifier || m.memberNo === identifier || identifier === m.omang);
-        if (mock) {
-            profile = {
-                personal: { firstName: mock.name.split(' ')[0], surname: mock.name.split(' ').slice(1).join(' '), omang: mock.omang, phone: '+267 70 000 000', email: '', dob: '1985-06-15' },
-                employment: {
-                    sectorId: mock.sector, sectorLabel: mock.sectorLabel,
-                    employeeName: mock.employerId, employerLabel: mock.employer,
-                    departmentId: mock.departmentId, jobTitle: mock.jobTitle,
-                    basicSalary: mock.basicSalary
-                },
-                location: { district: mock.district, town: '', area: '', workStation: '' },
-                memberNo: mock.memberNo,
-                joined: mock.joined,
-                status: mock.status
-            };
-            LocalStore.set('bopeu_profile', profile);
-        } else {
-            profile = {
-                personal: { firstName: 'BOPEU', surname: 'Member', omang: identifier, phone: '', email: '', dob: '' },
-                employment: {},
-                location: { district: '', town: '', area: '', workStation: '' },
-                memberNo: BOPEU_STATS.memberNoPrefix + String(1000 + Math.floor(Math.random() * 9000)),
-                joined: new Date().toISOString().slice(0, 10),
-                status: 'pending_verification'
-            };
-            LocalStore.set('bopeu_profile', profile);
-        }
-    }
-    LocalStore.set('bopeu_logged_in', true);
-    closeModal('login-modal');
-    refreshHeader();
-    renderHome();
-    renderMemberCard();
-    toasts();
+    if (window.BOPEUAuth) return window.BOPEUAuth.openDemoProfiles();
+    location.href = 'login.html?demo=1';
+    return false;
 }
 
 function logout() {
+    if (window.BOPEUAuth) return window.BOPEUAuth.logout({ redirect: true });
     LocalStore.remove('bopeu_logged_in');
+    refreshHeader();
     openModal('login-modal');
+}
+
+function handleLoginToggle() {
+    if (window.BOPEUAuth) return window.BOPEUAuth.toggleLogin();
+    if (LocalStore.get('bopeu_logged_in')) logout();
+    else openModal('login-modal');
 }
 
 function toasts() {
@@ -234,7 +217,7 @@ function renderLogoOptions() {
         const src = key === 'file' ? (sel.key === 'file' ? sel.dataUrl : null) : logo.src;
         html +=
             '<button type="button" class="logo-option' + (sel.key === key ? ' selected' : '') + '" onclick="selectLogo(\'' + key + '\')">' +
-            (src ? '<img src="' + src + '" alt="' + esc(logo.label) + '">' : '<div class="status-avatar" style="width:42px;height:42px;font-size:16px;">?</div>') +
+            (src ? '<img src="' + src + '" alt="' + esc(logo.label) + '">' : '<div class="status-avatar" style="width:42px;height:42px;font-size:18px;">?</div>') +
             '<div>' +
             '<div class="lo-title">' + esc(logo.label) + '</div>' +
             '<div class="lo-desc">' + esc(logo.desc) + '</div>' +
@@ -388,7 +371,7 @@ function buildHomeHtml() {
         '<button class="btn btn-secondary" onclick="openModal(\'logo-modal\')" style="margin-bottom:8px;">🎨 Change App Logo</button>' +
         '<button class="btn btn-secondary" onclick="openModal(\'privacy-modal\')" style="margin-bottom:8px;">Privacy Policy</button>' +
         '<button class="btn btn-secondary" onclick="openModal(\'terms-modal\')" style="margin-bottom:8px;">Terms of Service</button>' +
-        '<button class="btn btn-secondary" onclick="openModal(\'admin-modal\')" style="margin-bottom:8px;">Admin Dashboard</button>' +
+        '<button class="btn btn-secondary" onclick="location.href=\'admin-login.html\'" style="margin-bottom:8px;">Staff / Partner sign in</button>' +
         '<button class="btn btn-secondary" onclick="clearLocalData()">Clear Local Data</button>' +
         '</div>';
 
@@ -468,10 +451,64 @@ function emailSupport() {
 /* =====================================================
    8. HEADER / INITIALIZE
    ===================================================== */
+function ensureHeaderToggle() {
+    const header = document.querySelector('.app-header');
+    if (!header || !document.getElementById('login-modal')) return null;
+
+    let toggle = document.getElementById('loginToggleBtn');
+    if (toggle) return toggle;
+
+    toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.id = 'loginToggleBtn';
+    toggle.className = 'btn btn-primary header-login-btn';
+    toggle.setAttribute('onclick', 'handleLoginToggle()');
+    toggle.textContent = 'Login';
+    header.appendChild(toggle);
+    return toggle;
+}
+
 function refreshHeader() {
-    const loggedIn = LocalStore.get('bopeu_logged_in');
+    const authSession = window.BOPEUAuth && typeof window.BOPEUAuth.session === 'function'
+        ? window.BOPEUAuth.session()
+        : null;
+    const loggedIn = !!authSession || !!LocalStore.get('bopeu_logged_in');
+
     const statusDot = document.getElementById('statusDot');
     if (statusDot) statusDot.style.display = loggedIn ? 'block' : 'none';
+
+    const toggle = ensureHeaderToggle();
+    if (toggle) {
+        toggle.textContent = loggedIn ? 'Logout' : 'Login';
+        toggle.classList.toggle('btn-primary', !loggedIn);
+        toggle.classList.toggle('btn-secondary', loggedIn);
+    }
+}
+
+/* Decide when the login modal should auto-open:
+   - never when a member is logged in
+   - on reload
+   - on the first page load of a browser tab/session (e.g. opened via run.bat)
+   - when arriving from outside the app (external referrer)
+   Not on internal navigation between the app's own tabs. */
+function shouldPromptLogin() {
+    if (window.BOPEUAuth && typeof window.BOPEUAuth.session === 'function' && window.BOPEUAuth.session()) return false;
+    if (LocalStore.get('bopeu_logged_in')) return false;
+    if (!document.getElementById('login-modal')) return false;
+
+    const nav = (performance.getEntriesByType && performance.getEntriesByType('navigation')[0]) || null;
+    const isReload = nav ? nav.type === 'reload'
+                         : (performance.navigation && performance.navigation.type === 1);
+    if (isReload) return true;
+
+    if (!LoginPrompt.seen()) return true;
+
+    if (!document.referrer) return false;
+    try {
+        return new URL(document.referrer).origin !== window.location.origin;
+    } catch (e) {
+        return false;
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -482,14 +519,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (dataSaver) {
         const box = document.getElementById('dataSaverFlip');
         if (box) box.checked = true;
-        document.getElementById('appContainer').classList.add('data-saver');
+        const appContainer = document.getElementById('appContainer');
+        if (appContainer) appContainer.classList.add('data-saver');
     }
 
     applyAppLogo();
     refreshHeader();
     renderHome();
 
-    if (!LocalStore.get('bopeu_logged_in')) {
+    if (shouldPromptLogin()) {
+        LoginPrompt.mark();
         openModal('login-modal');
     }
 });

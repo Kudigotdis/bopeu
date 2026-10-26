@@ -1,0 +1,442 @@
+{
+  "schema_version": "1.0.0",
+  "content_type": "bopeu_notice_cards",
+  "locale": "en-BW",
+  "country": "Botswana",
+  "currency": "BWP",
+  "generated_on": "2026-10-25",
+  "instructions": {
+    "rendering": "Render each item as a notice card. Show title, category, summary, published/effective date, priority, and call-to-action. Expand body.sections in order. Render member_actions as a checklist or numbered steps. Render important_notice as a visually distinct caution. Do not display internal verification fields to ordinary members.",
+    "publication_guard": "Check each item's verification.publication_status. Do not show a WhatsApp CTA until its recipient number or official deep link has been verified and configured.",
+    "source_policy": "Partner terms, rates, deadlines and document requirements can change. Use the current signed policy and current partner-approved terms if they differ from this notice."
+  },
+  "items": [
+    {
+      "id": "notice-lending-access-bank-2026-03",
+      "slug": "revised-lending-scheme-access-bank",
+      "title": "Revised Lending Scheme — Effective 1 March 2026",
+      "category": "Finance & Lending",
+      "card_label": "MEMBER FINANCE UPDATE",
+      "summary": "BOPEU members can begin an enquiry about the revised lending arrangement with Access Bank by sending the word “payslip” through the officially confirmed WhatsApp application channel.",
+      "body": {
+        "intro": "The revised scheme is stated as effective from 1 March 2026. Members considering a loan should first confirm which Access Bank product and offer applies to them, what the current terms are, and whether the repayments fit their budget.",
+        "sections": [
+          {
+            "heading": "How to begin",
+            "paragraphs": [
+              "Send the single word payslip to the WhatsApp number or official WhatsApp link designated for this BOPEU–Access Bank offer. The app should open the verified recipient with the message prefilled; it must not send documents automatically.",
+              "A WhatsApp enquiry is an application starting point, not confirmation that a loan has been approved. The bank may ask for supporting information, identity checks and affordability or credit assessments before making a decision."
+            ]
+          },
+          {
+            "heading": "Prepare before you apply",
+            "bullets": [
+              "Have your latest payslip available in case the authorised bank representative requests it.",
+              "Be ready to provide identity, employment, income and residential information through a verified bank channel if requested.",
+              "If the application asks for a bank statement or other document, check that the recipient is an official Access Bank Botswana or BOPEU-approved contact before sending it.",
+              "Keep a copy of your application reference and any written offer or quotation you receive."
+            ]
+          },
+          {
+            "heading": "Understand the cost before accepting",
+            "paragraphs": [
+              "Ask for the amount you qualify to borrow, the interest rate and how it is calculated, all fees and insurance costs, the repayment period, the instalment amount, the total amount repayable, and the consequences of missed payments.",
+              "Do not judge an offer only by the amount paid into your account or the monthly instalment. Compare the full cost and check how the proposed repayment would affect household expenses, transport, food, school costs and other existing commitments."
+            ]
+          },
+          {
+            "heading": "Who qualifies?",
+            "paragraphs": [
+              "Eligibility, qualifying employer groups, maximum loan amounts, pricing, repayment terms and required documents must be confirmed against the current BOPEU-approved scheme terms and the bank's assessment. Do not assume that BOPEU membership alone guarantees approval or a particular interest rate."
+            ]
+          }
+        ],
+        "important_notice": "Never send an Omang image, payslip, bank statement, PIN, password or security verification code to an unverified WhatsApp number. BOPEU and the bank should confirm the official application channel before this card is published."
+      },
+      "member_actions": [
+        "Open the verified Access Bank lending contact from this notice.",
+        "Send the message: payslip.",
+        "Wait for instructions from the verified representative and provide documents only after checking the recipient.",
+        "Read the written offer and repayment schedule before accepting."
+      ],
+      "cta": {
+        "label": "WhatsApp “payslip” to enquire",
+        "action": "open_whatsapp",
+        "recipient_phone": null,
+        "prefill_text": "payslip",
+        "enabled": false,
+        "disabled_reason": "The BOPEU-approved WhatsApp recipient for this specific offer has not been verified in the source information supplied. Configure the recipient or official deep link before enabling this button.",
+        "fallback": {
+          "label": "Contact Access Bank Botswana",
+          "action": "open_url",
+          "url": "https://botswana.accessbankplc.com/contact-us"
+        }
+      },
+      "metadata": {
+        "target_audience": [
+          "active_members",
+          "eligible_public_employees"
+        ],
+        "tags": [
+          "Access Bank",
+          "loan",
+          "payslip",
+          "financial assistance",
+          "affordability"
+        ],
+        "priority": "normal",
+        "effective_date": "2026-03-01",
+        "expiry_date": null,
+        "suggested_read_time_seconds": 100,
+        "allow_member_sharing": true,
+        "requires_login": false
+      },
+      "verification": {
+        "publication_status": "review_required",
+        "facts_from_user_brief": [
+          "The BOPEU lending notice says the revised scheme is effective 1 March 2026.",
+          "The supplied brief instructs members to WhatsApp the word payslip."
+        ],
+        "official_reference": "Access Bank Botswana publishes personal-loan information and official contact channels, but the exact BOPEU scheme-specific WhatsApp recipient and the revised partner offer details were not independently confirmed.",
+        "must_confirm_before_publish": [
+          "BOPEU and Access Bank approval of the scheme name and effective date",
+          "Scheme-specific WhatsApp recipient or official deep link",
+          "Eligible member/employer categories",
+          "Current rates, fees, insurance, loan limits, tenure and total-cost examples",
+          "Required documents and approved application process",
+          "Offer validity or review date"
+        ],
+        "sources": [
+          {
+            "label": "Access Bank Botswana — Personal Loan",
+            "url": "https://botswana.accessbankplc.com/personal/borrowing/personal-loan"
+          },
+          {
+            "label": "Access Bank Botswana — Contact Us",
+            "url": "https://botswana.accessbankplc.com/contact-us"
+          }
+        ],
+        "last_checked": "2026-10-25"
+      }
+    },
+    {
+      "id": "notice-monthly-subscription-stop-order",
+      "slug": "monthly-subscription-deduction",
+      "title": "Monthly Subscription & Funeral Cover Deduction",
+      "category": "Membership & Payroll",
+      "card_label": "PAYROLL REMINDER",
+      "summary": "BOPEU membership subscriptions and applicable funeral-cover premiums are processed through the member’s authorised payroll stop-order. Check your payslip and raise any unexpected difference early.",
+      "body": {
+        "intro": "The monthly payroll stop-order cycle has a stated 15th-of-the-month cut-off in BOPEU membership paperwork. Use your payslip to check which deductions were actually processed and whether the amounts match your membership and cover arrangements.",
+        "sections": [
+          {
+            "heading": "What may appear on your payslip",
+            "paragraphs": [
+              "The BOPEU membership subscription and any applicable funeral-cover or optional-family-cover premiums are not necessarily the same line item. Check the deduction descriptions and compare them with your membership records, cover selection and latest approved schedule.",
+              "BOPEU's current public funeral-cover page describes the membership subscription as 1% of basic salary, capped between P39.90 and P100.00. Online and older application forms can show different figures, so use the current amount confirmed by BOPEU payroll and your applicable signed terms rather than assuming an old form is still current."
+            ]
+          },
+          {
+            "heading": "What the 15th means",
+            "paragraphs": [
+              "The supplied notice identifies the 15th of each month as the payroll stop-order date. BOPEU paperwork also refers to the 15th as a monthly cut-off. Depending on your salary group, ministry or employer payroll cycle, a deduction may be processed or visible on the payslip at a different point in the payroll run. Confirm the operative date with your payroll office if the timing is unclear."
+            ]
+          },
+          {
+            "heading": "What members should check",
+            "bullets": [
+              "Confirm that the BOPEU subscription line appears and that the amount matches your current approved contribution.",
+              "Check funeral-cover deductions separately, including any selected parent or extended-family cover and any premium-waiver option.",
+              "If you changed ministry, employer, salary group, bank account or payroll details, check that the stop-order followed the change correctly.",
+              "If the deduction is missing, duplicated or different from the approved amount, keep the relevant payslip and contact your payroll office and BOPEU for reconciliation.",
+              "If salary deductions stop, do not assume membership or insurance cover remains uninterrupted; ask BOPEU/Babereki to confirm your current status in writing."
+            ]
+          },
+          {
+            "heading": "Why it matters",
+            "paragraphs": [
+              "A missing or incorrect deduction can create uncertainty about membership standing or insurance premiums being received by the relevant administrator. Early reporting gives payroll and BOPEU a chance to investigate the entry, timing or remittance before the issue continues into later months."
+            ]
+          }
+        ],
+        "important_notice": "Do not calculate optional funeral-cover premiums from a generic notice alone. Premiums depend on the applicable policy, selected dependants and cover options. The current signed membership/policy schedule and confirmation from BOPEU/Babereki take precedence over older forms."
+      },
+      "member_actions": [
+        "Review the latest payslip after the monthly payroll run.",
+        "Compare subscription and funeral-cover deductions against your current approved schedule.",
+        "Save the payslip if an entry is missing or incorrect.",
+        "Contact payroll and BOPEU/Babereki to request reconciliation and keep the reference number."
+      ],
+      "cta": {
+        "label": "Report a deduction query",
+        "action": "open_app_form",
+        "form_id": "payroll_deduction_query",
+        "fallback": {
+          "label": "Email BOPEU",
+          "action": "mailto",
+          "email": "info@bopeu.org.bw"
+        }
+      },
+      "metadata": {
+        "target_audience": [
+          "active_members",
+          "members_with_funeral_cover"
+        ],
+        "tags": [
+          "subscription",
+          "payroll",
+          "stop-order",
+          "funeral premium",
+          "payslip"
+        ],
+        "priority": "high",
+        "effective_date": null,
+        "expiry_date": null,
+        "suggested_read_time_seconds": 90,
+        "allow_member_sharing": true,
+        "requires_login": false
+      },
+      "verification": {
+        "publication_status": "review_required",
+        "facts_from_user_brief": [
+          "The brief says subscriptions and funeral cover premiums are deducted via payroll stop-order on the 15th of each month."
+        ],
+        "official_reference": "BOPEU's public funeral-cover page gives a subscription rate of 1% of basic salary with a P39.90–P100.00 cap; membership application materials describe the 15th as a monthly cut-off and describe consequences for repeated missed deductions. Older online material shows differing amounts.",
+        "must_confirm_before_publish": [
+          "Current payroll posting date versus monthly cut-off for each payroll group",
+          "Current subscription cap and deduction codes",
+          "Which funeral premium components are compulsory versus optional under each member's policy",
+          "Current procedure for missed or incorrect deductions",
+          "Current member-status consequences for arrears and reinstatement"
+        ],
+        "sources": [
+          {
+            "label": "BOPEU — Funeral Cover",
+            "url": "https://bopeu.org.bw/funeral-cover.php"
+          },
+          {
+            "label": "BOPEU — Membership Application Form",
+            "url": "https://bopeu.org.bw/download.php?file=membership_application.pdf"
+          },
+          {
+            "label": "BOPEU — Official FAQs",
+            "url": "https://bopeu.org.bw/faqs.php"
+          }
+        ],
+        "last_checked": "2026-10-25"
+      }
+    },
+    {
+      "id": "notice-diagnofirm-health-partnership",
+      "slug": "diagnofirm-health-partnership-reminder",
+      "title": "Diagnofirm+ Health Partnership Reminder",
+      "category": "Health & Member Benefits",
+      "card_label": "MEMBER BENEFIT",
+      "summary": "Present your valid BOPEU membership card when visiting Diagnofirm Medical Laboratories and confirm the applicable member benefit before your test is performed.",
+      "body": {
+        "intro": "BOPEU members can use the union's Diagnofirm health-partnership information to ask about eligible laboratory services and member concessions. Carry your membership card and verify the terms for the specific service you need before proceeding.",
+        "sections": [
+          {
+            "heading": "At the laboratory",
+            "bullets": [
+              "Show your current physical or digital BOPEU membership card to the reception or verification desk before payment or service processing.",
+              "Tell staff that you are asking to use the BOPEU member benefit and ask them to confirm your eligibility using the approved verification process.",
+              "Ask whether your requested test is included, whether a referral or medical-aid authorisation is needed, and what amount you will be expected to pay.",
+              "Keep your receipt or transaction reference so any billing or discount query can be followed up."
+            ]
+          },
+          {
+            "heading": "What the published benefit says",
+            "paragraphs": [
+              "BOPEU's benefit reference describes the Diagnofirm partnership as including no 10% patient share and up to 35% off for members without medical aid. The exact application can depend on the service, medical-aid arrangements, exclusions and the partner's current verification rules.",
+              "“Up to 35%” is a maximum headline, not a promise that every test receives a 35% discount. Have Diagnofirm confirm the actual price or concession for your test before consenting to the service."
+            ]
+          },
+          {
+            "heading": "Protect your health information",
+            "paragraphs": [
+              "Only provide the information needed by the laboratory to identify you, process a test or confirm benefit eligibility. BOPEU membership verification is not the same as permission to display your medical history to the union or other partners.",
+              "Never share your BOPEU password, security code or another person's membership card. If a discount is not applied, ask the laboratory for a written explanation and report the issue through the app or BOPEU's official contact channel."
+            ]
+          }
+        ],
+        "important_notice": "Benefits, exclusions, eligible test categories and medical-aid handling must be confirmed with Diagnofirm under the current partner agreement. This notice does not replace a clinician's advice, a medical-aid scheme rule or the laboratory's quotation."
+      },
+      "member_actions": [
+        "Open your digital BOPEU membership card before arriving or bring the physical card.",
+        "Tell the reception desk you want to verify the BOPEU benefit before the service is processed.",
+        "Ask for the final price, applicable concession and any exclusions.",
+        "Keep your receipt and report any unresolved eligibility or billing issue."
+      ],
+      "cta": {
+        "label": "Open my BOPEU membership card",
+        "action": "navigate",
+        "route": "/digital-card",
+        "fallback": {
+          "label": "View BOPEU benefits",
+          "action": "open_url",
+          "url": "https://bopeu.org.bw/"
+        }
+      },
+      "metadata": {
+        "target_audience": [
+          "active_members",
+          "members_with_medical_aid",
+          "members_without_medical_aid"
+        ],
+        "tags": [
+          "Diagnofirm",
+          "health",
+          "laboratory",
+          "membership card",
+          "discount"
+        ],
+        "priority": "normal",
+        "effective_date": null,
+        "expiry_date": null,
+        "suggested_read_time_seconds": 80,
+        "allow_member_sharing": true,
+        "requires_login": false
+      },
+      "verification": {
+        "publication_status": "review_required",
+        "facts_from_user_brief": [
+          "The supplied brief tells members to present the BOPEU membership card at Diagnofirm."
+        ],
+        "official_reference": "BOPEU's benefits reference records the partnership as offering no 10% patient share and up to 35% off for members without medical aid, but service-specific application should be reconfirmed.",
+        "must_confirm_before_publish": [
+          "Current Diagnofirm agreement and exact eligible laboratory services",
+          "Exact meaning and application of the no-10%-patient-share term",
+          "Current discount schedule, exclusions and whether rates vary by test",
+          "Current digital-card verification process",
+          "Contact route for members disputing a discount or bill"
+        ],
+        "sources": [
+          {
+            "label": "BOPEU — Official Website and Member Benefits",
+            "url": "https://bopeu.org.bw/"
+          },
+          {
+            "label": "BOPEU — Official FAQs",
+            "url": "https://bopeu.org.bw/faqs.php"
+          }
+        ],
+        "last_checked": "2026-10-25"
+      }
+    },
+    {
+      "id": "notice-funeral-claim-deadlines",
+      "slug": "funeral-claim-deadline-reminder",
+      "title": "Funeral Claim Deadline Reminder",
+      "category": "Funeral Cover & Family Support",
+      "card_label": "TIME-SENSITIVE REMINDER",
+      "summary": "Notify the funeral-scheme administrator within 6 months of the date of death and submit all required claim documents within 12 months of the date of death.",
+      "body": {
+        "intro": "If a member or covered dependant passes away, contact the BOPEU/Babereki claims team as soon as possible. Do not wait until all paperwork has been collected before giving the required claim notification: notification and final document submission are separate deadlines.",
+        "sections": [
+          {
+            "heading": "Two deadlines to remember",
+            "bullets": [
+              "Claim notification: submit written notification within 6 months from the date of death.",
+              "Supporting documents: submit the complete set of documents requested for the claim within 12 months from the date of death."
+            ],
+            "paragraphs": [
+              "Record the date of death, date of first notification, the name of the person or office notified, and the claim reference. Ask for written acknowledgement of the notification and a checklist of outstanding documents.",
+              "Do not treat the 12-month document period as permission to postpone notifying the claim. The 6-month notification deadline is a separate requirement under the published scheme information."
+            ]
+          },
+          {
+            "heading": "Documents commonly requested",
+            "bullets": [
+              "Completed claim form supplied by the current claims administrator.",
+              "Certified death certificate.",
+              "Certified Omang/identity document for the claimant and proof of age where requested.",
+              "Proof of relationship to the deceased; for a spouse claim, a marriage certificate may be requested.",
+              "Birth certificate for a claim involving a minor child, where applicable.",
+              "Police report where required by the policy, including specified accidental-death circumstances.",
+              "Claimant's bank-account confirmation or proof of bank account.",
+              "Affidavit, proof of name change or relationship, KYC form, or further evidence if requested by the administrator."
+            ],
+            "paragraphs": [
+              "This is a preparation list, not a guarantee that every document is required in every case. The administrator may request further proof depending on who died, the relationship to the member, the cover selected and the policy terms. Use the current claim checklist issued for your particular scheme."
+            ]
+          },
+          {
+            "heading": "Where to start",
+            "paragraphs": [
+              "Contact the current BOPEU/Babereki claims office or your nearest BOPEU office and say that you need to notify a funeral claim. Ask which claim form, insurer/administrator, certification standard and submission channel apply to your policy. Keep copies of everything submitted and proof of delivery.",
+              "If some documents are delayed, still make the claim notification within the 6-month period and ask the claims officer to record what is outstanding and when it must be supplied. Do not assume an extension has been granted unless you receive written confirmation."
+            ]
+          }
+        ],
+        "important_notice": "Deadlines are measured from the date of death. Late notification or incomplete submission may affect admissibility under the policy. Current BOPEU webpages and older/alternate downloadable forms may not name the same insurer or administrator; obtain the current claim pack from BOPEU/Babereki rather than reusing a saved old form."
+      },
+      "member_actions": [
+        "Notify the claims administrator in writing as soon as possible and within 6 months of the date of death.",
+        "Request a claim reference and a current document checklist.",
+        "Collect certified documents and any policy-specific evidence requested.",
+        "Submit all required documents within 12 months of the date of death and keep proof of submission.",
+        "Use the app's claim tracker to record follow-ups and outstanding documents, if available."
+      ],
+      "cta": {
+        "label": "Start a funeral claim enquiry",
+        "action": "open_app_form",
+        "form_id": "funeral_claim_enquiry",
+        "fallback": {
+          "label": "Contact BOPEU",
+          "action": "mailto",
+          "email": "info@bopeu.org.bw"
+        }
+      },
+      "metadata": {
+        "target_audience": [
+          "active_members",
+          "covered_dependants",
+          "family_claimants"
+        ],
+        "tags": [
+          "funeral claim",
+          "deadline",
+          "dependants",
+          "documents",
+          "Babereki"
+        ],
+        "priority": "urgent",
+        "effective_date": null,
+        "expiry_date": null,
+        "suggested_read_time_seconds": 120,
+        "allow_member_sharing": true,
+        "requires_login": false
+      },
+      "verification": {
+        "publication_status": "review_required",
+        "facts_from_user_brief": [
+          "The supplied brief states claims must be filed within 6 months of death and all documents submitted within 12 months."
+        ],
+        "official_reference": "BOPEU's current funeral-cover page and published scheme material state a 6-month claim-notification period and a 12-month document-submission period. Published forms have differing insurer names, so the current claim pack must be confirmed.",
+        "must_confirm_before_publish": [
+          "Current policy wording and exact deadline language",
+          "Current insurer/administrator and correct claims office",
+          "Current claim form and mandatory document list for the scheme shown in-app",
+          "Accepted certification and submission methods",
+          "How the app should handle deceased members' accounts and authorised family representatives"
+        ],
+        "sources": [
+          {
+            "label": "BOPEU — Funeral Cover",
+            "url": "https://bopeu.org.bw/funeral-cover.php"
+          },
+          {
+            "label": "BOPEU — Extended Family Application Form",
+            "url": "https://bopeu.org.bw/resources/extended_family.pdf"
+          },
+          {
+            "label": "BOPEU — Official FAQs",
+            "url": "https://bopeu.org.bw/faqs.php"
+          }
+        ],
+        "last_checked": "2026-10-25"
+      }
+    }
+  ]
+}

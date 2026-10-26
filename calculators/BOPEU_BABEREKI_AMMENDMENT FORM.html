@@ -6,8 +6,9 @@
 <title>BOPEU Funeral Cover Calculator</title>
 <style>
   :root{
-    --ink:#1A202C;
-    --muted:#718096;
+    --ink:#868e96;          /* all text grey */
+    --dark:#2D3748;         /* darker text (disclaimer) */
+    --muted:#868e96;
     --line:#E2E8F0;
     --brand:#D32F2F;
     --brand2:#B71C1C;
@@ -15,7 +16,9 @@
     --soft:#F4F5F7;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html{height:100%}
+  *::-webkit-scrollbar{display:none;width:0;height:0}
+  *{scrollbar-width:none;-ms-overflow-style:none}
+  html,body{height:100%;overflow:hidden}
   body{
     margin:0;
     height:100dvh;
@@ -25,6 +28,7 @@
     align-items:center;
     justify-content:center;
     color:var(--ink);
+    font-size:16px;
   }
   .phone{
     width:100%;
@@ -44,22 +48,41 @@
   /* ---------- header ---------- */
   .topbar{
     flex:0 0 auto;
-    background:linear-gradient(135deg,#D32F2F 0%,#B71C1C 100%);
-    color:#fff;
-    padding:16px 18px 14px;
+    background:#fff;
+    border-bottom:3px solid var(--brand);
+    color:var(--ink);
+    padding:12px 18px;
+    display:flex;
+    align-items:center;
+    gap:12px;
   }
-  .brand{
-    font-size:9.5px;
-    letter-spacing:.18em;
+  .tb-home{display:flex;align-items:center;flex:0 0 auto}
+  .tb-logo{width:46px;height:46px;object-fit:contain}
+  .tb-text{
+    flex:1 1 auto;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    text-align:right;
+    gap:2px;
+  }
+  .tb-text .brand{
+    margin:0;
+    font-size:15px;
+    letter-spacing:.12em;
     text-transform:uppercase;
-    opacity:.78;
-    font-weight:700;
-  }
-  .topbar h1{
-    margin:3px 0 0;
-    font-size:17px;
+    color:var(--muted);
     font-weight:800;
+    line-height:1.2;
+  }
+  .tb-text h1{
+    margin:0;
+    font-size:16px;
+    font-weight:800;
+    color:var(--ink);
     letter-spacing:-.01em;
+    line-height:1.25;
   }
 
   /* ---------- sticky total ---------- */
@@ -77,23 +100,23 @@
     z-index:6;
   }
   .totalbar .lbl{
-    font-size:9.5px;
+    font-size:14px;
     font-weight:800;
-    letter-spacing:.11em;
+    letter-spacing:.09em;
     text-transform:uppercase;
-    color:var(--muted);
+    color:#1a202c;              /* very dark grey */
     line-height:1.3;
   }
   .totalbar .amt{
-    font-size:25px;
+    font-size:16px;
     font-weight:800;
     color:var(--brand);
     font-variant-numeric:tabular-nums;
-    letter-spacing:-.02em;
+    letter-spacing:-.01em;
     transition:transform .16s ease;
     transform-origin:right center;
   }
-  .totalbar .amt.pop{transform:scale(1.07)}
+  .totalbar .amt.pop{transform:scale(1.12)}
 
   /* ---------- scroll area ---------- */
   .scroll{
@@ -113,95 +136,130 @@
     overflow:hidden;
     transition:box-shadow .2s ease,border-color .2s ease;
   }
-  .acc.open{
-    border-color:#FFCDD2;
-    box-shadow:0 8px 20px rgba(211,47,47,.10);
-  }
+  .acc.open{border-color:#FFCDD2;box-shadow:0 8px 20px rgba(211,47,47,.10)}
   .acc-head{
     width:100%;
     border:0;
     background:transparent;
     font:inherit;
+    font-size:16px;
     text-align:left;
     cursor:pointer;
     padding:14px;
     display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:12px;
+    flex-direction:column;
+    gap:3px;
     transition:background .18s ease;
   }
   .acc.open .acc-head{background:#FFEBEE}
-  .acc-left{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .acc-headrow{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:10px;
+    width:100%;
+  }
   .acc-title{
-    font-size:13.5px;
+    font-size:16px;
     font-weight:800;
-    color:var(--ink);
+    color:#1a202c;              /* very dark grey */
     letter-spacing:-.01em;
+    line-height:1.3;
   }
   .acc-sub{
-    font-size:10.5px;
-    font-weight:500;
-    color:var(--muted);
-    line-height:1.25;
+    font-size:13px;
+    font-weight:600;
+    color:#868e96;
+    line-height:1.35;
   }
   .acc-total{
-    font-size:13.5px;
+    font-size:16px;
     font-weight:800;
     color:var(--brand);
     font-variant-numeric:tabular-nums;
     white-space:nowrap;
+    line-height:1.3;
   }
   .acc-body{
     display:none;
-    padding:4px 14px 14px;
+    padding:6px 14px 14px;
     border-top:1px solid var(--line);
   }
   .acc.open .acc-body{display:block}
 
-  /* ---------- fixed row (compulsory) ---------- */
+  /* ---------- static row ---------- */
   .static-row{
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:12px;
-    padding:12px 0 6px;
-    font-size:12.5px;
+    padding:12px 0 4px;
+    font-size:16px;
     color:var(--ink);
   }
   .static-row strong{
-    font-size:14px;
+    font-size:16px;
     font-weight:800;
     color:var(--brand);
     font-variant-numeric:tabular-nums;
+    white-space:nowrap;
   }
   .hint{
     margin:6px 0 0;
-    font-size:10.5px;
+    font-size:15px;
     line-height:1.5;
     color:var(--muted);
   }
 
-  /* ---------- person rows ---------- */
+  /* ---------- dynamic person card ---------- */
   .person{
-    padding:12px 0;
+    padding:14px 0;
     border-bottom:1px dashed var(--line);
   }
   .person:last-child{border-bottom:0}
+  .person:first-child{padding-top:0}
 
   .p-top{
     display:flex;
     align-items:center;
+    justify-content:space-between;
     gap:10px;
-    margin-bottom:10px;
+    margin-bottom:12px;
+  }
+  .p-tag{
+    font-size:15px;
+    font-weight:800;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--muted);
+    line-height:1;
   }
 
+  .x{
+    flex:0 0 auto;
+    width:26px;height:26px;
+    border-radius:50%;
+    border:1px solid #f2d6ce;
+    background:#fff5f1;
+    color:var(--danger);
+    font-size:16px;
+    line-height:1;
+    font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    padding:0;
+    transition:background .15s ease,transform .1s ease;
+  }
+  .x:active{background:#ffe4da;transform:scale(.92)}
+
+  /* ---------- avatar : 90px rounded square, centred ---------- */
+  .avatar-wrap{display:flex;justify-content:center;margin:0 0 14px}
   .avatar{
     position:relative;
     flex:0 0 auto;
-    width:48px;
-    height:48px;
-    border-radius:50%;
+    width:90px;
+    height:90px;
+    border-radius:18px;
     border:1.5px dashed #b9c7d1;
     background:#F7F9FB center/cover no-repeat;
     display:flex;
@@ -214,7 +272,7 @@
   .avatar:active{border-color:var(--brand);background-color:#FFEBEE}
   .avatar.has-photo{border-style:solid;border-color:#EF9A9A}
   .avatar svg{
-    width:21px;height:21px;
+    width:30px;height:30px;
     fill:none;stroke:#A0AEB9;stroke-width:1.7;
     stroke-linecap:round;stroke-linejoin:round;
     pointer-events:none;
@@ -223,116 +281,83 @@
     position:absolute;inset:0;
     width:100%;height:100%;
     opacity:0;cursor:pointer;
+    -webkit-appearance:none;appearance:none;
   }
+  .avatar input[type=file]::-webkit-file-upload-button{display:none}
 
-  .p-id{
-    flex:1 1 auto;
-    min-width:0;
-    display:flex;
-    flex-direction:column;
-    gap:4px;
-  }
-  .p-tag{
-    font-size:9.5px;
-    font-weight:800;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    color:var(--muted);
-    line-height:1;
-  }
+  /* ---------- full width inputs (no 2 columns) ---------- */
   .nameinput{
+    display:block;
     width:100%;
     font-family:inherit;
-    font-size:13px;
+    font-size:16px;
     font-weight:700;
     color:var(--ink);
     background:#F7F9FB;
     border:1px solid var(--line);
-    border-radius:9px;
-    padding:9px 10px;
+    border-radius:10px;
+    padding:11px 12px;
+    margin-top:10px;
   }
-  .nameinput::placeholder{font-weight:600;color:#a8b4be}
+  .nameinput::placeholder{font-weight:600;color:#adb5bd}
   .nameinput:focus{outline:2px solid #EF9A9A;outline-offset:-1px;background:#fff}
-
-  .x{
-    flex:0 0 auto;
-    width:26px;height:26px;
-    border-radius:50%;
-    border:1px solid #f2d6ce;
-    background:#fff5f1;
-    color:var(--danger);
-    font-size:15px;
-    line-height:1;
-    font-weight:700;
-    display:flex;align-items:center;justify-content:center;
-    cursor:pointer;
-    padding:0;
-    transition:background .15s ease,transform .1s ease;
-  }
-  .x:active{background:#ffe4da;transform:scale(.92)}
-
-  .p-row{display:flex;align-items:center;gap:8px}
-
-  select{
-    flex:1 1 auto;
-    min-width:0;
-    font-family:inherit;
-    font-size:12.5px;
-    font-weight:700;
-    color:var(--ink);
-    background:#F7F9FB;
-    border:1px solid var(--line);
-    border-radius:9px;
-    padding:9px 8px;
+  select.nameinput{
+    -webkit-appearance:none;
+    appearance:none;
+    background-image:none;
     cursor:pointer;
   }
-  select:focus{outline:2px solid #EF9A9A;outline-offset:-1px}
+  select.nameinput:focus{outline:2px solid #EF9A9A;outline-offset:-1px}
 
+  /* ---------- PW checkbox on its own line ---------- */
   .pw{
     display:flex;
     align-items:center;
-    gap:5px;
-    font-size:10px;
-    font-weight:800;
-    letter-spacing:.06em;
+    gap:9px;
+    width:100%;
+    margin-top:10px;
+    padding:11px 12px;
+    font-size:15px;
+    font-weight:700;
     color:var(--muted);
     background:#F7F9FB;
     border:1px solid var(--line);
-    border-radius:9px;
-    padding:9px 9px;
-    white-space:nowrap;
+    border-radius:10px;
     cursor:pointer;
     user-select:none;
   }
   .pw input{
-    width:14px;height:14px;margin:0;
+    width:16px;height:16px;margin:0;
     accent-color:var(--brand);
     cursor:pointer;
+    flex:0 0 auto;
   }
+  .pw.checked,
   .pw:has(input:checked){
     background:#FFEBEE;
     border-color:#EF9A9A;
     color:var(--brand);
   }
 
-  .p-cost{
+  /* ---------- cost row ---------- */
+  .cost-row{
     display:flex;
-    flex-direction:column;
-    align-items:flex-end;
-    line-height:1.15;
-    min-width:64px;
-    flex:0 0 auto;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px solid #EDF1F4;
   }
-  .p-cost i{
-    font-style:normal;
-    font-size:8px;
+  .cost-row .cr-label{
+    font-size:15px;
     font-weight:800;
-    letter-spacing:.12em;
+    letter-spacing:.1em;
     text-transform:uppercase;
     color:var(--muted);
   }
-  .p-cost b{
-    font-size:13px;
+  .cost-row .cr-amount{
+    font-size:16px;
     font-weight:800;
     color:var(--brand);
     font-variant-numeric:tabular-nums;
@@ -348,7 +373,7 @@
     background:#FFEBEE;
     color:var(--brand);
     font-family:inherit;
-    font-size:12px;
+    font-size:16px;
     font-weight:800;
     letter-spacing:.03em;
     cursor:pointer;
@@ -359,83 +384,101 @@
   .empty{
     margin:14px 0 2px;
     text-align:center;
-    font-size:11.5px;
-    color:#A0AEB9;
+    font-size:15px;
+    color:#adb5bd;
     font-weight:600;
   }
 
   /* ---------- notes ---------- */
   .notes{
-    margin:10px 0 0;
+    margin:8px 0 0;
     padding-left:16px;
-    font-size:11px;
+    font-size:15px;
     line-height:1.65;
     color:var(--muted);
   }
   .notes li{margin-bottom:6px}
   .notes li::marker{color:#EF9A9A}
 
+  /* ---------- disclaimer : darker ---------- */
   .disclaimer{
     margin:16px 4px 0;
-    font-size:9.5px;
+    font-size:15px;
     line-height:1.5;
     text-align:center;
-    color:#A0AEB9;
+    color:var(--dark);
+    font-weight:700;
   }
-  /* ===== BOPEU app styling bridge ===== */
-  .topbar{
-    flex:0 0 auto;
+
+  /* ---------- logos on white ---------- */
+  .form-logos{
+    margin:16px 0 4px;
+    padding:14px;
     background:#fff;
-    border-bottom:3px solid var(--brand);
-    color:var(--ink);
-    padding:12px 18px;
+    border:1px solid var(--line);
+    border-radius:14px;
     display:flex;
     align-items:center;
-    gap:12px;
+    justify-content:center;
+    gap:18px;
+    flex-wrap:wrap;
   }
-  .tb-home{display:flex;align-items:center}
-  .tb-logo{width:46px;height:46px;object-fit:contain}
-  .tb-text{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px}
-  .tb-text .brand{margin:0;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:800;opacity:1;line-height:1.2}
-  .tb-text h1{margin:0;font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.01em;line-height:1.25}
+  .form-logos img{
+    height:44px;
+    width:auto;
+    object-fit:contain;
+    max-width:46%;
+  }
 
-  .b-nav{flex:0 0 auto;display:flex;align-items:stretch;background:var(--brand);height:60px;z-index:20}
-  .b-nav a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:#fff;font-size:8.5px;font-weight:700;letter-spacing:.03em}
-  .b-nav a img{width:19px;height:19px;object-fit:contain;opacity:.62;filter:brightness(0) invert(1)}
-  .b-nav a span{opacity:.85}
-
-  .form-logos{margin:18px 6px 2px;padding-top:14px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
-  .form-logos img{height:44px;width:auto;object-fit:contain;max-width:46%}
-
+  /* ---------- bottom nav ---------- */
+  .b-nav{
+    flex:0 0 auto;display:flex;align-items:stretch;
+    background:var(--brand);height:60px;z-index:20;
+  }
+  .b-nav a{
+    flex:1;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:3px;
+    text-decoration:none;color:#fff;font-size:15px;font-weight:700;
+    letter-spacing:.02em;
+  }
+  .b-nav a img{
+    width:19px;height:19px;object-fit:contain;
+    opacity:.62;filter:brightness(0) invert(1);
+  }
 </style>
 </head>
 <body>
 
 <div class="phone">
 
+  <!-- HEADER -->
   <div class="topbar">
-    <a class="tb-home" href="../index.html?tab=2" title="Back to BOPEU app"><img class="tb-logo" src="../Assets/logo/bopeu_logo.webp" alt="BOPEU"></a>
+    <a class="tb-home" href="../index.html?tab=2" title="Back to BOPEU app">
+      <img class="tb-logo" src="../Assets/logo/bopeu_logo.webp" alt="BOPEU">
+    </a>
     <span class="tb-text">
       <span class="brand">BOPEU &middot; Babereki Insurance Brokers</span>
       <h1>Funeral Cover Calculator</h1>
     </span>
   </div>
 
+  <!-- TOTAL -->
   <div class="totalbar">
     <span class="lbl">Total Monthly<br>Premium</span>
     <span class="amt" id="grandTotal">P66.40</span>
   </div>
 
+  <!-- SCROLL AREA -->
   <div class="scroll" id="scroll">
 
     <!-- COMPULSORY -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Member &amp; Immediate Family</span>
-          <span class="acc-sub">Compulsory &middot; member, spouse &amp; children</span>
+          <span class="acc-total">P66.40</span>
         </span>
-        <span class="acc-total">P66.40</span>
+        <span class="acc-sub">Compulsory &middot; member, spouse &amp; children</span>
       </button>
       <div class="acc-body">
         <div class="static-row">
@@ -446,14 +489,14 @@
       </div>
     </section>
 
-    <!-- PARENTS -->
-    <section class="acc open">
+    <!-- PARENTS (closed by default) -->
+    <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Parents Funeral Cover</span>
-          <span class="acc-sub">Add each parent separately</span>
+          <span class="acc-total" id="sub-parents">P0.00</span>
         </span>
-        <span class="acc-total" id="sub-parents">P0.00</span>
+        <span class="acc-sub">Add each parent separately</span>
       </button>
       <div class="acc-body">
         <div id="list-parents"></div>
@@ -465,11 +508,11 @@
     <!-- EXTENDED FAMILY -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Extended Family Cover</span>
-          <span class="acc-sub">Uncles, aunts, cousins, in-laws &amp; others</span>
+          <span class="acc-total" id="sub-extended">P0.00</span>
         </span>
-        <span class="acc-total" id="sub-extended">P0.00</span>
+        <span class="acc-sub">Uncles, aunts, cousins, in-laws &amp; others</span>
       </button>
       <div class="acc-body">
         <div id="list-extended"></div>
@@ -481,11 +524,11 @@
     <!-- CHILDREN OVER 21 -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Children&rsquo;s Cover Over 21</span>
-          <span class="acc-sub">P30,000 &middot; P40,000 &middot; P50,000 per child</span>
+          <span class="acc-total" id="sub-children">P0.00</span>
         </span>
-        <span class="acc-total" id="sub-children">P0.00</span>
+        <span class="acc-sub">P30,000 &middot; P40,000 &middot; P50,000 per child</span>
       </button>
       <div class="acc-body">
         <div id="list-children"></div>
@@ -497,11 +540,11 @@
     <!-- ADULT CHILD -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Adult Child Cover (Over 35)</span>
-          <span class="acc-sub">Converted to Extended Family cover</span>
+          <span class="acc-total" id="sub-adult">P0.00</span>
         </span>
-        <span class="acc-total" id="sub-adult">P0.00</span>
+        <span class="acc-sub">Converted to Extended Family cover</span>
       </button>
       <div class="acc-body">
         <div id="list-adult"></div>
@@ -513,11 +556,11 @@
     <!-- NOTES -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Scheme Notes</span>
-          <span class="acc-sub">Waiting periods, claims &amp; cancellation</span>
+          <span class="acc-total">&nbsp;</span>
         </span>
-        <span class="acc-total">&nbsp;</span>
+        <span class="acc-sub">Waiting periods, claims &amp; cancellation</span>
       </button>
       <div class="acc-body">
         <ul class="notes">
@@ -545,15 +588,16 @@
 
   </div>
 
+  <!-- BOTTOM NAV -->
   <div class="b-nav">
-    <a href="../index.html?tab=0"><img src="../Assets/icons/timeline_icon.webp" alt="Timeline"><span>Timeline</span></a>
-    <a href="../index.html?tab=1"><img src="../Assets/icons/notices_icon.webp" alt="Updates"><span>Updates</span></a>
-    <a href="../index.html?tab=2"><img src="../Assets/icons/benefits_icon.webp" alt="Benefits"><span>Benefits</span></a>
-    <a href="../index.html?tab=3"><img src="../Assets/icons/claims_icon.webp" alt="Card"><span>Card</span></a>
-    <a href="../index.html?tab=4"><img src="../Assets/icons/menu_icon.webp" alt="Help"><span>Help</span></a>
+    <a href="../index.html?tab=0"><img src="../Assets/icons/timeline_icon.webp" alt="Timeline"></a>
+    <a href="../index.html?tab=1"><img src="../Assets/icons/notices_icon.webp" alt="Updates"></a>
+    <a href="../index.html?tab=2"><img src="../Assets/icons/benefits_icon.webp" alt="Benefits"></a>
+    <a href="../index.html?tab=3"><img src="../Assets/icons/claims_icon.webp" alt="Card"></a>
+    <a href="../index.html?tab=4"><img src="../Assets/icons/menu_icon.webp" alt="Help"></a>
   </div>
 
-  </div>
+</div>
 
 <script>
 (function () {
@@ -648,31 +692,39 @@
 
     var opts = sec.covers.map(function (cv, ci) {
       return '<option value="' + ci + '"' + (ci === item.cover ? " selected" : "") + ">" +
-             amt(cv.a) + "</option>";
+             amt(cv.a) + " cover</option>";
     }).join("");
 
     var pw = sec.hasPW
-      ? '<label class="pw"><input type="checkbox" data-pw' + (item.pw ? " checked" : "") +
-        '><span>PW</span></label>'
+      ? '<label class="pw' + (item.pw ? " checked" : "") + '">' +
+          '<input type="checkbox" data-pw' + (item.pw ? " checked" : "") + '>' +
+          '<span>Premium Waiver (PW)</span>' +
+        '</label>'
       : "";
 
     el.innerHTML =
       '<div class="p-top">' +
+        '<span class="p-tag">' + sec.tag + " " + index + '</span>' +
+        '<button class="x" type="button" aria-label="Remove">&times;</button>' +
+      '</div>' +
+
+      '<div class="avatar-wrap">' +
         '<label class="avatar' + (item.photo ? " has-photo" : "") + '" title="Add profile photo">' +
           '<input type="file" accept="image/*" aria-label="Add profile photo">' +
           CAMERA_SVG +
         '</label>' +
-        '<div class="p-id">' +
-          '<span class="p-tag">' + sec.tag + " " + index + '</span>' +
-          '<input class="nameinput" type="text" placeholder="Full name" ' +
-                 'autocomplete="off" value="' + esc(item.name) + '">' +
-        '</div>' +
-        '<button class="x" type="button" aria-label="Remove">&times;</button>' +
       '</div>' +
-      '<div class="p-row">' +
-        '<select data-cover aria-label="Cover amount">' + opts + '</select>' +
-        pw +
-        '<span class="p-cost"><i>adds</i><b>' + money(costOf(key, item)) + '</b></span>' +
+
+      '<input class="nameinput" type="text" placeholder="Full name" autocomplete="off" ' +
+             'value="' + esc(item.name) + '" aria-label="Full name">' +
+
+      '<select class="nameinput" data-cover aria-label="Cover amount">' + opts + '</select>' +
+
+      pw +
+
+      '<div class="cost-row">' +
+        '<span class="cr-label">Adds</span>' +
+        '<span class="cr-amount">' + money(costOf(key, item)) + '</span>' +
       '</div>';
 
     if (item.photo) applyPhoto(el, item.photo);
@@ -688,7 +740,7 @@
     if (svg) svg.style.display = "none";
   }
 
-  /* ---------- renumber the type labels in a section ---------- */
+  /* ---------- renumber type labels ---------- */
   function renumber(key) {
     var list = document.getElementById("list-" + key);
     var sec = SECTIONS[key];
@@ -709,9 +761,9 @@
       state[key].forEach(function (it) {
         var c = costOf(key, it);
         sub += c;
-        var row = document.querySelector('.person[data-id="' + it.id + '"]');
+        var row = document.querySelector('.person[data-key="' + key + '"][data-id="' + it.id + '"]');
         if (row) {
-          var b = row.querySelector(".p-cost b");
+          var b = row.querySelector(".cr-amount");
           if (b) b.textContent = money(c);
         }
       });
@@ -780,19 +832,31 @@
     if (x) {
       var row = x.closest(".person");
       if (row) removePerson(row);
+      return;
+    }
+
+    var pw = e.target.closest(".pw");
+    if (pw && e.target.tagName !== "INPUT") {
+      var cb = pw.querySelector("input");
+      if (cb) {
+        cb.checked = !cb.checked;
+        pw.classList.toggle("checked", cb.checked);
+        cb.dispatchEvent(new Event("change", { bubbles: true }));
+      }
     }
   });
 
-  /* text input — name (no premium impact) */
+  /* text input — name */
   scroll.addEventListener("input", function (e) {
     if (!e.target.classList.contains("nameinput")) return;
+    if (e.target.tagName === "SELECT") return;
     var row = e.target.closest(".person");
     if (!row) return;
     var item = findItem(row);
     if (item) item.name = e.target.value;
   });
 
-  /* selects, checkboxes & photo uploads */
+  /* change — selects, checkboxes, files */
   scroll.addEventListener("change", function (e) {
     var row = e.target.closest(".person");
     if (!row) return;
@@ -807,6 +871,8 @@
 
     if (e.target.hasAttribute("data-pw")) {
       item.pw = e.target.checked;
+      var box = e.target.closest(".pw");
+      if (box) box.classList.toggle("checked", e.target.checked);
       updateTotals();
       return;
     }

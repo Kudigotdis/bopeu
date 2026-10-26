@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Register · BOPEU</title><link rel="stylesheet" href="design-system.css"></head>
+<body class="bop">
+<header style="background:#fff;border-bottom:1px solid #E2E8F0;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;">
+  <a href="login.html" style="display:flex;gap:10px;align-items:center;text-decoration:none;color:inherit;">
+    <div style="width:32px;height:32px;border-radius:8px;background:#D32F2F;color:#fff;display:grid;place-items:center;font-weight:800;">B</div>
+    <div><div style="font-weight:800;font-size:14px;">BOPEU</div><div style="font-size:10px;color:#718096;">MEMBER SERVICES</div></div>
+  </a>
+  <a href="login.html" style="font-size:13px;font-weight:700;color:#D32F2F;text-decoration:none;">← Sign in</a>
+</header>
+<main class="page stack">
+  <div class="card">
+    <div class="card-head"><h2>Create your BOPEU account</h2><div class="card-sub">Three quick steps. You will sign in with your WhatsApp number, first name and password.</div></div>
+    <div class="card-body">
+      <div id="regProgress" style="margin-bottom:16px;"></div>
+      <div id="regBody"></div>
+      <div class="btn-row" style="margin-top:16px;">
+        <button class="btn btn-secondary" id="regBack" onclick="regBack()">Back</button>
+        <button class="btn btn-primary" id="regNext" onclick="regNext()">Continue</button>
+      </div>
+    </div>
+  </div>
+</main>
+<script src="js/data.js"></script><script src="js/app.js"></script>
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+<script>
+var REG = { step:0, data:{ personal:{}, contact:{}, consent:{} } };
+var REG_STEPS = ['Identity','Contact & Employment','Consent'];
+function regRender() {
+  document.getElementById('regProgress').innerHTML = '<div style="display:flex;gap:8px;align-items:center;">' +
+    REG_STEPS.map(function(s,i){ return '<div style="flex:1;height:6px;border-radius:3px;background:'+(i<=REG.step?'#D32F2F':'#E2E8F0')+';"></div>'; }).join('') +
+    '</div><div style="font-size:12px;color:#718096;margin-top:6px;font-weight:600;">Step '+(REG.step+1)+' of 3 — '+REG_STEPS[REG.step]+'</div>';
+  var b = document.getElementById('regBody');
+  if (REG.step===0) {
+    b.innerHTML = '<div class="form-group"><label class="form-label">First name</label><input id="rFirst" type="text" autocomplete="given-name" value="'+(REG.data.personal.first||'')+'"></div>' +
+      '<div class="form-group"><label class="form-label">Surname</label><input id="rSurname" type="text" autocomplete="family-name" value="'+(REG.data.personal.surname||'')+'"></div>' +
+      '<div class="form-group"><label class="form-label">WhatsApp Number</label><input id="rWhatsapp" type="tel" autocomplete="tel" placeholder="e.g. 71 000 101" value="'+(REG.data.personal.whatsapp||'')+'"></div>' +
+      '<div class="form-group"><label class="form-label">Password</label><input id="rPassword" type="password" autocomplete="new-password" placeholder="Choose a password" value="'+(REG.data.personal.password||'')+'"></div>' +
+      '<div class="form-group"><label class="form-label">Confirm password</label><input id="rPasswordConfirm" type="password" autocomplete="new-password" placeholder="Repeat password" value="'+(REG.data.personal.passwordConfirm||'')+'"></div>' +
+      '<div class="form-group"><label class="form-label">Omang / Passport</label><input id="rOmang" type="text" value="'+(REG.data.personal.omang||'')+'"></div>' +
+      '<div class="form-group"><label class="form-label">Date of birth</label><input id="rDob" type="date" value="'+(REG.data.personal.dob||'')+'"></div>';
+  } else if (REG.step===1) {
+    b.innerHTML = '<div class="form-group"><label class="form-label">Mobile (+267)</label><input id="rPhone" type="tel" value="'+(REG.data.contact.phone||'')+'"></div>' +
+      '<div class="form-group"><label class="form-label">Email</label><input id="rEmail" type="email" value="'+(REG.data.contact.email||'')+'"></div>' +
+      '<div class="form-group"><label class="form-label">Sector</label><select id="rSector"><option value="">Select…</option>'+
+        BOPEU_EMPLOYMENT_DATA.sectors.map(function(s){return '<option value="'+s.id+'">'+s.label+'</option>';}).join('')+'</select></div>' +
+      '<div class="form-group"><label class="form-label">Employer</label><input id="rEmployer" type="text" value="'+(REG.data.contact.employer||'')+'"></div>' +
+      '<div class="form-group"><label class="form-label">Job title</label><input id="rJob" type="text" value="'+(REG.data.contact.job||'')+'"></div>';
+  } else {
+    b.innerHTML = '<div class="checklist-item"><input type="checkbox" id="rConsent1"><label for="rConsent1">I confirm the information is accurate.</label></div>' +
+      '<div class="checklist-item"><input type="checkbox" id="rConsent2"><label for="rConsent2">I accept the Privacy Notice and Terms of Service.</label></div>' +
+      '<div class="checklist-item"><input type="checkbox" id="rConsent3"><label for="rConsent3">I consent to funeral cover auto-enrolment (1% of basic salary).</label></div>' +
+      '<div class="checklist-item"><input type="checkbox" id="rConsent4"><label for="rConsent4">I consent to receiving union announcements.</label></div>';
+  }
+  document.getElementById('regBack').style.visibility = REG.step===0 ? 'hidden' : 'visible';
+  document.getElementById('regNext').textContent = REG.step===2 ? 'Create Account' : 'Continue';
+}
+function regCollect() {
+  if (REG.step===0) REG.data.personal = { first:document.getElementById('rFirst').value, surname:document.getElementById('rSurname').value, whatsapp:document.getElementById('rWhatsapp').value, password:document.getElementById('rPassword').value, passwordConfirm:document.getElementById('rPasswordConfirm').value, omang:document.getElementById('rOmang').value, dob:document.getElementById('rDob').value };
+  if (REG.step===1) REG.data.contact = { phone:document.getElementById('rPhone').value, email:document.getElementById('rEmail').value, sectorId:document.getElementById('rSector').value, employer:document.getElementById('rEmployer').value, job:document.getElementById('rJob').value };
+  if (REG.step===2) REG.data.consent = { accurate:document.getElementById('rConsent1').checked, legal:document.getElementById('rConsent2').checked, funeral:document.getElementById('rConsent3').checked, marketing:document.getElementById('rConsent4').checked };
+}
+function regBack(){ regCollect(); if(REG.step===0)return; REG.step--; regRender(); }
+function regNext(){ regCollect(); if(REG.step===2){ finishRegistration(); return; } REG.step++; regRender(); }
+function finishRegistration(){
+  var p = REG.data.personal;
+  if(!p.first||!p.surname||!p.omang){ alert('Please complete your name and Omang.'); REG.step=0; regRender(); return; }
+  if(!p.whatsapp){ alert('Please enter your WhatsApp number.'); REG.step=0; regRender(); return; }
+  if(!p.password || String(p.password).length < 4){ alert('Choose a password with at least 4 characters.'); REG.step=0; regRender(); return; }
+  if(p.password !== p.passwordConfirm){ alert('Passwords do not match.'); REG.step=0; regRender(); return; }
+
+  if (window.BOPEUAuth && typeof window.BOPEUAuth.findProfileByCredentials === 'function') {
+    var existingProfile = window.BOPEUAuth.findProfileByCredentials(p.whatsapp, p.first);
+    if (existingProfile) {
+      alert('An account with that WhatsApp number and first name already exists. Please sign in.');
+      location.href = 'login.html';
+      return;
+    }
+  }
+
+  var whatsapp = p.whatsapp;
+  var digits = String(whatsapp).replace(/\D/g, '');
+  var memberNo = (BOPEU_STATS.memberNoPrefix)+String(1000+Math.floor(Math.random()*9000));
+  var profile = {
+    personal:{ firstName:p.first, surname:p.surname, omang:p.omang, dob:p.dob, phone:whatsapp, email:REG.data.contact.email||'' },
+    employment:{ sectorId:REG.data.contact.sectorId||'', employerLabel:REG.data.contact.employer||'', jobTitle:REG.data.contact.job||'' },
+    location:{ district:'', town:'', area:'', workStation:'' },
+    memberNo: memberNo,
+    joined: new Date().toISOString().slice(0,10),
+    status: 'pending_verification',
+    consents: REG.data.consent
+  };
+  var account = {
+    id: 'ACC-' + Date.now(),
+    recordId: memberNo,
+    portal: 'member',
+    roleKey: 'ROLE_MEMBER',
+    roleLabel: 'BOPEU Member',
+    firstName: p.first,
+    surname: p.surname,
+    displayName: p.first + ' ' + p.surname,
+    whatsapp: whatsapp,
+    whatsappDigits: digits,
+    password: String(p.password),
+    workPlace: REG.data.contact.employer || '',
+    jobTitle: REG.data.contact.job || '',
+    image: 'Assets/Demo Profile Images/NO IMAGE.png',
+    groupId: 'member',
+    groupLabel: 'BOPEU Member',
+    landing: 'index.html',
+    memberProfile: profile,
+    registered: true
+  };
+
+  var accounts = [];
+  try { accounts = JSON.parse(localStorage.getItem('bopeu_accounts') || '[]') || []; } catch(e) { accounts = []; }
+  var exists = accounts.some(function(a){
+    return String(a.whatsappDigits || a.whatsapp || '').replace(/\D/g,'').slice(-8) === digits.slice(-8) &&
+      String(a.firstName || '').toLowerCase() === String(p.first || '').toLowerCase();
+  });
+  if (exists) { alert('An account with that WhatsApp number and first name already exists. Please sign in.'); location.href='login.html'; return; }
+  accounts.push(account);
+  try { localStorage.setItem('bopeu_accounts', JSON.stringify(accounts)); } catch(e){}
+
+  if (window.BOPEUAuth) {
+    window.BOPEUAuth.startSession(account);
+  } else {
+    LocalStore.set('bopeu_profile', profile);
+    LocalStore.set('bopeu_logged_in', true);
+  }
+  alert("Account created. You're signed in — taking you to the timeline.");
+  location.href='index.html';
+}
+document.addEventListener('DOMContentLoaded', regRender);
+</script>
+</body></html>

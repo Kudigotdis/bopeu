@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Member Verification · Partner Portal</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+body.bop { background:#F2F5F9; }
+.p-header { background:#0F7A4D; color:#fff; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:20; }
+.p-mark { width:32px; height:32px; border-radius:8px; background:rgba(255,255,255,.2); display:grid; place-items:center; font-weight:800; color:#fff; }
+.p-nav { display:flex; gap:16px; font-size:13px; }
+.p-nav a { color:#fff; text-decoration:none; font-weight:600; opacity:.85; }
+.p-layout { display:grid; grid-template-columns:220px 1fr; min-height:calc(100vh - 56px); }
+.p-side { background:#fff; border-right:1px solid #E2E8F0; padding:16px 12px; }
+.p-side a { display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:8px; font-size:13px; font-weight:600; color:#4A5568; text-decoration:none; margin-bottom:2px; }
+.p-side a.active { background:#E7F4EC; color:#0F7A4D; }
+.p-main { padding:24px; max-width:900px; }
+.verify-box { background:#fff; border:1px solid #E2E8F0; border-radius:12px; padding:24px; margin-bottom:20px; }
+.verify-input { display:flex; gap:10px; margin-top:12px; }
+.verify-input input { flex:1; padding:14px; font-size:16px; font-family:inherit; border:2px solid #E2E8F0; border-radius:10px; outline:none; transition:border-color .15s; }
+.verify-input input:focus { border-color:#0F7A4D; }
+.verify-btn { padding:14px 24px; border:none; border-radius:10px; background:#0F7A4D; color:#fff; font-family:inherit; font-size:15px; font-weight:800; cursor:pointer; }
+.result-card { background:#fff; border:2px solid #A5D6A7; border-radius:12px; padding:20px; margin-top:20px; display:none; }
+.result-card.show { display:block; }
+.result-card.not-eligible { border-color:#F3C3C8; background:#FEF6F7; }
+.result-icon { font-size:48px; text-align:center; margin-bottom:12px; }
+.result-title { font-size:20px; font-weight:800; text-align:center; margin-bottom:6px; }
+.result-sub { font-size:13px; color:#718096; text-align:center; margin-bottom:16px; }
+.result-fields { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px; }
+.result-field { background:#F7F9FC; padding:10px 12px; border-radius:8px; }
+.result-field .lbl { font-size:10px; font-weight:800; color:#718096; text-transform:uppercase; letter-spacing:.05em; }
+.result-field .val { font-size:15px; font-weight:700; color:#1A202C; margin-top:3px; }
+.recent-list { background:#fff; border:1px solid #E2E8F0; border-radius:12px; }
+.recent-item { padding:12px 16px; border-bottom:1px solid #E2E8F0; font-size:13px; display:flex; justify-content:space-between; align-items:center; }
+.recent-item:last-child { border-bottom:none; }
+@media(max-width:820px){ .p-layout { grid-template-columns:1fr; } .p-side { display:none; } .result-fields { grid-template-columns:1fr; } }
+</style>
+</head>
+<body class="bop">
+
+<header class="p-header">
+  <div style="display:flex;align-items:center;gap:10px;">
+    <div class="p-mark">D</div>
+    <div><div style="font-weight:800;font-size:14px;">Diagnofirm</div><div style="font-size:10px;opacity:.8;">Member Verification · Partner Portal</div></div>
+  </div>
+  <nav class="p-nav">
+    <a href="partner-eligibility.html">Verify</a>
+    <a href="partner-login.html">Sign out</a>
+  </nav>
+</header>
+
+<div class="p-layout">
+  <aside class="p-side">
+    <a href="partner-dashboard.html">📊 Dashboard</a>
+    <a href="partner-eligibility.html" class="active">✅ Member Verification</a>
+    <a href="partner-analytics.html">📈 Analytics</a>
+    <a href="partner-feedback.html">💬 Feedback</a>
+    <a href="partner-documents.html">📄 Documents</a>
+  </aside>
+
+  <main class="p-main">
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:4px;">Verify Member Eligibility</h1>
+    <p style="color:#718096;font-size:14px;margin-bottom:20px;">Kagiso Nare · Diagnofirm Verification Agent</p>
+
+    <div class="callout">
+      <span class="callout-label">Privacy notice</span>
+      <p>This portal returns <strong>eligibility flags only</strong>. No medical history, test results, salary, or dependents are exposed. Every verification is logged with your user ID, timestamp, and the member's hashed ID.</p>
+    </div>
+
+    <div class="verify-box">
+      <label style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:#718096;">Member Omang or Membership Number</label>
+      <div class="verify-input">
+        <input type="text" id="memberInput" placeholder="e.g. BOPEU-DEMO-M-001 or DEMO-OMANG-001" onkeydown="if(event.key==='Enter') verify()">
+        <button class="verify-btn" onclick="verify()">Verify</button>
+      </div>
+      <p style="font-size:11px;color:#718096;margin-top:10px;">💡 Try: <code>BOPEU-DEMO-M-001</code>, <code>BOPEU-DEMO-F-006</code>, or any invalid value to test rejection</p>
+    </div>
+
+    <div class="result-card" id="result">
+      <div class="result-icon" id="resultIcon"></div>
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-sub" id="resultSub"></div>
+      <div class="result-fields" id="resultFields"></div>
+      <div class="callout mt-md" id="resultNote" style="display:none;"></div>
+    </div>
+
+    <h2 style="font-size:16px;font-weight:800;margin:24px 0 12px;">Recent verifications (last 5)</h2>
+    <div class="recent-list">
+      <div class="recent-item"><span><strong>BOPEU-DEMO-F-006</strong> · Patricia Kgaope</span><span class="badge badge-green">ELIGIBLE</span></div>
+      <div class="recent-item"><span><strong>BOPEU-DEMO-M-001</strong> · Jackson Michaels</span><span class="badge badge-green">ELIGIBLE</span></div>
+      <div class="recent-item"><span><strong>BOPEU-DEMO-F-004</strong> · Mercy Peters</span><span class="badge badge-green">ELIGIBLE</span></div>
+      <div class="recent-item"><span><strong>BOPEU-DEMO-M-002</strong> · James Dudumang</span><span class="badge badge-grey">MANUAL REVIEW</span></div>
+      <div class="recent-item"><span><strong>DEMO-OMANG-999</strong> · Not found</span><span class="badge badge-red">REJECTED</span></div>
+    </div>
+
+    <div class="callout" style="margin-top:24px;background:#FFF8E1;border-left-color:#F0A92B;">
+      <span class="callout-label">Audit trail</span>
+      <p>All verifications are logged. You can view your own verification history in <a href="partner-analytics.html" style="font-weight:700;color:#0F7A4D;">Analytics</a>. BOPEU DPO receives a monthly summary of all partner activity.</p>
+    </div>
+  </main>
+</div>
+
+<script>
+var MEMBERS = {
+  'BOPEU-DEMO-M-001': { name: 'Jackson Michaels', status: 'active', medical: 'BOMAID verified', discount: '35% off lab tests' },
+  'BOPEU-DEMO-M-002': { name: 'James Dudumang', status: 'review', medical: 'BPOMAS — pending transfer', discount: 'Confirm with member' },
+  'BOPEU-DEMO-M-003': { name: 'Kabelo Modise', status: 'active', medical: 'No medical aid', discount: '35% off lab tests' },
+  'BOPEU-DEMO-F-004': { name: 'Mercy Peters', status: 'active', medical: 'No medical aid', discount: '35% off lab tests' },
+  'BOPEU-DEMO-F-005': { name: 'Siyanda Kefitlile', status: 'active', medical: 'Not recorded', discount: '35% off lab tests' },
+  'BOPEU-DEMO-F-006': { name: 'Patricia Kgaope', status: 'active', medical: 'BPOMAS verified', discount: '35% off lab tests' }
+};
+
+function verify() {
+  var q = (document.getElementById('memberInput').value || '').trim().toUpperCase();
+  var r = document.getElementById('result');
+  var icon = document.getElementById('resultIcon');
+  var title = document.getElementById('resultTitle');
+  var sub = document.getElementById('resultSub');
+  var fields = document.getElementById('resultFields');
+  var note = document.getElementById('resultNote');
+
+  if (MEMBERS[q]) {
+    var m = MEMBERS[q];
+    r.classList.add('show');
+    r.classList.remove('not-eligible');
+    icon.textContent = '✓';
+    title.textContent = 'Member Verified — Eligible';
+    title.style.color = '#2E7D32';
+    sub.textContent = 'Verified ' + new Date().toLocaleString() + ' · User: Kagiso Nare';
+    fields.innerHTML =
+      '<div class="result-field"><div class="lbl">Member</div><div class="val">' + m.name + '</div></div>' +
+      '<div class="result-field"><div class="lbl">Membership number</div><div class="val">' + q + '</div></div>' +
+      '<div class="result-field"><div class="lbl">Status</div><div class="val">' + (m.status === 'active' ? '✓ Active member' : '⚠ ' + m.status) + '</div></div>' +
+      '<div class="result-field"><div class="lbl">Medical aid</div><div class="val">' + m.medical + '</div></div>' +
+      '<div class="result-field" style="grid-column:1/-1;"><div class="lbl">Available discount</div><div class="val" style="font-size:16px;color:#0F7A4D;">' + m.discount + '</div></div>';
+    if (m.status === 'active') {
+      note.style.display = 'none';
+    } else {
+      note.style.display = 'block';
+      note.innerHTML = '<span class="callout-label">Action needed</span><p>This member is in <strong>' + m.status + '</strong> state. Confirm eligibility manually with BOPEU before applying discount.</p>';
+    }
+  } else {
+    r.classList.add('show', 'not-eligible');
+    icon.textContent = '✗';
+    title.textContent = 'Member Not Found or Not Eligible';
+    title.style.color = '#B71C1C';
+    sub.textContent = 'Verify the Omang / membership number and try again';
+    fields.innerHTML = '<div class="result-field" style="grid-column:1/-1;"><div class="lbl">Searched for</div><div class="val">' + (q || '(empty)') + '</div></div>';
+    note.style.display = 'none';
+  }
+}
+</script>
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

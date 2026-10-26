@@ -6,16 +6,25 @@
 <title>BLIC — Extended Family Application</title>
 <style>
   :root{
-    --ink:#1A202C; --muted:#718096; --line:#E2E8F0;
-    --brand:#D32F2F; --brand2:#B71C1C; --danger:#B71C1C;
-    --gold:#C9A227; --soft:#F4F5F7;
+    --ink:#868e96;          /* all text grey */
+    --dark:#2D3748;         /* darker text (disclaimer) */
+    --muted:#868e96;
+    --line:#E2E8F0;
+    --brand:#D32F2F;
+    --brand2:#B71C1C;
+    --danger:#B71C1C;
+    --gold:#C9A227;
+    --soft:#F4F5F7;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html{height:100%}
+  *::-webkit-scrollbar{display:none;width:0;height:0}
+  *{scrollbar-width:none;-ms-overflow-style:none}
+  html{height:100%;overflow:hidden}
   body{
-    margin:0;height:100dvh;
+    margin:0;height:100dvh;overflow:hidden;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    background:#E9ECEF;display:flex;align-items:center;justify-content:center;color:var(--ink);
+    background:#E9ECEF;display:flex;align-items:center;justify-content:center;
+    color:var(--ink);font-size:16px;
   }
   .phone{
     width:100%;max-width:400px;height:100dvh;max-height:900px;
@@ -25,11 +34,23 @@
 
   /* ---------- header ---------- */
   .topbar{
-    flex:0 0 auto;background:linear-gradient(135deg,#D32F2F 0%,#B71C1C 100%);
-    color:#fff;padding:14px 18px 12px;
+    flex:0 0 auto;background:#fff;border-bottom:3px solid var(--brand);
+    color:var(--ink);padding:12px 18px;display:flex;align-items:center;gap:12px;
   }
-  .brand{font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;opacity:.78;font-weight:700}
-  .topbar h1{margin:3px 0 0;font-size:15px;font-weight:800;letter-spacing:-.01em;line-height:1.25}
+  .tb-home{display:flex;align-items:center;flex:0 0 auto}
+  .tb-logo{width:46px;height:46px;object-fit:contain}
+  .tb-text{
+    flex:1 1 auto;min-width:0;display:flex;flex-direction:column;
+    align-items:flex-end;text-align:right;gap:2px;
+  }
+  .tb-text .brand{
+    margin:0;font-size:15px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--muted);font-weight:800;line-height:1.2;
+  }
+  .tb-text h1{
+    margin:0;font-size:16px;font-weight:800;color:var(--ink);
+    letter-spacing:-.01em;line-height:1.25;
+  }
 
   /* ---------- sticky grand total ---------- */
   .totalbar{
@@ -38,112 +59,127 @@
     box-shadow:0 3px 12px rgba(0,0,0,.08);position:relative;z-index:6;
   }
   .totalbar .lbl{
-    font-size:9px;font-weight:800;letter-spacing:.11em;text-transform:uppercase;
-    color:var(--muted);line-height:1.3;
+    font-size:14px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+    color:#1a202c;line-height:1.3;
   }
   .totalbar .amt{
-    font-size:24px;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums;
-    letter-spacing:-.02em;transition:transform .16s ease;transform-origin:right center;
+    font-size:16px;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums;
+    letter-spacing:-.01em;transition:transform .16s ease;transform-origin:right center;
   }
-  .totalbar .amt.pop{transform:scale(1.07)}
+  .totalbar .amt.pop{transform:scale(1.12)}
 
   /* ---------- scroll area ---------- */
   .scroll{
     flex:1 1 auto;overflow-y:auto;overscroll-behavior:contain;
-    -webkit-overflow-scrolling:touch;padding:10px 10px 26px;
+    -webkit-overflow-scrolling:touch;padding:12px 12px 26px;
   }
 
   /* ---------- accordion ---------- */
   .acc{
     background:#fff;border:1px solid var(--line);border-radius:14px;
-    margin-bottom:9px;overflow:hidden;transition:box-shadow .2s ease,border-color .2s ease;
+    margin-bottom:10px;overflow:hidden;transition:box-shadow .2s ease,border-color .2s ease;
   }
   .acc.open{border-color:#FFCDD2;box-shadow:0 8px 20px rgba(211,47,47,.10)}
   .acc-head{
-    width:100%;border:0;background:transparent;font:inherit;text-align:left;cursor:pointer;
-    padding:12px 13px;display:flex;align-items:center;justify-content:space-between;gap:10px;
+    width:100%;border:0;background:transparent;font:inherit;font-size:16px;text-align:left;
+    cursor:pointer;padding:14px;display:flex;flex-direction:column;gap:3px;
     transition:background .18s ease;
   }
   .acc.open .acc-head{background:#FFEBEE}
-  .acc-left{display:flex;flex-direction:column;gap:2px;min-width:0}
-  .acc-title{font-size:13px;font-weight:800;color:var(--ink);letter-spacing:-.01em}
-  .acc-sub{font-size:10px;font-weight:500;color:var(--muted);line-height:1.25}
+  .acc-headrow{
+    display:flex;align-items:baseline;justify-content:space-between;gap:10px;width:100%;
+  }
+  .acc-title{
+    font-size:16px;font-weight:800;color:#1a202c;letter-spacing:-.01em;line-height:1.3;
+  }
+  .acc-sub{
+    font-size:13px;font-weight:600;color:#868e96;line-height:1.35;
+  }
   .acc-total{
-    font-size:11px;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums;
-    white-space:nowrap;
+    font-size:16px;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums;
+    white-space:nowrap;line-height:1.3;
   }
   .acc-total.muted{
-    font-size:10px;letter-spacing:.06em;text-transform:uppercase;
+    font-size:13px;letter-spacing:.06em;text-transform:uppercase;
     background:#F7F9FB;border:1px solid var(--line);border-radius:20px;padding:3px 8px;
     color:var(--muted);
   }
   .acc-total.pill{
-    font-size:10px;letter-spacing:.06em;text-transform:uppercase;
+    font-size:13px;letter-spacing:.06em;text-transform:uppercase;
     background:#FFEBEE;border:1px solid #EF9A9A;border-radius:20px;padding:3px 8px;
     color:var(--brand);
   }
-  .acc-body{display:none;padding:12px 13px 14px;border-top:1px solid var(--line)}
+  .acc-body{display:none;padding:6px 14px 14px;border-top:1px solid var(--line)}
   .acc.open .acc-body{display:block}
 
   /* ---------- sub headings ---------- */
   .subhead{
-    font-size:9px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--gold);margin:14px 0 8px;padding-bottom:5px;border-bottom:1px solid #EDEFF2;
+    font-size:15px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+    color:#2D3748;margin:14px 0 8px;padding-bottom:5px;border-bottom:1px solid #EDEFF2;
   }
   .subhead:first-child{margin-top:0}
 
-  /* ---------- fields ---------- */
-  .field{display:flex;flex-direction:column;gap:3px;min-width:0}
-  .field > label{
-    font-size:9px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;
-    color:var(--muted);padding-left:2px;
+  /* ---------- full-width inputs (single column) ---------- */
+  .field{
+    display:block;width:100%;margin-top:10px;
+    font-family:inherit;font-size:16px;font-weight:700;color:var(--ink);
+    background:#F7F9FB;border:1px solid var(--line);border-radius:10px;
+    padding:11px 12px;
   }
-  .field input,.field select,.field textarea{
-    width:100%;font-family:inherit;font-size:12.5px;font-weight:600;color:var(--ink);
-    background:#F7F9FB;border:1px solid var(--line);border-radius:9px;padding:9px 10px;
-    transition:border-color .15s ease,background .15s ease;
+  .field::placeholder{font-weight:600;color:#adb5bd}
+  .field:focus{outline:2px solid #EF9A9A;outline-offset:-1px;background:#fff}
+  select.field{
+    -webkit-appearance:none;appearance:none;background-image:none;cursor:pointer;
   }
-  .field textarea{resize:none;min-height:52px;line-height:1.45}
-  .field input::placeholder,.field textarea::placeholder{color:#a8b4be;font-weight:500}
-  .field input:focus,.field select:focus,.field textarea:focus{
-    outline:2px solid #EF9A9A;outline-offset:-1px;background:#fff;
-  }
-  .field input[type=date]{font-weight:700}
-
-  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
-  .grid-2 .field{margin:0}
-  .mb{margin-bottom:8px}
-  .mb:last-child{margin-bottom:0}
+  textarea.field{resize:none;min-height:54px;line-height:1.4}
 
   /* ---------- member card ---------- */
   .member{
     background:#F8FAFB;border:1px solid var(--line);border-radius:12px;
-    padding:12px;margin-bottom:10px;
+    padding:14px;margin-bottom:12px;
   }
   .member:last-of-type{margin-bottom:0}
   .member-head{
-    display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px;
+    display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;
   }
   .member-tag{
-    font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+    font-size:14px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
     color:var(--muted);
   }
   .x{
     width:26px;height:26px;border-radius:50%;border:1px solid #f2d6ce;background:#fff5f1;
-    color:var(--danger);font-size:15px;line-height:1;font-weight:700;
+    color:var(--danger);font-size:16px;line-height:1;font-weight:700;
     display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;
     transition:background .15s ease,transform .1s ease;
   }
   .x:active{background:#ffe4da;transform:scale(.92)}
 
-  .gender-opts{display:flex;gap:6px}
+  /* name inputs inside cards */
+  .nameinput{
+    display:block;width:100%;margin-top:10px;
+    font-family:inherit;font-size:16px;font-weight:700;color:var(--ink);
+    background:#F7F9FB;border:1px solid var(--line);border-radius:10px;
+    padding:11px 12px;
+  }
+  .nameinput::placeholder{font-weight:600;color:#adb5bd}
+  .nameinput:focus{outline:2px solid #EF9A9A;outline-offset:-1px;background:#fff}
+  select.nameinput{
+    -webkit-appearance:none;appearance:none;background-image:none;cursor:pointer;
+  }
+
+  /* gender inline group */
+  .gender-row{display:flex;align-items:center;gap:6px;margin-top:10px}
+  .gender-lbl{
+    font-size:14px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--muted);margin-right:2px;
+  }
   .g-opt{
     flex:1 1 0;display:flex;align-items:center;justify-content:center;gap:5px;
     padding:9px 6px;border-radius:9px;border:1px solid var(--line);background:#F7F9FB;
-    font-size:11px;font-weight:800;letter-spacing:.05em;color:var(--muted);
+    font-size:15px;font-weight:800;letter-spacing:.05em;color:var(--muted);
     cursor:pointer;user-select:none;transition:all .15s ease;
   }
-  .g-opt input{width:13px;height:13px;margin:0;accent-color:var(--brand);cursor:pointer}
+  .g-opt input{width:14px;height:14px;margin:0;accent-color:var(--brand);cursor:pointer}
   .g-opt:has(input:checked){background:#FFEBEE;border-color:#EF9A9A;color:var(--brand)}
 
   /* ---------- cost row ---------- */
@@ -152,29 +188,33 @@
     margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);
   }
   .pw{
-    display:flex;align-items:center;gap:5px;
-    font-size:10px;font-weight:800;letter-spacing:.05em;color:var(--muted);
-    background:#F7F9FB;border:1px solid var(--line);border-radius:9px;
-    padding:8px 9px;white-space:nowrap;cursor:pointer;user-select:none;flex:0 0 auto;
+    display:flex;align-items:center;gap:9px;width:100%;
+    font-size:15px;font-weight:700;color:var(--muted);
+    background:#F7F9FB;border:1px solid var(--line);border-radius:10px;
+    padding:11px 12px;cursor:pointer;user-select:none;
   }
-  .pw input{width:14px;height:14px;margin:0;accent-color:var(--brand);cursor:pointer}
-  .pw:has(input:checked){background:#FFEBEE;border-color:#EF9A9A;color:var(--brand)}
+  .pw input{
+    width:16px;height:16px;margin:0;accent-color:var(--brand);cursor:pointer;flex:0 0 auto;
+  }
+  .pw.checked,.pw:has(input:checked){
+    background:#FFEBEE;border-color:#EF9A9A;color:var(--brand);
+  }
   .cost-display{
     display:flex;align-items:baseline;gap:6px;margin-left:auto;
   }
   .cost-display .cd-lbl{
-    font-size:8px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
+    font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;
     color:var(--muted);
   }
   .cost-display .cd-amt{
-    font-size:14px;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums;
+    font-size:16px;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums;
   }
 
   /* ---------- add button ---------- */
   .addbtn{
-    width:100%;margin-top:11px;padding:11px;border-radius:11px;
+    width:100%;margin-top:12px;padding:12px;border-radius:11px;
     border:1px dashed #EF9A9A;background:#FFEBEE;color:var(--brand);
-    font-family:inherit;font-size:11.5px;font-weight:800;letter-spacing:.03em;
+    font-family:inherit;font-size:16px;font-weight:800;letter-spacing:.03em;
     cursor:pointer;transition:background .15s ease,transform .1s ease,opacity .15s ease;
   }
   .addbtn:active{background:#FFCDD2;transform:scale(.985)}
@@ -185,8 +225,7 @@
   .addbtn:disabled:active{transform:none;background:#F4F5F7}
 
   .empty{
-    margin:14px 0 2px;text-align:center;font-size:11px;
-    color:#A0AEB9;font-weight:600;
+    margin:14px 0 2px;text-align:center;font-size:15px;color:#adb5bd;font-weight:600;
   }
 
   /* ---------- limit badge ---------- */
@@ -196,11 +235,11 @@
     border:1px solid var(--line);border-radius:10px;
   }
   .limit-row .lr-l{
-    font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+    font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
     color:var(--muted);
   }
   .limit-row .lr-r{
-    font-size:11px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;
+    font-size:16px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;
   }
   .limit-row.warn{background:#F5F6F8;border-color:#D9E1E8}
   .limit-row.warn .lr-r{color:var(--gold)}
@@ -212,14 +251,14 @@
   }
   .sig-wrap .sig-hint{
     position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-    font-size:10.5px;font-weight:600;color:#B8C4CE;pointer-events:none;
+    font-size:15px;font-weight:600;color:#B8C4CE;pointer-events:none;
     transition:opacity .2s ease;
   }
   .sig-wrap.signed .sig-hint{opacity:0}
   canvas.sigpad{display:block;width:100%;height:120px;touch-action:none;cursor:crosshair}
   .sig-actions{display:flex;justify-content:flex-end;margin-top:6px}
   .sig-clear{
-    font-family:inherit;font-size:10px;font-weight:800;letter-spacing:.06em;
+    font-family:inherit;font-size:13px;font-weight:800;letter-spacing:.06em;
     text-transform:uppercase;color:var(--danger);background:#fff5f1;
     border:1px solid #f2d6ce;border-radius:7px;padding:6px 11px;cursor:pointer;
     transition:background .15s ease;
@@ -227,23 +266,23 @@
   .sig-clear:active{background:#ffe4da}
 
   /* ---------- legal text ---------- */
-  .legal{font-size:10.5px;line-height:1.65;color:var(--muted);margin:0 0 10px}
+  .legal{font-size:15px;line-height:1.65;color:var(--muted);margin:0 0 10px}
   .legal:last-child{margin-bottom:0}
-  .legal strong{color:var(--ink);font-weight:800}
+  .legal strong{color:var(--dark);font-weight:800}
 
-  .notes{margin:0;padding-left:16px;font-size:10.5px;line-height:1.65;color:var(--muted)}
+  .notes{margin:0;padding-left:16px;font-size:15px;line-height:1.65;color:var(--muted)}
   .notes li{margin-bottom:6px}
   .notes li:last-child{margin-bottom:0}
   .notes li::marker{color:#EF9A9A}
-  .notes strong{color:var(--ink);font-weight:800}
+  .notes strong{color:var(--dark);font-weight:800}
 
   .legal-quote{
-    font-size:10.5px;line-height:1.65;color:var(--muted);
+    font-size:15px;line-height:1.65;color:var(--muted);
     background:#F8FAFB;border-left:3px solid #EF9A9A;
     padding:10px 12px;border-radius:0 9px 9px 0;margin:0 0 10px;
   }
   .legal-quote:last-child{margin-bottom:0}
-  .legal-quote strong{color:var(--ink);font-weight:800}
+  .legal-quote strong{color:var(--dark);font-weight:800}
 
   /* ---------- official ---------- */
   .official{
@@ -255,35 +294,35 @@
     stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;
   }
   .official span{
-    font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+    font-size:13px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
     color:var(--gold);line-height:1.4;
   }
 
   /* ---------- contact cards ---------- */
   .contact-card{
     background:#F8FAFB;border:1px solid var(--line);border-radius:11px;
-    padding:11px;margin-bottom:9px;
+    padding:12px;margin-bottom:9px;
   }
   .contact-card:last-child{margin-bottom:0}
   .contact-card h4{
-    margin:0 0 6px;font-size:11.5px;font-weight:800;
-    color:var(--ink);letter-spacing:-.01em;
+    margin:0 0 6px;font-size:15px;font-weight:800;
+    color:var(--dark);letter-spacing:-.01em;
   }
-  .contact-card p{margin:0 0 3px;font-size:10.5px;line-height:1.5;color:var(--muted)}
+  .contact-card p{margin:0 0 3px;font-size:15px;line-height:1.5;color:var(--muted)}
   .contact-card p:last-child{margin-bottom:0}
-  .contact-card p strong{color:var(--ink);font-weight:700}
+  .contact-card p strong{color:var(--dark);font-weight:700}
 
   /* ---------- rate table ---------- */
   .rate-table{
-    width:100%;border-collapse:collapse;font-size:10.5px;margin-top:4px;
+    width:100%;border-collapse:collapse;font-size:15px;margin-top:4px;
   }
   .rate-table th{
-    font-size:8.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+    font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;
     color:var(--muted);text-align:left;padding:6px 6px;
     border-bottom:1px solid var(--line);
   }
   .rate-table td{
-    padding:7px 6px;font-weight:700;color:var(--ink);
+    padding:7px 6px;font-weight:700;color:var(--dark);
     border-bottom:1px dashed var(--line);font-variant-numeric:tabular-nums;
   }
   .rate-table tr:last-child td{border-bottom:0}
@@ -292,7 +331,7 @@
   /* ---------- toast ---------- */
   .toast{
     position:absolute;left:50%;bottom:22px;transform:translate(-50%,20px);
-    background:#1A202C;color:#fff;font-size:11px;font-weight:700;
+    background:#1A202C;color:#fff;font-size:15px;font-weight:700;
     padding:10px 16px;border-radius:22px;box-shadow:0 10px 24px rgba(0,0,0,.3);
     opacity:0;pointer-events:none;transition:all .25s ease;z-index:20;
     max-width:320px;text-align:center;line-height:1.4;
@@ -301,35 +340,84 @@
 
   /* ---------- disclaimer ---------- */
   .disclaimer{
-    margin:14px 4px 0;font-size:9px;line-height:1.55;
-    text-align:center;color:#A0AEB9;
+    margin:16px 4px 0;font-size:15px;line-height:1.55;
+    text-align:center;color:var(--dark);font-weight:700;
   }
-  .disclaimer strong{color:#8492A0;font-weight:700;letter-spacing:.04em}
-  /* ===== BOPEU app styling bridge ===== */
-  .topbar{
-    flex:0 0 auto;
-    background:#fff;
-    border-bottom:3px solid var(--brand);
-    color:var(--ink);
-    padding:12px 18px;
-    display:flex;
-    align-items:center;
-    gap:12px;
+  .disclaimer strong{color:#1A202C;font-weight:800;letter-spacing:.04em}
+
+  /* ---------- bottom nav ---------- */
+  .b-nav{
+    flex:0 0 auto;display:flex;align-items:stretch;
+    background:var(--brand);height:60px;z-index:20;
   }
-  .tb-home{display:flex;align-items:center}
-  .tb-logo{width:46px;height:46px;object-fit:contain}
-  .tb-text{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px}
-  .tb-text .brand{margin:0;font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:800;opacity:1;line-height:1.2}
-  .tb-text h1{margin:0;font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.01em;line-height:1.25}
+  .b-nav a{
+    flex:1;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:3px;
+    text-decoration:none;color:#fff;font-size:15px;font-weight:700;
+    letter-spacing:.02em;
+  }
+  .b-nav a img{
+    width:19px;height:19px;object-fit:contain;
+    opacity:.62;filter:brightness(0) invert(1);
+  }
 
-  .b-nav{flex:0 0 auto;display:flex;align-items:stretch;background:var(--brand);height:60px;z-index:20}
-  .b-nav a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:#fff;font-size:8.5px;font-weight:700;letter-spacing:.03em}
-  .b-nav a img{width:19px;height:19px;object-fit:contain;opacity:.62;filter:brightness(0) invert(1)}
-  .b-nav a span{opacity:.85}
-
-  .form-logos{margin:18px 6px 2px;padding-top:14px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap}
+  /* ---------- form logos ---------- */
+  .form-logos{
+    margin:16px 0 4px;padding:14px;background:#fff;
+    border:1px solid var(--line);border-radius:14px;
+    display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;
+  }
   .form-logos img{height:44px;width:auto;object-fit:contain;max-width:46%}
 
+  /* ---------- DOB 3-column picker ---------- */
+  .dob{display:flex;gap:8px;margin-top:10px}
+  .dob-btn{
+    flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;gap:2px;
+    padding:8px 4px;font-family:inherit;border:1px solid var(--line);border-radius:10px;
+    background:#F7F9FB;cursor:pointer;transition:background .15s ease,border-color .15s ease;
+  }
+  .dob-btn:active{background:#FFEBEE;border-color:#EF9A9A}
+  .dob-btn.set{background:#FFEBEE;border-color:#EF9A9A}
+  .dob-cap{
+    font-size:14px;font-weight:700;letter-spacing:.04em;color:var(--muted);line-height:1.1;
+  }
+  .dob-val{
+    font-size:16px;font-weight:800;color:var(--ink);line-height:1.2;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
+  }
+  .dob-btn.set .dob-val{color:var(--brand)}
+
+  /* ---------- centred floating picker ---------- */
+  .dp-overlay{
+    position:absolute;inset:0;z-index:90;background:rgba(15,20,30,.45);
+    display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  .dp-overlay[hidden]{display:none}
+  .dp-card{
+    width:100%;max-width:300px;max-height:72%;background:#fff;border-radius:16px;
+    overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.38);
+  }
+  .dp-head{
+    flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:12px 14px;border-bottom:1px solid var(--line);
+    font-size:16px;font-weight:800;color:var(--ink);background:#FFEBEE;
+  }
+  .dp-close{
+    flex:0 0 auto;width:28px;height:28px;border-radius:50%;border:1px solid #f2d6ce;
+    background:#fff;color:var(--brand2);font-size:16px;line-height:1;font-weight:700;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;
+  }
+  .dp-list{
+    flex:1 1 auto;position:relative;overflow-y:auto;overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;padding:8px;
+  }
+  .dp-opt{
+    display:block;width:100%;text-align:left;padding:12px;border:0;border-radius:9px;
+    background:transparent;font-family:inherit;font-size:16px;font-weight:600;
+    color:var(--ink);cursor:pointer;
+  }
+  .dp-opt:active{background:#F4F5F7}
+  .dp-opt.sel{background:#FFEBEE;color:var(--brand);font-weight:800}
 </style>
 </head>
 <body>
@@ -337,7 +425,9 @@
 <div class="phone">
 
   <div class="topbar">
-    <a class="tb-home" href="../index.html?tab=2" title="Back to BOPEU app"><img class="tb-logo" src="../Assets/logo/bopeu_logo.webp" alt="BOPEU"></a>
+    <a class="tb-home" href="../index.html?tab=2" title="Back to BOPEU app">
+      <img class="tb-logo" src="../Assets/logo/bopeu_logo.webp" alt="BOPEU">
+    </a>
     <span class="tb-text">
       <span class="brand">BLIC &middot; Babereki Life Insurance Company</span>
       <h1>Extended Family Application Form</h1>
@@ -351,14 +441,14 @@
 
   <div class="scroll" id="scroll">
 
-    <!-- ============ IMPORTANT NOTICE ============ -->
+    <!-- IMPORTANT NOTICE -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Important Notice</span>
-          <span class="acc-sub">Read before completing this form</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">Read before completing this form</span>
       </button>
       <div class="acc-body">
         <p class="legal-quote">
@@ -373,14 +463,14 @@
       </div>
     </section>
 
-    <!-- ============ EXTENDED FAMILY MEMBERS ============ -->
-    <section class="acc open">
+    <!-- EXTENDED FAMILY MEMBERS -->
+    <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Extended Family Members</span>
-          <span class="acc-sub" id="sub-ext">Add each member &middot; 0 added</span>
+          <span class="acc-total pill" id="sub-ext-amt">P0.00</span>
         </span>
-        <span class="acc-total pill" id="sub-ext-amt">P0.00</span>
+        <span class="acc-sub" id="sub-ext">Add each member &middot; 0 added</span>
       </button>
       <div class="acc-body">
         <div id="list-ext"></div>
@@ -402,14 +492,14 @@
       </div>
     </section>
 
-    <!-- ============ ADULT CHILD COVER ============ -->
+    <!-- ADULT CHILD COVER -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Adult Child Cover</span>
-          <span class="acc-sub" id="sub-adult">Children over 35 years</span>
+          <span class="acc-total pill" id="sub-adult-amt">P0.00</span>
         </span>
-        <span class="acc-total pill" id="sub-adult-amt">P0.00</span>
+        <span class="acc-sub" id="sub-adult">Children over 35 years</span>
       </button>
       <div class="acc-body">
         <p class="legal" style="margin-bottom:10px">
@@ -423,14 +513,14 @@
       </div>
     </section>
 
-    <!-- ============ CHILDREN OVER 21 ============ -->
+    <!-- CHILDREN OVER 21 -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Children&rsquo;s Cover Over 21</span>
-          <span class="acc-sub">P30,000 &middot; P40,000 &middot; P50,000 per child</span>
+          <span class="acc-total pill" id="sub-child-amt">P0.00</span>
         </span>
-        <span class="acc-total pill" id="sub-child-amt">P0.00</span>
+        <span class="acc-sub">P30,000 &middot; P40,000 &middot; P50,000 per child</span>
       </button>
       <div class="acc-body">
         <div id="list-child"></div>
@@ -450,14 +540,14 @@
       </div>
     </section>
 
-    <!-- ============ COVER & PREMIUM RATES ============ -->
+    <!-- COVER & PREMIUM RATES -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Cover &amp; Premium Rates</span>
-          <span class="acc-sub">Extended family &amp; adult child rates</span>
+          <span class="acc-total muted">Rates</span>
         </span>
-        <span class="acc-total muted">Rates</span>
+        <span class="acc-sub">Extended family &amp; adult child rates</span>
       </button>
       <div class="acc-body">
         <table class="rate-table">
@@ -498,14 +588,14 @@
       </div>
     </section>
 
-    <!-- ============ BANK & DEDUCTION ============ -->
+    <!-- BANK & DEDUCTION -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Bank &amp; Deduction Authorization</span>
-          <span class="acc-sub">Salary / bank account deduction</span>
+          <span class="acc-total muted" id="badge-bank">0/6</span>
         </span>
-        <span class="acc-total muted" id="badge-bank">0/6</span>
+        <span class="acc-sub">Salary / bank account deduction</span>
       </button>
       <div class="acc-body">
         <p class="legal">
@@ -513,41 +603,22 @@
           on the day of every month.
         </p>
 
-        <div class="field mb">
-          <label>Bank</label>
-          <input type="text" placeholder="Bank name" autocomplete="off" data-track>
-        </div>
-        <div class="grid-2">
-          <div class="field">
-            <label>Account Number</label>
-            <input type="text" inputmode="numeric" placeholder="Account no." autocomplete="off" data-track>
-          </div>
-          <div class="field">
-            <label>Branch</label>
-            <input type="text" placeholder="Branch" autocomplete="off" data-track>
-          </div>
-        </div>
-        <div class="grid-2">
-          <div class="field">
-            <label>Deduction Day</label>
-            <select data-track>
-              <option value="">—</option>
-              <option>1st</option><option>5th</option><option>10th</option>
-              <option>15th</option><option>20th</option><option>25th</option>
-              <option>30th</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Salary Payment Group</label>
-            <select data-track>
-              <option value="">—</option>
-              <option>Group 1</option>
-              <option>Group 2</option>
-            </select>
-          </div>
-        </div>
+        <input class="field" type="text" placeholder="Bank name" autocomplete="off" data-track>
+        <input class="field" type="text" inputmode="numeric" placeholder="Account number" autocomplete="off" data-track>
+        <input class="field" type="text" placeholder="Branch" autocomplete="off" data-track>
+        <select class="field" data-track>
+          <option value="" disabled selected>Deduction Day</option>
+          <option>1st</option><option>5th</option><option>10th</option>
+          <option>15th</option><option>20th</option><option>25th</option>
+          <option>30th</option>
+        </select>
+        <select class="field" data-track>
+          <option value="" disabled selected>Salary Payment Group</option>
+          <option>Group 1</option>
+          <option>Group 2</option>
+        </select>
 
-        <p class="legal" style="margin-top:6px">
+        <p class="legal" style="margin-top:12px">
           I understand that membership will take effect once first subscription has been deducted
           from my salary. Cut-off date is the <strong>15th of every month</strong>.
         </p>
@@ -563,54 +634,49 @@
       </div>
     </section>
 
-    <!-- ============ MEMBER SIGNATURE ============ -->
+    <!-- MEMBER SIGNATURE -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Member Signature</span>
-          <span class="acc-sub">Sign &amp; date this application</span>
+          <span class="acc-total muted" id="badge-sign">0/3</span>
         </span>
-        <span class="acc-total muted" id="badge-sign">0/3</span>
+        <span class="acc-sub">Sign &amp; date this application</span>
       </button>
       <div class="acc-body">
 
-        <div class="field mb">
-          <label>Member&rsquo;s Signature</label>
-          <div class="sig-wrap" id="sigWrap">
-            <div class="sig-hint">Sign here with your finger</div>
-            <canvas class="sigpad" id="sigPad"></canvas>
-          </div>
-          <div class="sig-actions">
-            <button class="sig-clear" type="button" id="sigClear">Clear signature</button>
-          </div>
+        <div class="sig-wrap" id="sigWrap">
+          <div class="sig-hint">Sign here with your finger</div>
+          <canvas class="sigpad" id="sigPad"></canvas>
+        </div>
+        <input type="hidden" data-track id="sigHidden" value="">
+        <div class="sig-actions">
+          <button class="sig-clear" type="button" id="sigClear">Clear signature</button>
         </div>
 
-        <div class="grid-2">
-          <div class="field">
-            <label>Date</label>
-            <input type="date" data-track>
-          </div>
-          <div class="field">
-            <label>Recruited By</label>
-            <input type="text" placeholder="Full name, bank, telephone, ID number" autocomplete="off" data-track>
-          </div>
+        <div class="dob" data-dob-target="sigDate">
+          <button class="dob-btn" type="button" data-dob="y"><span class="dob-cap">Year</span><span class="dob-val">&mdash;</span></button>
+          <button class="dob-btn" type="button" data-dob="m"><span class="dob-cap">Month</span><span class="dob-val">&mdash;</span></button>
+          <button class="dob-btn" type="button" data-dob="d"><span class="dob-cap">Day</span><span class="dob-val">&mdash;</span></button>
         </div>
 
-        <p class="legal" style="margin-top:4px">
+        <input class="field" type="text" placeholder="Recruited By (name, bank, tel, ID)" autocomplete="off" data-track>
+
+        <p class="legal" style="margin-top:12px">
           The onus rests on me as a member to ensure that my premium is credited to BLIC on a
           monthly basis.
         </p>
       </div>
     </section>
 
-    <!-- ============ FOR HEAD OFFICE USE ONLY ============ -->
+    <!-- FOR HEAD OFFICE USE ONLY -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">For Head Office Use Only</span>
-          <span class="acc-sub">Approval &amp; authorisation</span>
+          <span class="acc-total muted" id="badge-office">0/3</span>
         </span>
-        <span class="acc-total muted" id="badge-office">0/3</span>
+        <span class="acc-sub">Approval &amp; authorisation</span>
       </button>
       <div class="acc-body">
 
@@ -622,36 +688,30 @@
           <span>To be completed by BLIC staff only</span>
         </div>
 
-        <div class="field mb">
-          <label>Approved By</label>
-          <input type="text" placeholder="Officer name" autocomplete="off" data-track>
+        <input class="field" type="text" placeholder="Approved By (officer name)" autocomplete="off" data-track>
+
+        <div class="dob" data-dob-target="officeDate">
+          <button class="dob-btn" type="button" data-dob="y"><span class="dob-cap">Year</span><span class="dob-val">&mdash;</span></button>
+          <button class="dob-btn" type="button" data-dob="m"><span class="dob-cap">Month</span><span class="dob-val">&mdash;</span></button>
+          <button class="dob-btn" type="button" data-dob="d"><span class="dob-cap">Day</span><span class="dob-val">&mdash;</span></button>
         </div>
 
-        <div class="grid-2">
-          <div class="field">
-            <label>Date</label>
-            <input type="date" data-track>
-          </div>
-          <div class="field">
-            <label>Sign</label>
-            <input type="text" placeholder="Signature" autocomplete="off" data-track>
-          </div>
-        </div>
+        <input class="field" type="text" placeholder="Signature" autocomplete="off" data-track>
 
-        <p class="legal" style="margin-top:4px">
+        <p class="legal" style="margin-top:12px">
           On Behalf Of BLIC.
         </p>
       </div>
     </section>
 
-    <!-- ============ NOTES FOR FUNERAL COVER ============ -->
+    <!-- NOTES FOR FUNERAL COVER -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Notes for Funeral Cover</span>
-          <span class="acc-sub">Membership, spouse, children &amp; limits</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">Membership, spouse, children &amp; limits</span>
       </button>
       <div class="acc-body">
         <ul class="notes">
@@ -669,9 +729,7 @@
             <strong>65 years</strong>. The policy also has a compulsory accidental cover for the
             main member and spouse on the term of the policy schedule.
           </li>
-          <li>
-            <strong>Spouse</strong> is a legal or common law husband/wife of the member.
-          </li>
+          <li><strong>Spouse</strong> is a legal or common law husband/wife of the member.</li>
           <li>
             A <strong>child</strong> by birth, a step child, an adopted child to the member
             (inclusive of a child born out of wedlock) under the age of 21 and this age will be
@@ -696,14 +754,14 @@
       </div>
     </section>
 
-    <!-- ============ CLAIMS ============ -->
+    <!-- CLAIMS -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Claims</span>
-          <span class="acc-sub">Submission points &amp; required documents</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">Submission points &amp; required documents</span>
       </button>
       <div class="acc-body">
         <p class="legal">
@@ -742,14 +800,14 @@
       </div>
     </section>
 
-    <!-- ============ WAITING PERIOD ============ -->
+    <!-- WAITING PERIOD -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Waiting Period</span>
-          <span class="acc-sub">Main member, parents &amp; extended family</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">Main member, parents &amp; extended family</span>
       </button>
       <div class="acc-body">
         <ul class="notes">
@@ -769,19 +827,17 @@
       </div>
     </section>
 
-    <!-- ============ CESSATION ============ -->
+    <!-- CESSATION -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Cessation</span>
-          <span class="acc-sub">When the death benefit ceases</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">When the death benefit ceases</span>
       </button>
       <div class="acc-body">
-        <p class="legal">
-          Death benefit and refund of any kind shall cease on the day that:
-        </p>
+        <p class="legal">Death benefit and refund of any kind shall cease on the day that:</p>
         <ul class="notes">
           <li>Upon termination of membership by member in writing.</li>
           <li>Failure to pay premiums for three (3) consecutive months.</li>
@@ -805,14 +861,14 @@
       </div>
     </section>
 
-    <!-- ============ DECLARATION ============ -->
+    <!-- DECLARATION -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Declaration</span>
-          <span class="acc-sub">Personal data consent &amp; KYC</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">Personal data consent &amp; KYC</span>
       </button>
       <div class="acc-body">
         <p class="legal">
@@ -833,38 +889,32 @@
           the retention obligation supersedes the erasure right.
         </p>
 
-        <div class="field mb" style="margin-top:12px">
-          <label>Member&rsquo;s Signature (Declaration)</label>
-          <div class="sig-wrap" id="sigWrap2">
-            <div class="sig-hint">Sign here with your finger</div>
-            <canvas class="sigpad" id="sigPad2"></canvas>
-          </div>
-          <div class="sig-actions">
-            <button class="sig-clear" type="button" id="sigClear2">Clear signature</button>
-          </div>
+        <div class="sig-wrap" id="sigWrap2">
+          <div class="sig-hint">Sign here with your finger</div>
+          <canvas class="sigpad" id="sigPad2"></canvas>
+        </div>
+        <div class="sig-actions">
+          <button class="sig-clear" type="button" id="sigClear2">Clear signature</button>
         </div>
 
-        <div class="grid-2">
-          <div class="field">
-            <label>Date</label>
-            <input type="date">
-          </div>
-          <div class="field">
-            <label>Recruited By</label>
-            <input type="text" placeholder="Full name, bank, telephone, ID number" autocomplete="off">
-          </div>
+        <div class="dob" data-dob-target="declDate">
+          <button class="dob-btn" type="button" data-dob="y"><span class="dob-cap">Year</span><span class="dob-val">&mdash;</span></button>
+          <button class="dob-btn" type="button" data-dob="m"><span class="dob-cap">Month</span><span class="dob-val">&mdash;</span></button>
+          <button class="dob-btn" type="button" data-dob="d"><span class="dob-cap">Day</span><span class="dob-val">&mdash;</span></button>
         </div>
+
+        <input class="field" type="text" placeholder="Recruited By (name, bank, tel, ID)" autocomplete="off">
       </div>
     </section>
 
-    <!-- ============ CONTACT ============ -->
+    <!-- CONTACT -->
     <section class="acc">
       <button class="acc-head" type="button">
-        <span class="acc-left">
+        <span class="acc-headrow">
           <span class="acc-title">Contact BLIC</span>
-          <span class="acc-sub">Switchboard, email &amp; address</span>
+          <span class="acc-total muted">Info</span>
         </span>
-        <span class="acc-total muted">Info</span>
+        <span class="acc-sub">Switchboard, email &amp; address</span>
       </button>
       <div class="acc-body">
         <div class="contact-card">
@@ -895,18 +945,28 @@
 
   </div>
 
-  <div class="toast" id="toast">
-  </div>
+  <div class="toast" id="toast"></div>
 
   <div class="b-nav">
-    <a href="../index.html?tab=0"><img src="../Assets/icons/timeline_icon.webp" alt="Timeline"><span>Timeline</span></a>
-    <a href="../index.html?tab=1"><img src="../Assets/icons/notices_icon.webp" alt="Updates"><span>Updates</span></a>
-    <a href="../index.html?tab=2"><img src="../Assets/icons/benefits_icon.webp" alt="Benefits"><span>Benefits</span></a>
-    <a href="../index.html?tab=3"><img src="../Assets/icons/claims_icon.webp" alt="Card"><span>Card</span></a>
-    <a href="../index.html?tab=4"><img src="../Assets/icons/menu_icon.webp" alt="Help"><span>Help</span></a>
+    <a href="../index.html?tab=0"><img src="../Assets/icons/timeline_icon.webp" alt="Timeline"></a>
+    <a href="../index.html?tab=1"><img src="../Assets/icons/notices_icon.webp" alt="Updates"></a>
+    <a href="../index.html?tab=2"><img src="../Assets/icons/benefits_icon.webp" alt="Benefits"></a>
+    <a href="../index.html?tab=3"><img src="../Assets/icons/claims_icon.webp" alt="Card"></a>
+    <a href="../Assets/icons/menu_icon.webp" alt="Help"></a>
   </div>
 
+  <!-- centred floating picker -->
+  <div class="dp-overlay" id="dpOverlay" hidden>
+    <div class="dp-card" role="dialog" aria-modal="true" aria-labelledby="dpTitle">
+      <div class="dp-head">
+        <span id="dpTitle">Select</span>
+        <button class="dp-close" type="button" id="dpClose" aria-label="Close">&times;</button>
+      </div>
+      <div class="dp-list" id="dpList"></div>
+    </div>
   </div>
+
+</div>
 
 <script>
 (function () {
@@ -933,12 +993,23 @@
 
   var LIMITS = { ext: 8, child: 6 };
 
+  var MONTHS = ["January","February","March","April","May","June",
+                "July","August","September","October","November","December"];
+  var MONTHS_SHORT = ["Jan","Feb","Mar","Apr","May","Jun",
+                      "Jul","Aug","Sep","Oct","Nov","Dec"];
+
   /* ==================== STATE ==================== */
   var extList   = [];
   var adultList = [];
   var childList = [];
   var uid = 0;
   var lastTotal = 0;
+
+  var dateStates = {
+    sigDate:    { y: null, m: null, d: null },
+    officeDate: { y: null, m: null, d: null },
+    declDate:   { y: null, m: null, d: null }
+  };
 
   /* ==================== HELPERS ==================== */
   function money(n) {
@@ -952,12 +1023,13 @@
       .replace(/&/g, "&amp;").replace(/"/g, "&quot;")
       .replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
-
+  function daysInMonth(y, m) {
+    return new Date(y || 2000, m, 0).getDate();
+  }
   function costOf(item, rates) {
     var r = rates[item.cover] || rates[0];
     return item.pw && r.w !== undefined ? r.w : r.p;
   }
-
   function showToast(msg) {
     var t = document.getElementById("toast");
     t.textContent = msg;
@@ -966,7 +1038,100 @@
     t._timer = setTimeout(function () { t.classList.remove("show"); }, 1900);
   }
 
-  /* ==================== BUILD MEMBER CARD ==================== */
+  /* ==================== DOB render ==================== */
+  function renderDob(container, dob) {
+    var btns = container.querySelectorAll(".dob-btn");
+    var vals = [
+      dob.y ? String(dob.y) : "\u2014",
+      dob.m ? MONTHS_SHORT[dob.m - 1] : "\u2014",
+      dob.d ? String(dob.d) : "\u2014"
+    ];
+    Array.prototype.forEach.call(btns, function (b, i) {
+      var v = b.querySelector(".dob-val");
+      if (v) v.textContent = vals[i];
+      var isSet = (i === 0 && !!dob.y) || (i === 1 && !!dob.m) || (i === 2 && !!dob.d);
+      b.classList.toggle("set", isSet);
+    });
+  }
+
+  /* ==================== Picker overlay ==================== */
+  var overlay = document.getElementById("dpOverlay");
+  var dpTitle = document.getElementById("dpTitle");
+  var dpList  = document.getElementById("dpList");
+  var picker  = { dob: null, refresh: null, kind: null };
+
+  function closePicker() {
+    overlay.hidden = true;
+    picker.dob = null;
+    picker.refresh = null;
+    picker.kind = null;
+  }
+  function openPicker(dob, refreshFn, kind) {
+    picker.dob = dob;
+    picker.refresh = refreshFn;
+    picker.kind = kind;
+
+    var html = "";
+    var nowY = new Date().getFullYear();
+
+    if (kind === "y") {
+      dpTitle.textContent = "Select Year";
+      for (var y = nowY; y >= nowY - 100; y--) {
+        html += '<button type="button" class="dp-opt' + (dob.y === y ? " sel" : "") +
+                '" data-v="' + y + '">' + y + "</button>";
+      }
+    } else if (kind === "m") {
+      dpTitle.textContent = "Select Month";
+      for (var m = 1; m <= 12; m++) {
+        html += '<button type="button" class="dp-opt' + (dob.m === m ? " sel" : "") +
+                '" data-v="' + m + '">' + MONTHS[m - 1] + "</button>";
+      }
+    } else {
+      dpTitle.textContent = "Select Day";
+      var max = dob.m ? daysInMonth(dob.y || 2000, dob.m) : 31;
+      for (var d = 1; d <= max; d++) {
+        html += '<button type="button" class="dp-opt' + (dob.d === d ? " sel" : "") +
+                '" data-v="' + d + '">' + d + "</button>";
+      }
+    }
+
+    dpList.innerHTML = html;
+    overlay.hidden = false;
+
+    var sel = dpList.querySelector(".dp-opt.sel");
+    if (sel) {
+      dpList.scrollTop = Math.max(0, sel.offsetTop - dpList.clientHeight / 2 + sel.offsetHeight / 2);
+    } else {
+      dpList.scrollTop = 0;
+    }
+  }
+
+  dpList.addEventListener("click", function (e) {
+    var btn = e.target.closest(".dp-opt");
+    if (!btn) return;
+    var dob = picker.dob;
+    if (!dob) { closePicker(); return; }
+    var v = Number(btn.getAttribute("data-v"));
+    if (picker.kind === "y") dob.y = v;
+    else if (picker.kind === "m") dob.m = v;
+    else dob.d = v;
+
+    if (dob.d && dob.m) {
+      var maxDay = daysInMonth(dob.y || 2000, dob.m);
+      if (dob.d > maxDay) dob.d = maxDay;
+    }
+
+    if (picker.refresh) picker.refresh();
+    closePicker();
+    updateBadges();
+  });
+
+  document.getElementById("dpClose").addEventListener("click", closePicker);
+  overlay.addEventListener("click", function (e) {
+    if (e.target === overlay) closePicker();
+  });
+
+  /* ==================== BUILD CARDS ==================== */
   function buildExtCard(item, index) {
     var el = document.createElement("div");
     el.className = "member";
@@ -975,7 +1140,7 @@
 
     var opts = EXT_RATES.map(function (r, i) {
       return '<option value="' + i + '"' + (i === item.cover ? " selected" : "") + ">" +
-             amt(r.a) + "</option>";
+             amt(r.a) + " cover</option>";
     }).join("");
 
     el.innerHTML =
@@ -984,38 +1149,25 @@
         '<button class="x" type="button" aria-label="Remove">&times;</button>' +
       '</div>' +
 
-      '<div class="grid-2">' +
-        '<div class="field">' +
-          '<label>Surname</label>' +
-          '<input type="text" placeholder="Surname" data-f="surname" value="' + esc(item.surname) + '" autocomplete="off">' +
-        '</div>' +
-        '<div class="field">' +
-          '<label>First Name</label>' +
-          '<input type="text" placeholder="First name" data-f="firstname" value="' + esc(item.firstname) + '" autocomplete="off">' +
-        '</div>' +
+      '<input class="nameinput" type="text" placeholder="Surname" data-f="surname" value="' + esc(item.surname) + '" autocomplete="off">' +
+      '<input class="nameinput" type="text" placeholder="First Name" data-f="firstname" value="' + esc(item.firstname) + '" autocomplete="off">' +
+
+      '<div class="gender-row">' +
+        '<span class="gender-lbl">Gender</span>' +
+        '<label class="g-opt"><input type="radio" name="g' + item.id + '" value="M" data-gender' + (item.gender === "M" ? " checked" : "") + '><span>M</span></label>' +
+        '<label class="g-opt"><input type="radio" name="g' + item.id + '" value="F" data-gender' + (item.gender === "F" ? " checked" : "") + '><span>F</span></label>' +
       '</div>' +
 
-      '<div class="grid-2">' +
-        '<div class="field">' +
-          '<label>Gender</label>' +
-          '<div class="gender-opts" style="margin-top:1px">' +
-            '<label class="g-opt"><input type="radio" name="x' + item.id + '" value="M" data-gender' + (item.gender === "M" ? " checked" : "") + '><span>M</span></label>' +
-            '<label class="g-opt"><input type="radio" name="x' + item.id + '" value="F" data-gender' + (item.gender === "F" ? " checked" : "") + '><span>F</span></label>' +
-          '</div>' +
-        '</div>' +
-        '<div class="field">' +
-          '<label>Relationship</label>' +
-          '<input type="text" placeholder="e.g. Brother" data-f="relationship" value="' + esc(item.relationship) + '" autocomplete="off">' +
-        '</div>' +
-      '</div>' +
+      '<input class="nameinput" type="text" placeholder="Relationship (e.g. Brother)" data-f="relationship" value="' + esc(item.relationship) + '" autocomplete="off">' +
 
-      '<div class="field">' +
-        '<label>Cover Amount</label>' +
-        '<select data-cover>' + opts + '</select>' +
-      '</div>' +
+      '<select class="nameinput" data-cover aria-label="Cover Amount">' + opts + '</select>' +
+
+      '<label class="pw' + (item.pw ? " checked" : "") + '">' +
+        '<input type="checkbox" data-pw' + (item.pw ? " checked" : "") + '>' +
+        '<span>Add Premium Waiver</span>' +
+      '</label>' +
 
       '<div class="cost-row">' +
-        '<label class="pw"><input type="checkbox" data-pw' + (item.pw ? " checked" : "") + '><span>PW</span></label>' +
         '<span class="cost-display">' +
           '<span class="cd-lbl">Cost</span>' +
           '<span class="cd-amt" data-cost>' + money(costOf(item, EXT_RATES)) + '</span>' +
@@ -1033,7 +1185,7 @@
 
     var opts = CHILD_RATES.map(function (r, i) {
       return '<option value="' + i + '"' + (i === item.cover ? " selected" : "") + ">" +
-             amt(r.a) + "</option>";
+             amt(r.a) + " cover</option>";
     }).join("");
 
     el.innerHTML =
@@ -1042,39 +1194,24 @@
         '<button class="x" type="button" aria-label="Remove">&times;</button>' +
       '</div>' +
 
-      '<div class="grid-2">' +
-        '<div class="field">' +
-          '<label>Surname</label>' +
-          '<input type="text" placeholder="Surname" data-f="surname" value="' + esc(item.surname) + '" autocomplete="off">' +
-        '</div>' +
-        '<div class="field">' +
-          '<label>First Name</label>' +
-          '<input type="text" placeholder="First name" data-f="firstname" value="' + esc(item.firstname) + '" autocomplete="off">' +
-        '</div>' +
+      '<input class="nameinput" type="text" placeholder="Surname" data-f="surname" value="' + esc(item.surname) + '" autocomplete="off">' +
+      '<input class="nameinput" type="text" placeholder="First Name" data-f="firstname" value="' + esc(item.firstname) + '" autocomplete="off">' +
+
+      '<div class="gender-row">' +
+        '<span class="gender-lbl">Gender</span>' +
+        '<label class="g-opt"><input type="radio" name="c' + item.id + '" value="M" data-gender' + (item.gender === "M" ? " checked" : "") + '><span>M</span></label>' +
+        '<label class="g-opt"><input type="radio" name="c' + item.id + '" value="F" data-gender' + (item.gender === "F" ? " checked" : "") + '><span>F</span></label>' +
       '</div>' +
 
-      '<div class="grid-2">' +
-        '<div class="field">' +
-          '<label>Gender</label>' +
-          '<div class="gender-opts" style="margin-top:1px">' +
-            '<label class="g-opt"><input type="radio" name="c' + item.id + '" value="M" data-gender' + (item.gender === "M" ? " checked" : "") + '><span>M</span></label>' +
-            '<label class="g-opt"><input type="radio" name="c' + item.id + '" value="F" data-gender' + (item.gender === "F" ? " checked" : "") + '><span>F</span></label>' +
-          '</div>' +
-        '</div>' +
-        '<div class="field">' +
-          '<label>Relationship</label>' +
-          '<input type="text" placeholder="e.g. Son" data-f="relationship" value="' + esc(item.relationship) + '" autocomplete="off">' +
-        '</div>' +
-      '</div>' +
+      '<input class="nameinput" type="text" placeholder="Relationship (e.g. Son)" data-f="relationship" value="' + esc(item.relationship) + '" autocomplete="off">' +
 
-      '<div class="field">' +
-        '<label>Cover Amount</label>' +
-        '<select data-cover>' + opts + '</select>' +
-      '</div>' +
+      '<select class="nameinput" data-cover aria-label="Cover Amount">' + opts + '</select>' +
 
       '<div class="cost-row">' +
-        '<span class="cd-lbl" style="margin-left:auto;font-size:8px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)">Cost</span>' +
-        '<span class="cd-amt" data-cost style="font-size:14px;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums;margin-left:6px">' + money(costOf(item, CHILD_RATES)) + '</span>' +
+        '<span class="cost-display">' +
+          '<span class="cd-lbl">Cost</span>' +
+          '<span class="cd-amt" data-cost>' + money(costOf(item, CHILD_RATES)) + '</span>' +
+        '</span>' +
       '</div>';
 
     return el;
@@ -1109,21 +1246,14 @@
     document.getElementById("addExt").disabled   = extList.length   >= LIMITS.ext;
     document.getElementById("addChild").disabled = childList.length >= LIMITS.child;
 
-    if (extList.length >= LIMITS.ext) {
-      document.getElementById("addExt").textContent = "Limit reached (8/8)";
-    } else {
-      document.getElementById("addExt").textContent = "+ Add Extended Family Member";
-    }
-    if (childList.length >= LIMITS.child) {
-      document.getElementById("addChild").textContent = "Limit reached (6/6)";
-    } else {
-      document.getElementById("addChild").textContent = "+ Add Child Over 21";
-    }
+    document.getElementById("addExt").textContent = extList.length >= LIMITS.ext
+      ? "Limit reached (8/8)" : "+ Add Extended Family Member";
+    document.getElementById("addChild").textContent = childList.length >= LIMITS.child
+      ? "Limit reached (6/6)" : "+ Add Child Over 21";
   }
 
   /* ==================== TOTALS ==================== */
   function updateTotals() {
-    /* extended family */
     var extTotal = 0;
     extList.forEach(function (it) {
       var c = costOf(it, EXT_RATES);
@@ -1138,7 +1268,6 @@
     document.getElementById("sub-ext").textContent =
       "Add each member \u00b7 " + extList.length + " added";
 
-    /* adult children */
     var adultTotal = 0;
     adultList.forEach(function (it) {
       var c = costOf(it, EXT_RATES);
@@ -1153,7 +1282,6 @@
     document.getElementById("sub-adult").textContent =
       adultList.length ? adultList.length + " adult child(ren)" : "Children over 35 years";
 
-    /* children over 21 */
     var childTotal = 0;
     childList.forEach(function (it) {
       var c = costOf(it, CHILD_RATES);
@@ -1166,7 +1294,6 @@
     });
     document.getElementById("sub-child-amt").textContent = money(childTotal);
 
-    /* grand total */
     var grand = extTotal + adultTotal + childTotal;
     var el = document.getElementById("grandTotal");
     el.textContent = money(grand);
@@ -1205,7 +1332,6 @@
     };
     adultList.push(item);
     listAdult.appendChild(buildExtCard(item, adultList.length));
-    /* retag as Adult Child */
     var card = listAdult.querySelector('[data-id="' + item.id + '"]');
     var tag = card.querySelector(".member-tag");
     if (tag) tag.textContent = "Adult Child " + adultList.length;
@@ -1247,7 +1373,6 @@
       card.remove();
       renumber(listChild, "Child");
     } else {
-      /* adult shares ext markup */
       adultList = adultList.filter(function (i) { return i.id !== id; });
       card.remove();
       var rows = listAdult.querySelectorAll(".member");
@@ -1281,6 +1406,13 @@
         }
       }
     });
+    /* count dob pickers */
+    var dobs = sectionEl.querySelectorAll("[data-dob-target]");
+    Array.prototype.forEach.call(dobs, function (el) {
+      total++;
+      var st = dateStates[el.getAttribute("data-dob-target")];
+      if (st && st.y && st.m && st.d) filled++;
+    });
     return { filled: filled, total: total };
   }
 
@@ -1302,20 +1434,42 @@
   var scroll = document.getElementById("scroll");
 
   scroll.addEventListener("click", function (e) {
-    /* accordion */
     var head = e.target.closest(".acc-head");
     if (head) { head.parentElement.classList.toggle("open"); return; }
 
-    /* remove */
     var x = e.target.closest(".x");
     if (x) {
       var card = x.closest(".member");
       if (card) removeCard(card);
       return;
     }
+
+    var dobBtn = e.target.closest(".dob-btn");
+    if (dobBtn) {
+      var container = dobBtn.closest(".dob");
+      if (!container) return;
+      var target = container.getAttribute("data-dob-target");
+      var dob = dateStates[target];
+      if (!dob) return;
+      var kind = dobBtn.getAttribute("data-dob");
+      openPicker(dob, function () {
+        renderDob(container, dob);
+      }, kind);
+      return;
+    }
+
+    /* PW box tap (whole row) */
+    var pw = e.target.closest(".pw");
+    if (pw && e.target.tagName !== "INPUT") {
+      var cb = pw.querySelector("input");
+      if (cb) {
+        cb.checked = !cb.checked;
+        pw.classList.toggle("checked", cb.checked);
+        cb.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    }
   });
 
-  /* add buttons */
   document.getElementById("addExt").addEventListener("click", addExt);
   document.getElementById("addAdult").addEventListener("click", addAdult);
   document.getElementById("addChild").addEventListener("click", addChild);
@@ -1339,10 +1493,7 @@
   /* changes — cover select, PW checkbox, gender */
   scroll.addEventListener("change", function (e) {
     var card = e.target.closest(".member");
-    if (!card) {
-      updateBadges();
-      return;
-    }
+    if (!card) { updateBadges(); return; }
 
     var kind = card.getAttribute("data-kind");
     var id = Number(card.getAttribute("data-id"));
@@ -1358,6 +1509,8 @@
     }
     if (e.target.hasAttribute("data-pw")) {
       item.pw = e.target.checked;
+      var box = e.target.closest(".pw");
+      if (box) box.classList.toggle("checked", e.target.checked);
       updateTotals();
       return;
     }
@@ -1368,10 +1521,11 @@
   });
 
   /* ==================== SIGNATURE PADS ==================== */
-  function setupSignaturePad(canvasId, wrapId, clearId) {
+  function setupSignaturePad(canvasId, wrapId, clearId, hiddenId) {
     var canvas = document.getElementById(canvasId);
     var wrap   = document.getElementById(wrapId);
     var clear  = document.getElementById(clearId);
+    var hidden = hiddenId ? document.getElementById(hiddenId) : null;
     if (!canvas || !wrap) return;
 
     var ctx = canvas.getContext("2d");
@@ -1404,6 +1558,7 @@
       evt.preventDefault();
       drawing = true; dirty = true;
       wrap.classList.add("signed");
+      if (hidden) { hidden.value = "signed"; updateBadges(); }
       var p = point(evt);
       ctx.beginPath(); ctx.moveTo(p.x, p.y);
     }
@@ -1429,6 +1584,7 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         dirty = false;
         wrap.classList.remove("signed");
+        if (hidden) { hidden.value = ""; updateBadges(); }
       });
     }
 
@@ -1440,11 +1596,10 @@
   renderEmptyStates();
   updateTotals();
 
-  /* pre-add one extended family row to invite entry */
   addExt();
 
-  setupSignaturePad("sigPad",  "sigWrap",  "sigClear");
-  setupSignaturePad("sigPad2", "sigWrap2", "sigClear2");
+  setupSignaturePad("sigPad",  "sigWrap",  "sigClear",  "sigHidden");
+  setupSignaturePad("sigPad2", "sigWrap2", "sigClear2", null);
 
 })();
 </script>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Partner Detail · BOPEU Admin</title><link rel="stylesheet" href="design-system.css">
+<style>
+body.bop{background:#F2F5F9}
+.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+.admin-mark{width:32px;height:32px;border-radius:8px;background:#D32F2F;display:grid;place-items:center;font-weight:800;color:#fff}
+.admin-nav{display:flex;gap:16px;font-size:13px}
+.admin-nav a{color:#fff;text-decoration:none;font-weight:600;opacity:.85}
+.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}
+.admin-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}
+.admin-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}
+.admin-side a.active{background:#FFEBEE;color:#D32F2F}
+.admin-main{padding:24px;max-width:900px}
+@media(max-width:820px){.admin-layout{grid-template-columns:1fr}.admin-side{display:none}}
+</style></head>
+<body class="bop">
+<header class="admin-header">
+  <div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Staff Portal</div></div></div>
+  <nav class="admin-nav"><a href="admin-partners.html">Partners</a><a href="admin-login.html">Sign out</a></nav>
+</header>
+<div class="admin-layout">
+  <aside class="admin-side"><a href="admin-dashboard.html">📊 Dashboard</a><a href="admin-partners.html" class="active">🤝 Partners</a></aside>
+  <main class="admin-main" id="partnerMain"><div class="empty">Loading…</div></main>
+</div>
+<script src="js/data.js"></script><script src="js/app.js"></script>
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var id = new URLSearchParams(location.search).get('id');
+  var p = BOPEU_BENEFIT_PARTNERS.find(function(x){return x.id===id;}) || (id ? null : {name:'New partner',sector:'',category:'',discount:'',detail:'',how:'',status:'coming'});
+  if (!p){ document.getElementById('partnerMain').innerHTML = '<div class="empty">Partner not found.</div>'; return; }
+  document.getElementById('partnerMain').innerHTML =
+    '<a href="admin-partners.html" style="font-size:13px;font-weight:700;color:#D32F2F;text-decoration:none;">← Partners</a>' +
+    '<h1 style="font-size:22px;font-weight:800;margin:8px 0 4px;">'+p.name+'</h1>' +
+    '<p style="color:#718096;font-size:14px;margin:0 0 20px;">'+(p.category||p.sector||'—')+'</p>' +
+    '<div class="card"><div class="card-header"><h2>Offer</h2></div><div class="card-body">' +
+    '<div class="form-group"><label class="form-label">Offer summary</label><input type="text" value="'+(p.discount||'')+'" readonly></div>' +
+    '<div class="form-group"><label class="form-label">Details</label><textarea rows="3" style="width:100%;padding:10px;border:1px solid #E2E8F0;border-radius:10px;font-family:inherit;font-size:14px;" readonly>'+(p.detail||'')+'</textarea></div>' +
+    '<div class="form-group"><label class="form-label">How to claim</label><textarea rows="2" style="width:100%;padding:10px;border:1px solid #E2E8F0;border-radius:10px;font-family:inherit;font-size:14px;" readonly>'+(p.how||'')+'</textarea></div></div></div>' +
+    '<div class="card"><div class="card-header"><h2>Data-sharing agreement</h2></div><div class="card-body">' +
+    '<div class="checklist-item"><span class="chk-num">'+(p.status==='verified'?'✓':'·')+'</span><span>DPA status: <strong>'+(p.status==='verified'?'Signed':'Pending')+'</strong></span></div>' +
+    '<div class="checklist-item"><span class="chk-num">🔒</span><span>Aggregated-only rule enforced. No member PII shared without consent.</span></div>' +
+    '<div class="btn-row mt-md"><button class="btn btn-secondary" onclick="alert(\'Upload signed DPA (demo).\')">Upload DPA</button><button class="btn btn-primary" onclick="approveOffer(\''+p.id+'\')">Approve offer</button></div>' +
+    '</div></div>' +
+    '<div class="card"><div class="card-header"><h2>Aggregated stats</h2></div><div class="card-body"><div class="empty">Aggregated analytics become available once partner tracking is enabled in Phase 2.</div></div></div>';
+});
+function approveOffer(id){ alert('Offer for '+id+' approved (demo).'); }
+</script>
+</body></html>

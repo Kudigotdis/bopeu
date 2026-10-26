@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Breach Response · BOPEU DPO</title>
+<link rel="stylesheet" href="design-system.css">
+<style>body.bop{background:#F2F5F9}.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20}.admin-mark{width:32px;height:32px;border-radius:8px;background:#D32F2F;display:grid;place-items:center;font-weight:800;color:#fff}.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}.admin-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}.admin-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}.admin-side a.active{background:#FFEBEE;color:#D32F2F}.admin-main{padding:24px;max-width:900px}.step-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:20px;margin-bottom:16px}.step-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#D32F2F;color:#fff;font-weight:800;font-size:13px;margin-right:10px}</style>
+</head>
+<body class="bop">
+<header class="admin-header"><div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Breach Response</div></div></div></header>
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-data-requests.html">📋 DSRs</a>
+    <a href="admin-consents-register.html">✅ Consents</a>
+    <a href="admin-breach-response.html" class="active">🚨 Breach Response</a>
+    <a href="admin-audit-log.html">📜 Audit Log</a>
+  </aside>
+  <main class="admin-main">
+    <h1 style="font-size:22px;font-weight:800;margin-bottom:4px;">Data Breach Response</h1>
+    <p style="color:#718096;font-size:14px;margin-bottom:20px;">Botswana DPA 2024 requires notification within 72 hours of becoming aware of a breach.</p>
+    <div class="callout" style="margin-bottom:20px;background:#FFF3E0;border-left-color:#E65100;"><span class="callout-label">Regulator contact</span><p>Information & Data Protection Commissioner (Botswana) — notify at <strong>compliance@idpc.co.bw</strong> within 72 hours. Keep evidence of notification timestamp.</p></div>
+
+    <div class="step-card"><h3><span class="step-num">1</span>Confirm the breach</h3>
+      <div class="form-group"><label class="form-label">Date/time breach detected *</label><input type="datetime-local" id="bDate"></div>
+      <div class="form-group"><label class="form-label">Breach type *</label><select id="bType"><option>Unauthorised access</option><option>Accidental disclosure</option><option>Lost device</option><option>Insider misuse</option><option>Third-party breach</option><option>Other</option></select></div>
+      <div class="form-group"><label class="form-label">Description *</label><textarea id="bDesc" rows="3" placeholder="What happened, how detected, how many records"></textarea></div>
+      <button class="btn btn-primary" onclick="logBreach()">Log breach</button>
+    </div>
+
+    <div class="step-card"><h3><span class="step-num">2</span>Contain the breach</h3>
+      <div class="checklist-item"><input type="checkbox" id="c1"><label for="c1">Revoked access / terminated session for affected accounts</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c2"><label for="c2">Isolated affected systems</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c3"><label for="c3">Preserved logs and evidence for investigation</label></div>
+      <div class="checklist-item"><input type="checkbox" id="c4"><label for="c4">Documented chain of custody</label></div>
+      <button class="btn btn-primary" onclick="alert('Containment steps saved.')">Save containment status</button>
+    </div>
+
+    <div class="step-card"><h3><span class="step-num">3</span>Assess impact</h3>
+      <div class="form-group"><label class="form-label">Estimated affected records *</label><input type="number" id="bRecords" placeholder="e.g. 150"></div>
+      <div class="form-group"><label class="form-label">Categories of data involved</label><textarea id="bData" rows="2" placeholder="e.g. Names, Omang, contact numbers"></textarea></div>
+      <div class="form-group"><label class="form-label">Risk level *</label><select id="bRisk"><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select></div>
+    </div>
+
+    <div class="step-card"><h3><span class="step-num">4</span>Notify</h3>
+      <div class="checklist-item"><input type="checkbox" id="n1"><label for="n1">Notify regulator (IDPC) — deadline 72 hours</label></div>
+      <div class="checklist-item"><input type="checkbox" id="n2"><label for="n2">Notify affected members — direct communication</label></div>
+      <div class="checklist-item"><input type="checkbox" id="n3"><label for="n3">Notify partner organisations (if applicable)</label></div>
+      <div class="checklist-item"><input type="checkbox" id="n4"><label for="n4">Notify BOPEU leadership</label></div>
+      <button class="btn btn-primary" onclick="alert('Notifications logged.')">Log notifications</button>
+    </div>
+
+    <div class="step-card"><h3><span class="step-num">5</span>Post-incident</h3>
+      <div class="form-group"><label class="form-label">Root cause</label><textarea id="bCause" rows="3"></textarea></div>
+      <div class="form-group"><label class="form-label">Preventive measures</label><textarea id="bPrev" rows="3"></textarea></div>
+      <button class="btn btn-primary" onclick="alert('Post-incident report saved.')">Save final report</button>
+    </div>
+  </main>
+</div>
+<script>
+function logBreach() {
+  if (!document.getElementById('bDate').value || !document.getElementById('bDesc').value) { alert('Date/time and description are required.'); return; }
+  var ref = 'BREACH-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + String(Math.floor(Math.random()*9000)+1000);
+  var breach = { ref, date: document.getElementById('bDate').value, type: document.getElementById('bType').value, desc: document.getElementById('bDesc').value, at: new Date().toISOString() };
+  try { var list = JSON.parse(localStorage.getItem('bopeu_breaches') || '[]'); list.unshift(breach); localStorage.setItem('bopeu_breaches', JSON.stringify(list)); } catch(e){}
+  alert('Breach logged.\nReference: ' + ref + '\n\nRegulator notification deadline: 72 hours from detection.');
+}
+</script>
+
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

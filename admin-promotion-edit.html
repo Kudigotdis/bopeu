@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit Promotion · BOPEU Admin</title>
+<link rel="stylesheet" href="design-system.css">
+<style>
+body.bop { background:#F2F5F9; }
+.admin-header { background:#1A202C; color:#fff; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:20; }
+.admin-brand { display:flex; align-items:center; gap:10px; }
+.admin-mark { width:32px; height:32px; border-radius:8px; background:#D32F2F; display:grid; place-items:center; font-weight:800; color:#fff; }
+.admin-nav { display:flex; gap:16px; font-size:13px; }
+.admin-nav a { color:#fff; text-decoration:none; font-weight:600; opacity:.85; }
+.admin-nav a:hover, .admin-nav a.active { opacity:1; text-decoration:underline; }
+.admin-layout { display:grid; grid-template-columns:220px 1fr; min-height:calc(100vh - 56px); }
+.admin-side { background:#fff; border-right:1px solid #E2E8F0; padding:16px 12px; }
+.admin-side a { display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:8px; font-size:13px; font-weight:600; color:#4A5568; text-decoration:none; margin-bottom:2px; }
+.admin-side a:hover { background:#F7F9FC; color:#D32F2F; }
+.admin-side a.active { background:#FFEBEE; color:#D32F2F; }
+.admin-main { padding:24px; max-width:900px; }
+.form-row-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.preview-tile { background:#F7F9FC; border:1px solid #E2E8F0; border-radius:12px; padding:14px; margin-top:14px; }
+.preview-tile .lbl { font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:#718096; margin-bottom:8px; }
+.preview-card { background:#fff; border:1px solid #E2E8F0; border-radius:12px; overflow:hidden; }
+.preview-card .pc-img { aspect-ratio:16/9; background:linear-gradient(135deg,#FFEBEE,#F7DCE1); display:flex; align-items:center; justify-content:center; color:rgba(211,47,47,.35); font-weight:800; letter-spacing:.22em; font-size:12px; overflow:hidden; }
+.preview-card .pc-img img { width:100%; height:100%; object-fit:cover; display:block; }
+.preview-card .pc-body { padding:12px; }
+.preview-card .pc-meta { font-size:11px; color:#718096; font-weight:700; margin-bottom:4px; }
+.preview-card .pc-title { font-size:15px; font-weight:800; color:#1A202C; margin-bottom:4px; }
+.preview-card .pc-desc { font-size:12px; color:#718096; line-height:1.45; }
+.audience-pills { display:flex; flex-wrap:wrap; gap:8px; }
+.audience-pills label { display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; border:1px solid #E2E8F0; background:#fff; font-size:13px; font-weight:600; color:#4A5568; cursor:pointer; user-select:none; }
+.audience-pills label:hover { border-color:#D32F2F; color:#D32F2F; }
+.audience-pills input { accent-color:#D32F2F; }
+@media(max-width:820px) {
+  .admin-layout { grid-template-columns:1fr; }
+  .admin-side { display:none; }
+  .form-row-2 { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body class="bop">
+
+<header class="admin-header">
+  <div class="admin-brand">
+    <div class="admin-mark">B</div>
+    <div>
+      <div style="font-weight:800;font-size:14px;">BOPEU Admin</div>
+      <div style="font-size:10px;opacity:.7;">Staff Portal</div>
+    </div>
+  </div>
+  <nav class="admin-nav">
+    <a href="admin-dashboard.html">Dashboard</a>
+    <a href="admin-submissions.html">Submissions</a>
+    <a href="admin-members.html">Members</a>
+    <a href="admin-content.html">Content</a>
+    <a href="admin-reports.html">Reports</a>
+    <a href="admin-login.html">Sign out</a>
+  </nav>
+</header>
+
+<div class="admin-layout">
+  <aside class="admin-side">
+    <a href="admin-dashboard.html">📊 Dashboard</a>
+    <a href="admin-submissions.html">📥 Submissions</a>
+    <a href="admin-members.html">👥 Members</a>
+    <a href="admin-content.html">📰 Content</a>
+    <a href="admin-promotions.html" class="active">📣 Promotions</a>
+    <a href="admin-noticeboards.html">📌 Notice Boards</a>
+    <a href="admin-content-analytics.html">📊 Analytics</a>
+    <a href="admin-users-roles.html">🔐 Users &amp; Roles</a>
+    <a href="admin-audit-log.html">📜 Audit Log</a>
+    <a href="admin-reports.html">📈 Reports</a>
+  </aside>
+
+  <main class="admin-main">
+    <a href="admin-promotions.html" style="font-size:13px;font-weight:700;color:#D32F2F;text-decoration:none;">← Promotions</a>
+
+    <h1 id="editTitle" style="font-size:22px;font-weight:800;margin:8px 0 4px;">New Promotion</h1>
+    <p id="editSub" style="color:#718096;font-size:14px;margin:0 0 20px;">Create a promotion shown on the member timeline.</p>
+
+    <!-- ============================================================
+         Publish / status controls
+         ============================================================ -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-body" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+        <div>
+          <div style="font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#718096;">Status</div>
+          <div id="statusLabel" style="font-size:15px;font-weight:800;color:#1A202C;margin-top:2px;">Draft</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <a href="admin-promotions.html" class="btn btn-secondary">Cancel</a>
+          <button class="btn btn-secondary" onclick="setStatus('draft')">Save as draft</button>
+          <button class="btn btn-primary" onclick="saveAndPublish()">Save &amp; Publish</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Content
+         ============================================================ -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-header"><h2>Content</h2></div>
+      <div class="card-body">
+        <div class="form-group">
+          <label class="form-label">Title <span style="color:#D32F2F;">*</span></label>
+          <input type="text" id="pTitle" placeholder="e.g. Diagnofirm Health Week" oninput="refreshPreview()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Teaser / short description</label>
+          <input type="text" id="pTeaser" placeholder="One-line hook for the timeline card" oninput="refreshPreview()">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Body / details</label>
+          <textarea id="pBody" rows="6" placeholder="Full description shown when the member taps the promotion…" oninput="refreshPreview()"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cover image URL</label>
+          <input type="text" id="pCover" placeholder="Assets/timeline_feed_images/…" oninput="refreshPreview()">
+          <div class="text-small text-muted" style="margin-top:6px;">Leave blank to use the default BOPEU red gradient.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Audience & Schedule
+         ============================================================ -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-header"><h2>Audience &amp; Schedule</h2></div>
+      <div class="card-body">
+        <div class="form-group">
+          <label class="form-label">Target audience</label>
+          <div class="audience-pills" id="audiencePills">
+            <label><input type="checkbox" value="All members" checked onchange="refreshPreview()"> All members</label>
+            <label><input type="checkbox" value="Central Government" onchange="refreshPreview()"> Central Government</label>
+            <label><input type="checkbox" value="Local Authority" onchange="refreshPreview()"> Local Authority</label>
+            <label><input type="checkbox" value="Land Board" onchange="refreshPreview()"> Land Board</label>
+            <label><input type="checkbox" value="Parastatal" onchange="refreshPreview()"> Parastatal</label>
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Start date</label>
+            <input type="date" id="pStart" oninput="refreshPreview()">
+          </div>
+          <div class="form-group">
+            <label class="form-label">End date (optional)</label>
+            <input type="date" id="pEnd" oninput="refreshPreview()">
+          </div>
+        </div>
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Priority</label>
+            <select id="pPriority">
+              <option value="normal">Normal</option>
+              <option value="high">High (pinned)</option>
+              <option value="low">Low</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Partner / source (optional)</label>
+            <input type="text" id="pSource" placeholder="e.g. Diagnofirm">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Call-to-action
+         ============================================================ -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-header"><h2>Call to Action</h2></div>
+      <div class="card-body">
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="form-label">Button label</label>
+            <input type="text" id="pCtaLabel" placeholder="e.g. Learn more">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Destination URL</label>
+            <input type="text" id="pCtaUrl" placeholder="my-benefits.html or https://…">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Live preview
+         ============================================================ -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-header"><h2>Live preview</h2></div>
+      <div class="card-body">
+        <div class="preview-tile">
+          <div class="lbl">How members will see it on the timeline</div>
+          <div class="preview-card">
+            <div class="pc-img" id="pvImg">BOPEU</div>
+            <div class="pc-body">
+              <div class="pc-meta" id="pvMeta">September 2026 · Promotion</div>
+              <div class="pc-title" id="pvTitle">Your promotion title</div>
+              <div class="pc-desc" id="pvDesc">Your teaser will appear here…</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Audit + approvals
+         ============================================================ -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-header"><h2>Approval</h2></div>
+      <div class="card-body">
+        <div class="callout" style="margin-bottom:12px;">
+          <span class="callout-label">Maker-checker required</span>
+          <p>Publishing a promotion shows it to members immediately. If maker-checker is enabled, saving as "Live" submits it to the approvals queue first.</p>
+        </div>
+        <div class="checklist-item">
+          <input type="checkbox" id="pMaker" checked>
+          <label for="pMaker">Send for approval before publishing (recommended)</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         Delete (existing promotions only)
+         ============================================================ -->
+    <div class="card" id="deleteCard" style="display:none;margin-bottom:16px;">
+      <div class="card-header"><h2 style="color:#B71C1C;">Danger zone</h2></div>
+      <div class="card-body">
+        <p class="text-small text-muted">Deleting this promotion removes it from the timeline for all members. This cannot be undone.</p>
+        <button class="btn btn-ghost" style="color:#B71C1C;" onclick="deletePromotion()">Delete promotion</button>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/demo-profiles.js"></script>
+<script src="js/auth.js"></script>
+<script>
+/* ============================================================
+   DEMO SEED — replace with server data once the API exists
+   ============================================================ */
+var DEMO_PROMOS = {
+  'P-1': { id:'P-1', title:'Diagnofirm Health Week', teaser:'Exclusive health & fitness discounts for BOPEU members.',
+           body:'No 10% patient share and up to 35% off for members without medical aid. Virgin Active 10% off, Penalty Box 15% off.',
+           cover:'Assets/timeline_feed_images/lifestyle_discounts_at_selected_retailers_and_hotels.webp',
+           audience:['All members'], start:'2026-09-01', end:'2026-09-30', status:'live', priority:'high', source:'Diagnofirm' },
+  'P-2': { id:'P-2', title:'Funeral Cover Awareness', teaser:'Know your Metropolitan Life funeral cover.',
+           body:'P60,000 core benefit. Subscription 1% of basic salary, capped P39.90 – P100.00.',
+           cover:'Assets/timeline_feed_images/insurance_bopeu_funeral_cover.webp',
+           audience:['Central Government'], start:'2026-10-01', end:'2026-10-31', status:'scheduled', priority:'normal', source:'BOPEU' },
+  'P-3': { id:'P-3', title:'Bursary Applications Open', teaser:'Interest-free educational bursary up to P30,000.',
+           body:'Applications open for the 2026 academic year. Up to P30,000, interest-free, repaid over 24 months.',
+           cover:'Assets/timeline_feed_images/educational_bursaries.webp',
+           audience:['All members'], start:'2026-08-01', end:'2026-08-31', status:'ended', priority:'normal', source:'BOPEU' }
+};
+
+var EDIT_ID = null;
+var CURRENT_STATUS = 'draft';
+
+/* ============================================================
+   LOAD
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', function () {
+  EDIT_ID = new URLSearchParams(location.search).get('id');
+
+  if (!EDIT_ID) {
+    setDefaultDates();
+    CURRENT_STATUS = 'draft';
+    updateStatusUi();
+    refreshPreview();
+    return;
+  }
+
+  // Load from LocalStore first (recently saved), then fall back to demo seed
+  var live = (LocalStore.get('bopeu_promotions') || []).find(function (p) { return p.id === EDIT_ID; });
+  var p = live || DEMO_PROMOS[EDIT_ID];
+
+  if (!p) {
+    document.getElementById('editTitle').textContent = 'Promotion not found';
+    document.getElementById('editSub').textContent = 'Reference ' + EDIT_ID;
+    return;
+  }
+
+  document.getElementById('editTitle').textContent = 'Edit: ' + p.title;
+  document.getElementById('editSub').textContent = 'ID ' + p.id + ' · Created via admin portal';
+
+  document.getElementById('pTitle').value   = p.title || '';
+  document.getElementById('pTeaser').value  = p.teaser || '';
+  document.getElementById('pBody').value    = p.body || '';
+  document.getElementById('pCover').value   = p.cover || '';
+  document.getElementById('pStart').value   = p.start || '';
+  document.getElementById('pEnd').value     = p.end || '';
+  document.getElementById('pPriority').value = p.priority || 'normal';
+  document.getElementById('pSource').value  = p.source || '';
+  document.getElementById('pCtaLabel').value = p.ctaLabel || '';
+  document.getElementById('pCtaUrl').value   = p.ctaUrl || '';
+
+  // Restore audience pills
+  (p.audience || ['All members']).forEach(function (v) {
+    document.querySelectorAll('#audiencePills input').forEach(function (cb) {
+      if (cb.value === v) cb.checked = true;
+    });
+  });
+
+  CURRENT_STATUS = p.status || 'draft';
+  updateStatusUi();
+  refreshPreview();
+
+  // Show delete for existing items
+  document.getElementById('deleteCard').style.display = 'block';
+});
+
+/* ============================================================
+   DEFAULTS
+   ============================================================ */
+function setDefaultDates() {
+  var today = new Date();
+  var iso = function (d) { return d.toISOString().slice(0, 10); };
+  document.getElementById('pStart').value = iso(today);
+  var end = new Date(today); end.setDate(end.getDate() + 30);
+  document.getElementById('pEnd').value = iso(end);
+}
+
+/* ============================================================
+   LIVE PREVIEW
+   ============================================================ */
+function refreshPreview() {
+  var title  = document.getElementById('pTitle').value.trim();
+  var teaser = document.getElementById('pTeaser').value.trim();
+  var cover  = document.getElementById('pCover').value.trim();
+  var aud    = getSelectedAudience();
+  var start  = document.getElementById('pStart').value;
+
+  var meta = start ? new Date(start).toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' }) : 'Unscheduled';
+  if (aud && aud.length) meta += ' · ' + (aud.length > 1 ? aud.length + ' audiences' : aud[0]);
+
+  document.getElementById('pvMeta').textContent = meta;
+  document.getElementById('pvTitle').textContent = title || 'Your promotion title';
+  document.getElementById('pvDesc').textContent = teaser || 'Your teaser will appear here…';
+
+  var imgEl = document.getElementById('pvImg');
+  if (cover) {
+    imgEl.innerHTML = '<img src="' + escAttr(cover) + '" alt="" onerror="this.style.display=\'none\'">';
+  } else {
+    imgEl.textContent = 'BOPEU';
+  }
+}
+
+function escAttr(s) {
+  return String(s == null ? '' : s).replace(/"/g, '&quot;').replace(/</g, '&lt;');
+}
+
+/* ============================================================
+   AUDIENCE
+   ============================================================ */
+function getSelectedAudience() {
+  var out = [];
+  document.querySelectorAll('#audiencePills input:checked').forEach(function (cb) {
+    out.push(cb.value);
+  });
+  return out;
+}
+
+/* ============================================================
+   STATUS
+   ============================================================ */
+function updateStatusUi() {
+  var map = { draft:'Draft', scheduled:'Scheduled', live:'Live', ended:'Ended', pending:'Pending approval' };
+  var col = { draft:'#718096', scheduled:'#0D47A1', live:'#2E7D32', ended:'#718096', pending:'#F0A92B' };
+  var lbl = document.getElementById('statusLabel');
+  lbl.textContent = map[CURRENT_STATUS] || CURRENT_STATUS;
+  lbl.style.color = col[CURRENT_STATUS] || '#1A202C';
+}
+
+function setStatus(s) {
+  CURRENT_STATUS = s;
+  updateStatusUi();
+  persistPromotion();
+  // Stay on the page after "Save as draft"
+  if (s === 'draft') alert('Saved as draft.');
+  else location.href = 'admin-promotions.html';
+}
+
+/* ============================================================
+   SAVE
+   ============================================================ */
+function saveAndPublish() {
+  var title = document.getElementById('pTitle').value.trim();
+  if (!title) { alert('Please add a title before publishing.'); return; }
+
+  var wantsApproval = document.getElementById('pMaker').checked;
+  CURRENT_STATUS = wantsApproval ? 'pending' : 'live';
+  updateStatusUi();
+
+  if (!persistPromotion()) return;
+
+  if (wantsApproval) {
+    alert('Sent for approval. A reviewer must approve before this promotion goes live.');
+  } else {
+    alert('Published live to the member timeline.');
+  }
+  location.href = 'admin-promotions.html';
+}
+
+function persistPromotion() {
+  var title = document.getElementById('pTitle').value.trim();
+  if (!title) { alert('Title is required.'); return false; }
+
+  var record = {
+    id: EDIT_ID || ('P-' + Date.now()),
+    title: title,
+    teaser: document.getElementById('pTeaser').value.trim(),
+    body: document.getElementById('pBody').value.trim(),
+    cover: document.getElementById('pCover').value.trim(),
+    audience: getSelectedAudience(),
+    start: document.getElementById('pStart').value,
+    end: document.getElementById('pEnd').value,
+    priority: document.getElementById('pPriority').value,
+    source: document.getElementById('pSource').value.trim(),
+    ctaLabel: document.getElementById('pCtaLabel').value.trim(),
+    ctaUrl: document.getElementById('pCtaUrl').value.trim(),
+    status: CURRENT_STATUS,
+    updatedAt: new Date().toISOString()
+  };
+  if (!EDIT_ID) record.createdAt = record.updatedAt;
+
+  var list = (LocalStore.get('bopeu_promotions') || []).filter(function (p) { return p.id !== record.id; });
+  list.unshift(record);
+  LocalStore.set('bopeu_promotions', list);
+
+  // Audit trail entry
+  var audit = LocalStore.get('bopeu_audit_extra') || [];
+  audit.unshift({
+    at: new Date().toISOString(),
+    user: 'staff@bopeu.org.bw',
+    action: (EDIT_ID ? 'Updated' : 'Created') + ' promotion "' + record.title + '" (status: ' + record.status + ')'
+  });
+  LocalStore.set('bopeu_audit_extra', audit.slice(0, 500));
+
+  EDIT_ID = record.id;
+  return true;
+}
+
+/* ============================================================
+   DELETE
+   ============================================================ */
+function deletePromotion() {
+  if (!EDIT_ID) return;
+  if (!confirm('Delete this promotion? Members will no longer see it.')) return;
+
+  var list = (LocalStore.get('bopeu_promotions') || []).filter(function (p) { return p.id !== EDIT_ID; });
+  LocalStore.set('bopeu_promotions', list);
+
+  var audit = LocalStore.get('bopeu_audit_extra') || [];
+  audit.unshift({
+    at: new Date().toISOString(),
+    user: 'staff@bopeu.org.bw',
+    action: 'Deleted promotion ' + EDIT_ID
+  });
+  LocalStore.set('bopeu_audit_extra', audit.slice(0, 500));
+
+  alert('Promotion deleted.');
+  location.href = 'admin-promotions.html';
+}
+</script>
+</body>
+</html>

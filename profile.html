@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>My Profile · BOPEU</title><link rel="stylesheet" href="design-system.css"></head>
+<body class="bop">
+<header style="background:#fff;border-bottom:1px solid #E2E8F0;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;">
+  <a href="index.html" style="display:flex;gap:10px;align-items:center;text-decoration:none;color:inherit;">
+    <div style="width:32px;height:32px;border-radius:8px;background:#D32F2F;color:#fff;display:grid;place-items:center;font-weight:800;">B</div>
+    <div><div style="font-weight:800;font-size:14px;">BOPEU</div><div style="font-size:10px;color:#718096;">MEMBER SERVICES</div></div>
+  </a>
+  <a href="index.html" style="font-size:13px;font-weight:700;color:#D32F2F;text-decoration:none;">← Home</a>
+</header>
+<main class="page stack">
+  <div class="card"><div class="card-header"><h2>Profile</h2></div><div class="card-body" id="profileSummary"></div></div>
+  <div class="card"><div class="card-header"><h2>Contact & Employment</h2></div>
+    <div class="card-body" id="profDetails"></div>
+  </div>
+  <div class="card"><div class="card-header"><h2>Dependents & Beneficiaries</h2></div>
+    <div class="card-body">
+      <div id="profDeps"></div>
+      <button class="btn btn-secondary btn-block mt-md" onclick="openOnboarding()">Add / Edit dependents</button>
+    </div>
+  </div>
+  <div class="card"><div class="card-header"><h2>Communication preferences</h2></div>
+    <div class="card-body">
+      <div class="checklist-item"><input type="checkbox" id="prefEmail" onchange="savePref('email')"><label for="prefEmail">Email announcements</label></div>
+      <div class="checklist-item"><input type="checkbox" id="prefSms" onchange="savePref('sms')"><label for="prefSms">SMS announcements</label></div>
+      <div class="checklist-item"><input type="checkbox" id="prefWa" onchange="savePref('wa')"><label for="prefWa">WhatsApp announcements</label></div>
+    </div>
+  </div>
+  <div class="card"><div class="card-header"><h2>Shortcuts</h2></div><div class="card-body">
+    <a class="row" href="security.html"><div class="row-icon">🔐</div><div class="row-body"><div class="row-title">Security</div><div class="row-desc">Password, sessions, recovery.</div></div></a>
+    <a class="row" href="consents.html"><div class="row-icon">✅</div><div class="row-body"><div class="row-title">Consents & Data Requests</div><div class="row-desc">Privacy, marketing, data access.</div></div></a>
+    <a class="row" href="my-documents.html"><div class="row-icon">📁</div><div class="row-body"><div class="row-title">My Documents</div><div class="row-desc">Formal document vault.</div></div></a>
+  </div></div>
+</main>
+<div class="modal" id="onboarding-modal" style="position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(15,23,32,.55);">
+  <div style="width:100%;max-width:560px;max-height:88vh;overflow-y:auto;background:#fff;border-radius:16px;padding:20px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #E2E8F0;"><h2 style="font-size:18px;font-weight:800;margin:0;">Edit Profile</h2><button style="background:none;border:none;font-size:24px;cursor:pointer;color:#718096;" onclick="closeModal('onboarding-modal')">&times;</button></div>
+    <div id="wizardProgress"></div><div id="wizardBody"></div>
+    <div class="btn-row" style="margin-top:16px;"><button class="btn btn-secondary" id="wizBack" onclick="wizardBack()">Back</button><button class="btn btn-primary" id="wizNext" onclick="wizardNext()">Continue</button></div>
+  </div>
+</div>
+<script src="js/data.js"></script><script src="js/app.js"></script><script src="js/onboarding.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  if (typeof renderProfileSummary==='function') renderProfileSummary();
+  var p = loadOnboarding();
+  var det = document.getElementById('profDetails');
+  if (!p) { det.innerHTML='<div class="empty">Complete registration to see your profile.</div>'; return; }
+  det.innerHTML = '<div class="checklist-item"><span class="chk-num">☎</span><span><strong>Phone:</strong> '+(p.personal.phone||'—')+'</span></div>' +
+    '<div class="checklist-item"><span class="chk-num">✉</span><span><strong>Email:</strong> '+(p.personal.email||'—')+'</span></div>' +
+    '<div class="checklist-item"><span class="chk-num">🏢</span><span><strong>Employer:</strong> '+(p.employment.employerLabel||'—')+'</span></div>' +
+    '<div class="checklist-item"><span class="chk-num">💼</span><span><strong>Job title:</strong> '+(p.employment.jobTitle||'—')+'</span></div>' +
+    '<div class="checklist-item"><span class="chk-num">📍</span><span><strong>Station:</strong> '+(p.location.workStation||'—')+'</span></div>';
+  var deps = (p.funeral && p.funeral.dependants) || [];
+  document.getElementById('profDeps').innerHTML = deps.length ? deps.map(function(d){
+    return '<div class="checklist-item"><span class="chk-num">'+d.relation.charAt(0)+'</span><span><strong>'+d.name+'</strong> — '+d.relation+' · '+d.cover+'</span></div>';
+  }).join('') : '<div class="empty">No dependents added yet.</div>';
+  var prefs = LocalStore.get('bopeu_prefs') || {};
+  ['email','sms','wa'].forEach(function(k){ var el=document.getElementById('pref'+k.charAt(0).toUpperCase()+k.slice(1)); if(el) el.checked=!!prefs[k]; });
+});
+function savePref(k){ var p = LocalStore.get('bopeu_prefs')||{}; var el=document.getElementById('pref'+k.charAt(0).toUpperCase()+k.slice(1)); p[k]=el.checked; LocalStore.set('bopeu_prefs',p); }
+</script>
+</body></html>

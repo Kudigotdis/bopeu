@@ -14,8 +14,9 @@
  *      the only thing in it (11 pages), so no empty dark bar is left behind.
  *   5. Removes the now-unused `.admin-brand { ... }` and `.admin-mark { ... }`
  *      CSS rules.
- *   6. Resizes `.admin-layout` so the 62px app header plus the 56px bottom bar
- *      fill the viewport exactly: calc(100vh - 56px) -> calc(100vh - 118px).
+ *   6. Resizes `.admin-layout` so the bars fill the viewport exactly: pages with
+ *      both bars use calc(100vh - 118px), the pages whose bottom bar was
+ *      deleted use calc(100vh - 62px).
  *
  * Safe to re-run: every step is a no-op once it has been applied.
  */
@@ -40,8 +41,9 @@ const SIGNOUT_LINE = /[ \t]*<a\b[^>]*?href="admin-login\.html"[^>]*>[^<]*<\/a>[ 
 const SIGNOUT_INLINE = /[ \t]*<a\b[^>]*?href="admin-login\.html"[^>]*>[^<]*<\/a>/g;
 const BRAND_CSS = /[ \t]*\.admin-brand\s*\{[^}]*\}[ \t]*(\r?\n)?/g;
 const MARK_CSS = /[ \t]*\.admin-mark\s*\{[^}]*\}[ \t]*(\r?\n)?/g;
-const LAYOUT_HEIGHT = /min-height\s*:\s*calc\(100vh\s*-\s*56px\)/g;
-const LAYOUT_HEIGHT_FIXED = 'min-height:calc(100vh - 118px)';
+const LAYOUT_HEIGHT = /(\.admin-layout\s*\{[^}]*?min-height\s*:\s*)calc\(100vh\s*-\s*\d+px\)/g;
+const TOP_BAR_HEIGHT = 62;
+const BOTTOM_BAR_HEIGHT = 56;
 
 async function main() {
   const entries = await readdir(root, { withFileTypes: true });
@@ -110,7 +112,11 @@ async function main() {
     }
 
     /* ---- layout height --------------------------------------------------- */
-    const resized = content.replace(LAYOUT_HEIGHT, LAYOUT_HEIGHT_FIXED);
+    /* Pages that kept their bottom nav need room for both bars; the pages whose
+       bar was deleted only carry the 62px app header. */
+    const bars = TOP_BAR_HEIGHT + (/<header class="admin-header">/.test(content) ? BOTTOM_BAR_HEIGHT : 0);
+    const height = `calc(100vh - ${bars}px)`;
+    const resized = content.replace(LAYOUT_HEIGHT, `$1${height}`);
     if (resized !== content) {
       report.height.push(file);
       content = resized;

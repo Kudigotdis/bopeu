@@ -4,9 +4,15 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Data Import · BOPEU Admin</title>
 <link rel="stylesheet" href="design-system.css">
-<style>body.bop{background:#F2F5F9}.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;bottom:0;z-index:20}.admin-mark{width:32px;height:32px;border-radius:8px;background:#D32F2F;display:grid;place-items:center;font-weight:800;color:#fff}.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 56px)}.admin-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}.admin-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}.admin-side a.active{background:#FFEBEE;color:#D32F2F}.admin-main{padding:24px;max-width:900px}.import-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:20px;margin-bottom:16px}</style>
+<style>body.bop{background:#F2F5F9}.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;bottom:0;z-index:20}.admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 118px)}.admin-side{background:#fff;border-right:1px solid #E2E8F0;padding:16px 12px}.admin-side a{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#4A5568;text-decoration:none;margin-bottom:2px}.admin-side a.active{background:#FFEBEE;color:#D32F2F}.admin-main{padding:24px;max-width:900px}.import-card{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:20px;margin-bottom:16px}</style>
 </head>
 <body data-page-id="Page-admin-data-import" class="bop">
+
+<div class="app-header">
+    <img src="Assets/logo/bopeu_logo.webp" alt="BOPEU" class="app-logo" data-logo-key="bopeu">
+    <button type="button" id="loginToggleBtn" class="btn header-login-btn btn-secondary" onclick="handleLoginToggle()">Logout</button>
+</div>
+
 <div class="admin-layout">
   <aside class="admin-side">
     <a href="admin-dashboard.html">📊 Dashboard</a>
@@ -74,7 +80,5 @@ function commitImport() {
 
 <script src="js/demo-profiles.js"></script>
 <script src="js/auth.js"></script>
-
-<header class="admin-header"><div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Data Import</div></div></div></header>
 </body>
 </html>

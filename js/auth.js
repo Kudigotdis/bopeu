@@ -607,7 +607,9 @@
 
   function addUserChip(sessionData) {
     if (!sessionData) return;
-    var header = document.querySelector('.admin-header, .p-header');
+    // Admin pages carry the app top bar (logo + Log out) instead of a chip,
+    // so the chip is only injected into partner headers.
+    var header = document.querySelector('.p-header');
     if (!header || header.querySelector('.auth-user-chip')) return;
     var nav = header.querySelector('.admin-nav, .p-nav');
     var chip = document.createElement('div');

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>My Profile · BOPEU</title><link rel="stylesheet" href="design-system.css"></head>
-<body class="bop">
+<body data-page-id="Page-profile" class="bop">
 <header style="background:#fff;border-bottom:1px solid #E2E8F0;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10;">
   <a href="index.html" style="display:flex;gap:10px;align-items:center;text-decoration:none;color:inherit;">
     <div style="width:32px;height:32px;border-radius:8px;background:#D32F2F;color:#fff;display:grid;place-items:center;font-weight:800;">B</div>
@@ -33,7 +33,7 @@
     <a class="row" href="my-documents.html"><div class="row-icon">📁</div><div class="row-body"><div class="row-title">My Documents</div><div class="row-desc">Formal document vault.</div></div></a>
   </div></div>
 </main>
-<div class="modal" id="onboarding-modal" style="position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(15,23,32,.55);">
+<div class="modal" id="onboarding-modal" data-view-id="Page-profile-onboarding-modal" style="position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(15,23,32,.55);">
   <div style="width:100%;max-width:560px;max-height:88vh;overflow-y:auto;background:#fff;border-radius:16px;padding:20px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #E2E8F0;"><h2 style="font-size:18px;font-weight:800;margin:0;">Edit Profile</h2><button style="background:none;border:none;font-size:24px;cursor:pointer;color:#718096;" onclick="closeModal('onboarding-modal')">&times;</button></div>
     <div id="wizardProgress"></div><div id="wizardBody"></div>

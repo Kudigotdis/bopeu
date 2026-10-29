@@ -14,7 +14,7 @@
   .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--bop-muted); padding: 4px 8px; line-height: 1; }
 </style>
 </head>
-<body class="bop">
+<body data-page-id="Page-application-tracker" class="bop">
 
 <header style="background:#fff;border-bottom:1px solid #E2E8F0;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;">
   <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;">
@@ -83,7 +83,7 @@
 </main>
 
 <!-- Form modal (used by openForm) -->
-<div class="modal" id="form-modal">
+<div class="modal" id="form-modal" data-view-id="Page-application-tracker-form-modal">
   <div class="modal-card">
     <div class="modal-head">
       <h2 class="modal-title" id="formTitle">Application</h2>
@@ -99,7 +99,7 @@
 </div>
 
 <!-- Benefit / detail modal -->
-<div class="modal" id="benefit-modal">
+<div class="modal" id="benefit-modal" data-view-id="Page-application-tracker-benefit-modal">
   <div class="modal-card">
     <div class="modal-head">
       <h2 class="modal-title" id="benefitModalTitle">Details</h2>

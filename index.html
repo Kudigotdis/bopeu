@@ -226,14 +226,14 @@
     <!-- ALL MODALS FROM ORIGINAL INDEX.HTML -->
     
     <!-- Login -->
-    <div class="modal" id="login-modal">
+    <div class="modal" id="login-modal" data-view-id="Page-index-login-modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal('login-modal')">✕</button>
             <div id="loginModalBody"></div>
         </div>
     </div>
 </head>
-<body class="bop">
+<body data-page-id="Page-index" class="bop">
     <div class="app-container">
         <!-- Header -->
         <div class="app-header">
@@ -251,7 +251,7 @@
     </div>
     
     <!-- Timeline post modal -->
-    <div class="post-modal-overlay" id="postModal" aria-hidden="true"><div class="post-modal" role="dialog" aria-modal="true" aria-label="Timeline post"><div class="post-modal-media no-img" id="postModalMedia"><img id="postModalImage" alt="" loading="eager"></div><div class="post-modal-body" id="postModalBody"></div></div></div>
+    <div class="post-modal-overlay" id="postModal" data-view-id="Page-index-postModal" aria-hidden="true"><div class="post-modal" role="dialog" aria-modal="true" aria-label="Timeline post"><div class="post-modal-media no-img" id="postModalMedia"><img id="postModalImage" alt="" loading="eager"></div><div class="post-modal-body" id="postModalBody"></div></div></div>
     <script>
     // Close timeline post modal on backdrop click or Escape
     document.addEventListener('click', function (e) {

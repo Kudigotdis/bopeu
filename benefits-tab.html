@@ -1165,7 +1165,7 @@
     <!-- ALL MODALS FROM ORIGINAL INDEX.HTML -->
     
     <!-- Login -->
-    <div class="modal" id="login-modal">
+    <div class="modal" id="login-modal" data-view-id="Page-benefits-tab-login-modal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal('login-modal')">✕</button>
             <div id="loginModalBody"></div>
@@ -1174,7 +1174,7 @@
     
     <!-- Other modals would continue here... -->
 </head>
-<body>
+<body data-page-id="Page-benefits-tab">
     <div class="app-container">
         <!-- Header -->
         <div class="app-header">
@@ -1321,7 +1321,7 @@
                 <div class="acc-body">
                     <div class="card-sub">Verified offers carry a red dot. Amber dots await the current partner schedule.</div>
                     
-                    <div id="partnerBenefitSection"></div>
+                    <div id="partnerBenefitSection" data-view-id="Page-benefits-tab-partnerBenefitSection"></div>
                 </div>
             </div>
             
@@ -1337,7 +1337,7 @@
     </div>
 
     <!-- Floating service detail modal -->
-    <div class="service-modal" id="service-modal" role="dialog" aria-modal="true" aria-labelledby="serviceModalTitle" aria-hidden="true">
+    <div class="service-modal" id="service-modal" data-view-id="Page-benefits-tab-service-modal" role="dialog" aria-modal="true" aria-labelledby="serviceModalTitle" aria-hidden="true">
         <div class="service-modal-panel" role="document">
             <button type="button" class="service-modal-close" aria-label="Close service details" onclick="closeServiceModal()">✕</button>
             <div class="service-modal-body" id="serviceModalBody"></div>
@@ -1345,7 +1345,7 @@
     </div>
     
     <!-- Floating partner detail modal -->
-    <div class="partner-tile-modal" id="partner-tile-modal" role="dialog" aria-modal="true" aria-labelledby="partnerTileModalTitle" aria-hidden="true">
+    <div class="partner-tile-modal" id="partner-tile-modal" data-view-id="Page-benefits-tab-partner-tile-modal" role="dialog" aria-modal="true" aria-labelledby="partnerTileModalTitle" aria-hidden="true">
         <div class="partner-tile-modal-panel" role="document">
             <button type="button" class="partner-tile-modal-close" aria-label="Close partner details" onclick="closePartnerDetail()">✕</button>
             <div class="partner-tile-modal-body" id="partnerTileModalBody"></div>

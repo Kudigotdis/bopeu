@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="design-system.css">
 <style>
   body.bop { background:#F2F5F9; }
-  .admin-header { background:#1A202C; color:#fff; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:20; }
+  .admin-header { background:#1A202C; color:#fff; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; bottom:0; z-index:20; }
   .admin-brand { display:flex; align-items:center; gap:10px; }
   .admin-mark { width:32px; height:32px; border-radius:8px; background:#D32F2F; display:grid; place-items:center; font-weight:800; color:#fff; }
   .admin-nav { display:flex; gap:16px; font-size:13px; }
@@ -26,21 +26,6 @@
 </style>
 </head>
 <body data-page-id="Page-admin-reports" class="bop">
-
-<header class="admin-header">
-  <div class="admin-brand">
-    <div class="admin-mark">B</div>
-    <div><div style="font-weight:800; font-size:14px;">BOPEU Admin</div><div style="font-size:10px; opacity:.7;">Staff Portal</div></div>
-  </div>
-  <nav class="admin-nav">
-    <a href="admin-dashboard.html">Dashboard</a>
-    <a href="admin-submissions.html">Submissions</a>
-    <a href="admin-members.html">Members</a>
-    <a href="admin-content.html">Content</a>
-    <a href="admin-reports.html" style="text-decoration:underline;">Reports</a>
-    <a href="admin-login.html">Sign out</a>
-  </nav>
-</header>
 
 <div class="admin-layout">
   <aside class="admin-side">
@@ -158,5 +143,20 @@
   styleEl.textContent = '.admin-table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.03);}.admin-table th{background:#F7F9FC;text-align:left;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#718096;padding:12px;border-bottom:1px solid #E2E8F0;}.admin-table td{padding:12px;border-bottom:1px solid #E2E8F0;font-size:14px;color:#1A202C;}';
   document.head.appendChild(styleEl);
 </script>
+
+<header class="admin-header">
+  <div class="admin-brand">
+    <div class="admin-mark">B</div>
+    <div><div style="font-weight:800; font-size:14px;">BOPEU Admin</div><div style="font-size:10px; opacity:.7;">Staff Portal</div></div>
+  </div>
+  <nav class="admin-nav">
+    <a href="admin-dashboard.html">Dashboard</a>
+    <a href="admin-submissions.html">Submissions</a>
+    <a href="admin-members.html">Members</a>
+    <a href="admin-content.html">Content</a>
+    <a href="admin-reports.html" style="text-decoration:underline;">Reports</a>
+    <a href="admin-login.html">Sign out</a>
+  </nav>
+</header>
 </body>
 </html>

@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="design-system.css">
 <style>
   body.bop { background:#F2F5F9; }
-  .admin-header { background:#1A202C; color:#fff; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:20; }
+  .admin-header { background:#1A202C; color:#fff; padding:12px 20px; display:flex; align-items:center; justify-content:space-between; position:sticky; bottom:0; z-index:20; }
   .admin-brand { display:flex; align-items:center; gap:10px; }
   .admin-mark { width:32px; height:32px; border-radius:8px; background:#D32F2F; display:grid; place-items:center; font-weight:800; color:#fff; }
   .admin-nav { display:flex; gap:16px; font-size:13px; }
@@ -30,21 +30,6 @@
 </style>
 </head>
 <body data-page-id="Page-admin-submissions" class="bop">
-
-<header class="admin-header">
-  <div class="admin-brand">
-    <div class="admin-mark">B</div>
-    <div><div style="font-weight:800; font-size:14px;">BOPEU Admin</div><div style="font-size:10px; opacity:.7;">Staff Portal</div></div>
-  </div>
-  <nav class="admin-nav">
-    <a href="admin-dashboard.html">Dashboard</a>
-    <a href="admin-submissions.html" class="active">Submissions</a>
-    <a href="admin-members.html">Members</a>
-    <a href="admin-content.html">Content</a>
-    <a href="admin-reports.html">Reports</a>
-    <a href="admin-login.html">Sign out</a>
-  </nav>
-</header>
 
 <div class="admin-layout">
   <aside class="admin-side">
@@ -162,5 +147,20 @@
     renderSubmissions();
   });
 </script>
+
+<header class="admin-header">
+  <div class="admin-brand">
+    <div class="admin-mark">B</div>
+    <div><div style="font-weight:800; font-size:14px;">BOPEU Admin</div><div style="font-size:10px; opacity:.7;">Staff Portal</div></div>
+  </div>
+  <nav class="admin-nav">
+    <a href="admin-dashboard.html">Dashboard</a>
+    <a href="admin-submissions.html" class="active">Submissions</a>
+    <a href="admin-members.html">Members</a>
+    <a href="admin-content.html">Content</a>
+    <a href="admin-reports.html">Reports</a>
+    <a href="admin-login.html">Sign out</a>
+  </nav>
+</header>
 </body>
 </html>

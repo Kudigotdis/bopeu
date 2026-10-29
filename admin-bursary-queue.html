@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="design-system.css">
 <style>
 body.bop{background:#F2F5F9}
-.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+.admin-header{background:#1A202C;color:#fff;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;bottom:0;z-index:20}
 .admin-mark{width:32px;height:32px;border-radius:8px;background:#D32F2F;display:grid;place-items:center;font-weight:800;color:#fff}
 .admin-nav{display:flex;gap:16px;font-size:13px}
 .admin-nav a{color:#fff;text-decoration:none;font-weight:600;opacity:.85}
@@ -28,10 +28,6 @@ body.bop{background:#F2F5F9}
 </style>
 </head>
 <body data-page-id="Page-admin-bursary-queue" class="bop">
-<header class="admin-header">
-  <div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Bursary Queue</div></div></div>
-  <nav class="admin-nav"><a href="admin-funeral-claims.html">Welfare</a><a href="admin-login.html">Sign out</a></nav>
-</header>
 <div class="admin-layout">
   <aside class="admin-side">
     <a href="admin-funeral-claims.html">⚰️ Funeral Claims</a>
@@ -108,5 +104,10 @@ renderList();
 
 <script src="js/demo-profiles.js"></script>
 <script src="js/auth.js"></script>
+
+<header class="admin-header">
+  <div style="display:flex;align-items:center;gap:10px;"><div class="admin-mark">B</div><div><div style="font-weight:800;font-size:14px;">BOPEU Admin</div><div style="font-size:10px;opacity:.7;">Bursary Queue</div></div></div>
+  <nav class="admin-nav"><a href="admin-funeral-claims.html">Welfare</a><a href="admin-login.html">Sign out</a></nav>
+</header>
 </body>
 </html>

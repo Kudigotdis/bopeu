@@ -61,11 +61,20 @@ const MEMBER_IMAGES = {
 const STAFF_IMAGES = {
   'Naledi Molefe': 'BOPEU Staff - Marketing.jpg',
   'Kago Ndlovu': 'BOPEU Staff - Sales & Client Services.jpg',
-  'Otsile Sechele': 'BOPEU Admin.jpg'
+  'Otsile Sechele': 'BOPEU Admin.jpg',
+  'Thabo Motsamai': 'Thabo Motsamai.png',
+  'Boitumelo Kgosidintsi': 'Boitumelo Kgosidintsi.jpg',
+  'Lorato Tsheko': 'Lorato Tsheko.jpg',
+  'Dineo Tlhabi': 'Dineo Tlhabi.jpg'
 };
 
 const PARTNER_IMAGES = {
-  'Keitumetse Mooketsi': 'Benefit Partner.jpg'
+  'Keitumetse Mooketsi': 'Benefit Partner.jpg',
+  'Tebogo Ramokate': 'Tebogo Ramokate.avif',
+  'Kagiso Nare': 'Kagiso Nare.jpg',
+  'Mpho Garekwe': 'Mpho Garekwe.jpg',
+  'Onalenna Setshwane': 'Onalenna Setshwane.jpg',
+  'Kefilwe Makwati': 'Kefilwe Makwati.avif'
 };
 
 const IMAGE_ROOT = 'Assets/Demo Profile Images';

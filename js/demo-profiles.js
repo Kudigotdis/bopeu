@@ -2052,7 +2052,7 @@ window.BOPEU_DEMO_PROFILES = [
     "department": "Finance & Payroll Reconciliation",
     "staffId": "BOPEU-DEMO-STA-031",
     "email": "thabo.motsamai@demo.bopeu.invalid",
-    "image": "Assets/Demo Profile Images/NO IMAGE.png",
+    "image": "Assets/Demo Profile Images/Thabo Motsamai.png",
     "landing": "admin-dashboard.html",
     "metrics": {
       "latest_batch": "DEMO-BATCH-2026-10-A",
@@ -2131,7 +2131,7 @@ window.BOPEU_DEMO_PROFILES = [
     "department": "Welfare & Claims Administration — Babereki Services",
     "staffId": "BOPEU-DEMO-STA-038",
     "email": "boitumelo.kgosidintsi@demo.babereki.invalid",
-    "image": "Assets/Demo Profile Images/NO IMAGE.png",
+    "image": "Assets/Demo Profile Images/Boitumelo Kgosidintsi.jpg",
     "landing": "admin-dashboard.html",
     "metrics": {
       "funeral_claims_in_queue": 8,
@@ -2208,7 +2208,7 @@ window.BOPEU_DEMO_PROFILES = [
     "department": "Regional Operations & Shop Stewards",
     "staffId": "BOPEU-DEMO-STA-045",
     "email": "lorato.tsheko@demo.bopeu.invalid",
-    "image": "Assets/Demo Profile Images/NO IMAGE.png",
+    "image": "Assets/Demo Profile Images/Lorato Tsheko.jpg",
     "landing": "admin-dashboard.html",
     "metrics": {
       "local_meetings_upcoming": 3,
@@ -2287,7 +2287,7 @@ window.BOPEU_DEMO_PROFILES = [
     "department": "Operations & Legal Services",
     "staffId": "BOPEU-DEMO-STA-052",
     "email": "dineo.tlhabi@demo.bopeu.invalid",
-    "image": "Assets/Demo Profile Images/NO IMAGE.png",
+    "image": "Assets/Demo Profile Images/Dineo Tlhabi.jpg",
     "landing": "admin-dashboard.html",
     "metrics": {
       "active_cases": 11,
@@ -2524,7 +2524,7 @@ window.BOPEU_DEMO_PROFILES = [
     "branch": "Francistown Enterprise Desk — demo label; confirm branch",
     "partnerRole": "Mascom_Corporate_Agent",
     "email": "tebogo.ramokate@demo.mascom.invalid",
-    "image": "Assets/Demo Profile Images/NO IMAGE.png",
+    "image": "Assets/Demo Profile Images/Tebogo Ramokate.avif",
     "landing": "partner-dashboard.html",
     "metrics": {
       "draft_offers": 1,
@@ -2603,7 +2603,7 @@ window.BOPEU_DEMO_PROFILES = [
     "branch": "Gaborone Central — demo branch label; confirm official branch listing",
     "partnerRole": "Diagnofirm_Verification_Agent",
     "email": "kagiso.nare@demo.diagnofirm.invalid",
-    "image": "Assets/Demo Profile Images/NO IMAGE.png",
+    "image": "Assets/Demo Profile Images/Kagiso Nare.jpg",
     "landing": "partner-dashboard.html",
     "metrics": {
       "eligibility_pings_today_demo": 18,
@@ -2682,7 +2682,7 @@ window.BOPEU_DEMO_PROFILES = [
     "branch": "Gaborone Sales Desk — demo label; confirm current locations",
     "partnerRole": "Archein_Member_Scheme_Manager",
     "email": "mpho.garekwe@demo.archein.invalid",
-    "image": "Assets/Demo Profile Images/NO IMAGE.png",
+    "image": "Assets/Demo Profile Images/Mpho Garekwe.jpg",
     "landing": "partner-dashboard.html",
     "metrics": {
       "assigned_quotes_demo": 7,
@@ -2761,7 +2761,7 @@ window.BOPEU_DEMO_PROFILES = [
     "branch": "Gaborone Corporate Banking — demo label; confirm assigned desk",
     "partnerRole": "FirstCapital_Babereki_Facility_Officer",
     "email": "onalenna.setshwane@demo.firstcapital.invalid",
-    "image": "Assets/Demo Profile Images/NO IMAGE.png",
+    "image": "Assets/Demo Profile Images/Onalenna Setshwane.jpg",
     "landing": "partner-dashboard.html",
     "metrics": {
       "assigned_applications_demo": 6,
@@ -2840,7 +2840,7 @@ window.BOPEU_DEMO_PROFILES = [
     "branch": "Cresta Lodge Gaborone — demo assignment; check participating properties",
     "partnerRole": "Cresta_Partner_Reservations_Agent",
     "email": "kefilwe.makwati@demo.cresta.invalid",
-    "image": "Assets/Demo Profile Images/NO IMAGE.png",
+    "image": "Assets/Demo Profile Images/Kefilwe Makwati.avif",
     "landing": "partner-dashboard.html",
     "metrics": {
       "booking_enquiries_demo": 11,
